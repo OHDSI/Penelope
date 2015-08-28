@@ -1,0 +1,42 @@
+body {
+  padding-top: 70px;
+}
+
+.navbar-nav li {
+ line-height: 50px;
+}
+
+.navbar-nav .glyphicon-cog {
+	color: #4AC3FF;
+}
+
+.navbar-nav .glyphicon {
+	font-size:1.4em;
+}
+
+.navbar-nav span.glyphicon {
+	line-height:1.4em;
+}
+
+.service-name {
+	font-weight: bold;
+}
+
+.service-name .glyphicon-ok-sign {
+	color: #4AC3FF;
+}
+
+.service-info {
+	color: #888;
+	font-size: .8em;
+}
+
+.navbar-nav .glyphicon {
+	font-size:1.4em;
+}
+
+.navbar-search{
+    margin-top: 8px; 
+    margin-bottom: 8px;   
+}
+

@@ -1,0 +1,7 @@
+<div id="wrapperSearchResults">
+	<div>
+		<div class="wrapperTitle" data-bind="text: 'Search Results for ' + decodeURI(model.currentSearch())"></div>
+	</div>
+	
+	<faceted-datatable params="{columns: model.searchConceptsColumns, options: model.searchConceptsOptions, reference: model.searchResultsConcepts }"></faceted-datatable>
+</div>

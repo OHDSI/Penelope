@@ -27,6 +27,7 @@ requirejs.config({
         "datatables": "https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.8/js/jquery.dataTables.min",
         "director": "https://cdnjs.cloudflare.com/ajax/libs/Director/1.2.8/director.min",
         "knockout.dataTables.binding": "knockout.dataTables.binding", // OHDSI CDN Candidate
+        "drug-label": "components/drug-label",
         "faceted-datatable": "components/faceted-datatable",
         "home": "components/home",
         "search": "components/search",
@@ -34,7 +35,7 @@ requirejs.config({
 	}
 });
 
-requirejs(['knockout', './app', 'director', 'faceted-datatable', 'home', 'search', 'search-results'], function(ko, app) {
+requirejs(['knockout', './app', 'director', 'drug-label', 'faceted-datatable', 'home', 'search', 'search-results'], function(ko, app) {
     var pageModel = new app();
     var routerOptions = {
 		notfound: function () {
@@ -45,7 +46,10 @@ requirejs(['knockout', './app', 'director', 'faceted-datatable', 'home', 'search
 		'/search/:query:': pageModel.search,
 		'/search': function () {
 			pageModel.currentView('search');
-		}
+		},
+        '/druglabel/:setid:': function () {
+        	pageModel.currentView('druglabel');
+        }
 	}
     pageModel.router = new Router(routes).configure(routerOptions);
     window.pageModel = pageModel;

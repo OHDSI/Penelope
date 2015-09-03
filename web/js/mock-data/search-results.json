@@ -1,0 +1,26 @@
+[
+    {
+        "drug_concept_id":1118087,
+        "drug_name":"celebrex",
+        "set_id":"8d52185d-421f-4e34-8db7-f7676db2a226",
+        "image_preview": "http://localhost"
+    },
+    {
+        "drug_concept_id":1525216,
+        "drug_name":"actos",
+        "set_id":"d2ddc491-88a9-4063-9150-443b4fa4330c",
+        "image_preview": "http://localhost"
+    },
+    {
+        "drug_concept_id":19074692,
+        "drug_name":"tegretol",
+        "set_id":"8d409411-aa9f-4f3a-a52c-fbcb0c3ec053",
+        "image_preview": "http://localhost"
+    },
+    {
+        "drug_concept_id":40223769,
+        "drug_name":"aricept",
+        "set_id":"98e451e1-e4d7-4439-a675-c5457ba20975",
+        "image_preview": "http://localhost"
+    }
+]

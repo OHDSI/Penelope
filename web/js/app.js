@@ -38,66 +38,8 @@ define([
 			filters = [];
 			$('#querytext').blur();
     
-            // TEMPORARY CODE - Put into AJAX call later
-            var tempCaption;
-            var results = [  
-               {  
-                  "CONCEPT_ID":45768801,
-                  "CONCEPT_NAME":"Bridging anticoagulant therapy with low molecular weight heparin",
-                  "STANDARD_CONCEPT":"S",
-                  "INVALID_REASON":"V",
-                  "CONCEPT_CODE":"707309004",
-                  "DOMAIN_ID":"Procedure",
-                  "VOCABULARY_ID":"SNOMED",
-                  "CONCEPT_CLASS_ID":"Procedure",
-                  "INVALID_REASON_CAPTION":"Valid",
-                  "STANDARD_CONCEPT_CAPTION":"Standard",
-                    "DENSITY":0
-               },
-               {  
-                  "CONCEPT_ID":45452644,
-                  "CONCEPT_NAME":"Bridging anticoagulant therapy with low molecular weight heparin",
-                  "STANDARD_CONCEPT":"N",
-                  "INVALID_REASON":"V",
-                  "CONCEPT_CODE":"88A5000",
-                  "DOMAIN_ID":"Procedure",
-                  "VOCABULARY_ID":"Read",
-                  "CONCEPT_CLASS_ID":"Read",
-                  "INVALID_REASON_CAPTION":"Valid",
-                  "STANDARD_CONCEPT_CAPTION":"Non-Standard",
-                    "DENSITY":0
-               }
-            ];
-
-            if (decodeURI(query).length > 20) {
-                tempCaption = decodeURI(query).substring(0, 20) + '...';
-            } else {
-                tempCaption = decodeURI(query);
-            }
-
-            lastQuery = {
-                query: query,
-                caption: tempCaption,
-                resultLength: results.length
-            };
-            self.currentSearch(query);
-
-            var exists = false;
-            for (var i = 0; i < self.recentSearch().length; i++) {
-                if (self.recentSearch()[i].query == query)
-                    exists = true;
-            }
-            if (!exists) {
-                self.recentSearch.unshift(lastQuery);
-            }
-            if (self.recentSearch().length > 7) {
-                self.recentSearch.pop();
-            }
-
-            self.currentView('searchResults');
-            self.searchResultsConcepts(results);
-/*			$.ajax({
-				url: self.vocabularyUrl() + 'search/' + query,
+			$.ajax({
+				url: 'js/mock-data/search-results.json', //self.vocabularyUrl() + 'search/' + query,
 				success: function (results) {
 					if (results.length == 0) {
 						self.currentView('search');
@@ -105,9 +47,9 @@ define([
 						return;
 					}
 
-					var densityPromise = self.loadDensity(results);
+					//var densityPromise = self.loadDensity(results);
 
-					$.when(densityPromise).done(function () {
+					//$.when(densityPromise).done(function () {
 						var tempCaption;
 
 						if (decodeURI(query).length > 20) {
@@ -137,12 +79,12 @@ define([
 
 						self.currentView('searchResults');
 						self.searchResultsConcepts(results);
-					});
+					//});
 				},
 				error: function (xhr, message) {
 					alert('error while searching ' + message);
 				}
-			}); */
+			});
 		}        
         self.selectedConceptsIndex = {};
         

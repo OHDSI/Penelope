@@ -1,7 +1,44 @@
-<div id="wrapperSearchResults">
+<div class="container" id="wrapperSearchResults">
 	<div>
 		<div class="wrapperTitle" data-bind="text: 'Search Results for ' + decodeURI(model.currentSearch())"></div>
 	</div>
 	
-	<faceted-datatable params="{columns: model.searchConceptsColumns, options: model.searchConceptsOptions, reference: model.searchResultsConcepts }"></faceted-datatable>
+    <table style="border-style:solid;border-width:1px">
+        <tbody data-bind="foreach: searchResults">
+            <tr>
+                <td>
+                    <img data-bind="attr: {src : 'https://placehold.it/84x84', title: drug_name}" />
+                </td>
+                <td>
+                    <a style="font-weight: bold;" data-bind="attr : { href : '#/druglabel/' + set_id, title: drug_name} "><span data-bind="text: drug_name"></span></a><br/>
+                    <span>description goes here.</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- 
+    Data Tables
+    <br />
+    <br />
+    -->
+    <!-- <span data-bind="text: ko.toJSON($component.searchResults, null, 2)"></span> -->
+    <!-- 
+    <table id="search-results" data-bind="dataTable:{data: $component.data}">
+        <thead>
+            <tr>
+                <th>
+                    ID
+                </th>
+                <th>
+                    Code
+                </th>
+            </tr>
+        </thead>
+    </table>
+    <br />
+    <br />
+    Faceted:<br/>
+    <br />
+	<faceted-datatable params="{columns: model.searchConceptsColumns, options: model.searchConceptsOptions, reference: model.searchResultsConcepts }"></faceted-datatable>    
+    -->
 </div>

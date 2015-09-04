@@ -47,9 +47,7 @@ requirejs(['knockout', './app', 'director', 'drug-label', 'faceted-datatable', '
 		'/search': function () {
 			pageModel.currentView('search');
 		},
-        '/druglabel/:setid:': function () {
-        	pageModel.currentView('druglabel');
-        }
+        '/druglabel/:setid:': pageModel.displayLabel
 	}
     pageModel.router = new Router(routes).configure(routerOptions);
     window.pageModel = pageModel;

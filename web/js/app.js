@@ -13,6 +13,7 @@ define([
         // Search settings
         self.currentView = ko.observable('home');
         self.currentSearch = ko.observable();
+        self.currentLabel = ko.observable();
         self.recentSearch = ko.observableArray(null);
         self.searchResultsConcepts = ko.observableArray();
         self.initComplete = function () {
@@ -85,7 +86,24 @@ define([
 					alert('error while searching ' + message);
 				}
 			});
-		}        
+		} 
+        
+        self.displayLabel = function (setid){
+            self.currentView('loading');
+            
+            $.ajax({
+                url : "js/mock-data/sample-label.html",
+                success : function(result){
+                    self.currentLabel = result;
+                },
+                error : function(error){
+                	alert('Error retrieving label: ' + error);
+                }
+            });    
+            
+            self.currentView('druglabel');
+        }
+        
         self.selectedConceptsIndex = {};
         
 		self.searchConceptsColumns = [

@@ -1,5 +1,8 @@
 <div class="container" id="drug-label-display">
-    Hello Drug Label
-    
-    <div id="drug-label" data-bind="html: model.currentLabel"></div>
+    <div class="panel panel-default">
+        <div class="panel-heading" data-bind="text: model.currentDrugName">
+        </div>
+    </div>
+    <hr/>
+    <div id="drug-label" data-bind="html: model.currentDrugLabel"></div>
 </div>

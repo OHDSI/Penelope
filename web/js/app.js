@@ -10,18 +10,24 @@ define([
 	var appModel = function () {
         var self = this;
         
+        // Example model settings
+		self.appHeading = ko.observable('Welcome to Penelope');
+		self.appBody = ko.observable('Personalized Exploratory Navigation and Evaluation for Labels Of Product Effects');
+
+        // Selected Drug settings
+        self.currentDrugSetId = ko.observable();
+        self.currentDrugName = ko.observable();
+        self.currentDrugLabel = ko.observable();
+        
         // Search settings
         self.currentView = ko.observable('home');
         self.currentSearch = ko.observable();
-        self.currentLabel = ko.observable();
+        //self.currentLabel = ko.observable();
         self.recentSearch = ko.observableArray(null);
         self.searchResultsConcepts = ko.observableArray();
         self.initComplete = function () {
             self.router.init('/');
         }
-        // Example model settings
-		self.appHeading = ko.observable('Welcome to Penelope');
-		self.appBody = ko.observable('Personalized Exploratory Navigation and Evaluation for Labels Of Product Effects');
 
 		// configure services to include at least one valid OHDSI WebAPI endpoint
 		self.services = [
@@ -91,17 +97,50 @@ define([
         self.displayLabel = function (setid){
             self.currentView('loading');
             
-            $.ajax({
-                url : "js/mock-data/sample-label.html",
-                success : function(result){
-                    self.currentLabel = result;
-                },
-                error : function(error){
-                	alert('Error retrieving label: ' + error);
-                }
-            });    
+            // Get the current drug by setid - first by
+            // interrogating the search results and if it is 
+            // not there, go back to the server.
+            var selectedDrug = ko.utils.arrayFirst(self.searchResultsConcepts(), function (item) { 
+                return item.set_id == setid;
+            });
             
-            self.currentView('druglabel');
+            // Call the WS to get the current drug selected
+            if (selectedDrug == null) {
+                $.ajax({
+                    url : "js/mock-data/sample-drug.json",
+                    success : function(result){
+                        self.getLabel(result);
+                    }
+                });
+            }
+            else
+            {
+                self.getLabel(selectedDrug);
+            }
+        }
+        
+        self.getLabel = function (selectedDrug){
+            if (selectedDrug != null)
+            {
+                self.currentDrugSetId(selectedDrug.set_id);
+                self.currentDrugName(selectedDrug.drug_name);
+            
+                $.ajax({
+                    url : "js/mock-data/sample-label.html",
+                    success : function(result){
+                        //self.currentLabel(result);
+                        self.currentDrugLabel(result);
+                        self.currentView('druglabel');
+                    },
+                    error : function(error){
+                        alert('Error retrieving label: ' + error);
+                    }
+                });    
+            } 
+            else
+            {
+                // TODO: Display something to let the user know we couldn't find this SetID
+            }
         }
         
         self.selectedConceptsIndex = {};

@@ -1,0 +1,22 @@
+[
+    {
+        "evidence_group_id":1,
+        "evidence_group_name":"Clinical Trials",
+        "evidence_count": "100"
+    },
+    {
+        "evidence_group_id":2,
+        "evidence_group_name":"Scientific Literature",
+        "evidence_count": "100"
+    },
+    {
+        "evidence_group_id":3,
+        "evidence_group_name":"<Literature Bucket 3>",
+        "evidence_count": "999"
+    },
+    {
+        "evidence_group_id":3,
+        "evidence_group_name":"<Literature Bucket 4>",
+        "evidence_count": "999"
+    }
+]

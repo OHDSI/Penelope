@@ -25,6 +25,15 @@ define([
         //self.currentLabel = ko.observable();
         self.recentSearch = ko.observableArray(null);
         self.searchResultsConcepts = ko.observableArray();
+        
+        
+        // Drug Label settings
+        self.selectedConditionConceptId = ko.observable();
+        self.selectedConditionConceptName = ko.observable('<Selected HOI Name>');
+        
+        // Literature Evidence Settings
+        self.literatureEvidenceResults = ko.observableArray(null);
+        
         self.initComplete = function () {
             self.router.init('/');
         }

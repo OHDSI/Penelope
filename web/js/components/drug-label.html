@@ -1,8 +1,42 @@
 <div class="container" id="drug-label-display">
-    <div class="panel panel-default">
-        <div class="panel-heading" data-bind="text: model.currentDrugName">
+    <div class="container" style="border-bottom: rgba(0, 0, 0, 0.12) 1px solid;">
+        <div style="float: left" class="h1" data-bind="text: model.currentDrugName"></div>
+        <div style="float: right; padding-top: 22px;">
+            <a class="btn btn-default" role="button">Browser</a>
+            <a class="btn btn-default" role="button">About Me</a>
+            <a class="btn btn-default" role="button" data-bind="click:function() { openEvidenceBrowser(); }">Evidence Browser</a>
         </div>
     </div>
-    <hr/>
-    <div id="drug-label" data-bind="html: model.currentDrugLabel"></div>
+    <div id="drug-label" style="padding-top: 5px; margin-top: 5px;" data-bind="html: model.currentDrugLabel"></div>
+	<div class="modal fade" id="evidenceExplorer" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header" data-bind="text: model.selectedConditionConceptName"></div> 
+                <div id="evidenceBrowserTabs">
+                  <ul>
+                    <li><a href="#tabs-1">Observational Data</a></li>
+                    <li><a href="#tabs-2" data-bind="click:function() { getLiteratureSummary(); }">Literature</a></li>
+                    <li><a href="#tabs-3" data-bind="click:function() { getSpontaneousReportsSummary(); }">Spontaneous Reports</a></li>
+                  </ul>
+                  <div id="tabs-1">
+                    <p>Observational Data Evidence goes here.</p>
+                  </div>
+                  <div id="tabs-2">
+                    <p>Literature Evidence (Laertes)</p>
+                    <div id="literature">
+                      <!-- ko foreach: model.literatureEvidenceResults -->
+                      <h3 data-bind="attr: {title: evidence_group_name}, text: evidence_group_name + '  (' + evidence_count + ')'"></h3>
+                      <div>
+                        <p data-bind="attr: {title: evidence_group_name}, text: evidence_group_name"></p>
+                      </div>
+                      <!-- /ko -->
+                    </div>
+                  </div>
+                  <div id="tabs-3">
+                    <p>Spontaneous Reports</p>
+                  </div>
+                </div>
+            </div>
+		</div>
+	</div>    
 </div>

@@ -10,8 +10,12 @@ requirejs.config({
 		"bootstrap": {
 			"deps": [
 				'jquery',
+                'jquery-ui',
 				"css!https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.min.css",
-                "css!https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap-theme.min.css"
+                "css!https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap-theme.min.css",
+                "css!https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css",
+                "css!https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.theme.min.css",
+                "css!https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.structure.min.css"
 			]
 		},
         "facets": {
@@ -21,12 +25,16 @@ requirejs.config({
 	},
 	paths: {
 		"jquery":  "https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min",
+        "jquery-ui": "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min",
 		"bootstrap": "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min",
 		"colvis": "https://cdnjs.cloudflare.com/ajax/libs/datatables-colvis/1.1.0/js/datatables.colvis.min",
         "knockout": "https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min",
         "datatables": "https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.8/js/jquery.dataTables.min",
         "director": "https://cdnjs.cloudflare.com/ajax/libs/Director/1.2.8/director.min",
+        "datatablesbuttons": "https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min",
+        "jsbuttons": "//cdn.datatables.net/buttons/1.0.3/js/buttons.html5.min", 
         "knockout.dataTables.binding": "knockout.dataTables.binding", // OHDSI CDN Candidate
+        "datatable-test": "components/datatable-test",
         "drug-label": "components/drug-label",
         "faceted-datatable": "components/faceted-datatable",
         "home": "components/home",
@@ -35,7 +43,7 @@ requirejs.config({
 	}
 });
 
-requirejs(['knockout', './app', 'director', 'drug-label', 'faceted-datatable', 'home', 'search', 'search-results'], function(ko, app) {
+requirejs(['knockout', './app', 'datatable-test', 'director', 'drug-label', 'faceted-datatable', 'home', 'search', 'search-results', ], function(ko, app) {
     var pageModel = new app();
     var routerOptions = {
 		notfound: function () {
@@ -47,7 +55,10 @@ requirejs(['knockout', './app', 'director', 'drug-label', 'faceted-datatable', '
 		'/search': function () {
 			pageModel.currentView('search');
 		},
-        '/druglabel/:setid:': pageModel.displayLabel
+        '/druglabel/:setid:': pageModel.displayLabel,
+        '/datatabletest/': function() {
+            pageModel.currentView('datatabletest');
+        }
 	}
     pageModel.router = new Router(routes).configure(routerOptions);
     window.pageModel = pageModel;

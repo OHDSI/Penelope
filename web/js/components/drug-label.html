@@ -1,5 +1,5 @@
 <div class="container" id="drug-label-display">
-    <div class="container" style="border-bottom: rgba(0, 0, 0, 0.12) 1px solid;">
+    <div class="container" style="padding-left: 0px; padding-right: 0px; border-bottom: rgba(0, 0, 0, 0.12) 1px solid;">
         <div style="float: left" class="h1" data-bind="text: model.currentDrugName"></div>
         <div style="float: right; padding-top: 22px;">
             <a class="btn btn-default" role="button">Browser</a>
@@ -7,7 +7,9 @@
             <a class="btn btn-default" role="button" data-bind="click:function() { openEvidenceBrowser(); }">Evidence Browser</a>
         </div>
     </div>
-    <div id="drug-label" style="padding-top: 5px; margin-top: 5px;" data-bind="html: model.currentDrugLabel"></div>
+    <div id="drug-label-container" style="padding-top: 5px; margin-top: 5px;">
+        <div id="drug-label-external-display" data-bind="html: model.currentDrugLabel, eventListener: { event: 'click', selector: '.product-label-link', callback: productLabelLinkClick}"></div>
+    </div>
 	<div class="modal fade" id="evidenceExplorer" tabindex="-1" role="dialog">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
@@ -15,7 +17,7 @@
                 <div id="evidenceBrowserTabs">
                   <ul>
                     <li><a href="#tabs-1">Observational Data</a></li>
-                    <li><a href="#tabs-2" data-bind="click:function() { getLiteratureSummary(); }">Literature</a></li>
+                    <li><a href="#tabs-2" data-bind="click:function() { getLiteratureSummary(); }">Scientific Literature</a></li>
                     <li><a href="#tabs-3" data-bind="click:function() { getSpontaneousReportsSummary(); }">Spontaneous Reports</a></li>
                   </ul>
                   <div id="tabs-1">

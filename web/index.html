@@ -33,7 +33,8 @@
     <home params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'home'"></home>
     <penelope-search-results params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'searchResults'"></penelope-search-results>
     <drug-label params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'druglabel'"></drug-label>
-    <datatable-test params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'datatabletest'"></datatable-test>
+    <!-- REQUIRES UPGRADE OF DATA TABLES TO 1.10.10 -->
+    <!-- <datatable-test params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'datatabletest'"></datatable-test> -->
     <!-- DEBUG currentView = <span id="debug" data-bind="text: pageModel.currentView()"></span> -->
 </body>
 </html>

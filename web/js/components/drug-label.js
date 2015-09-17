@@ -31,9 +31,17 @@ define(['knockout', 'text!./drug-label.html', 'jquery', 'jquery-ui'], function (
         self.getSpontaneousReportsSummary = function() {
             alert('Spontaneous Report Summary Call');
         }
+        
+        self.productLabelLinkClick = function(item, event) {
+            self.model.selectedConditionConceptId(event.target.attributes["conceptid"].value);
+            self.model.selectedConditionConceptName(event.target.attributes["conceptname"].value);
+            self.openEvidenceBrowser();
+        }        
+        
+        self.drugLabelPostProcessingLogic = function(elements){
+            alert('got here');
+        }
     }
-    
-    
 
 	var component = {
 		viewModel: drugLabel,

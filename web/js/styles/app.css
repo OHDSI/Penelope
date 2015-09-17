@@ -40,3 +40,24 @@ body {
     margin-bottom: 8px;   
 }
 
+.product-label-link {
+     cursor:pointer;
+     color:blue;
+     text-decoration:underline;    
+}
+
+.product-label-link:hover {
+     font-weight: bold;
+}
+
+#drug-label-external-display > * {
+    font-size: 12px;
+}
+
+#drug-label-external-display > * h1 {
+    font-size: 18px;
+}
+
+#drug-label-external-display > * div.Warning {
+    border: black 1px solid;
+}

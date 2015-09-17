@@ -4,7 +4,7 @@ define([
 	'components/webapi-configuration',
 	'bootstrap',
     'facets',
-	'css!styles/app'
+    'databindings'
 ], function ($, ko) {
 
 	var appModel = function () {

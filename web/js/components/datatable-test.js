@@ -1,4 +1,4 @@
-define(['knockout', 'text!./datatable-test.html', 'jquery', 'datatables', 'datatablesbuttons', 'jsbuttons'], function (ko, view) {
+define(['knockout', 'text!./datatable-test.html', 'jquery', 'datatables', 'jsbuttons', 'datatablesbuttons'], function (ko, view) {
 	function home(params) {
 		var self = this;
 		self.model = params.model;

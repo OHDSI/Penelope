@@ -8,12 +8,13 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<script data-main="js/main" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.16/require.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="js/styles/app.css">
 	<title>Penelope</title>
 </head>
 
-<body>
+<body data-spy="scroll" data-target=".scrollspy">
 	<!-- Fixed navbar -->
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <header class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -28,7 +29,7 @@
                 <penelope-search params="{model: pageModel}"></penelope-search>
             </div>
 		</div>
-	</nav>
+	</header>
 
     <home params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'home'"></home>
     <penelope-search-results params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'searchResults'"></penelope-search-results>

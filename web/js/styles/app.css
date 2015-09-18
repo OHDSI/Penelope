@@ -1,5 +1,174 @@
+@import url("https://fonts.googleapis.com/css?family=Lato");
+
+/*
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 900;
+
+  src: url('lato/lato-black.eot');
+  src: url('lato/lato-black.eot?#iefix') format('embedded-opentype'), url('lato/lato-black.woff') format('woff'), url('lato/lato-black.ttf') format('truetype'), url('lato/lato-black.svg#latoblack') format('svg');
+  }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: bold;
+
+  src: url('lato/lato-bold.eot');
+  src: url('lato/lato-bold.eot?#iefix') format('embedded-opentype'), url('lato/lato-bold.woff') format('woff'), url('lato/lato-bold.ttf') format('truetype'), url('lato/lato-bold.svg#latobold') format('svg');
+  }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: bold;
+
+  src: url('lato/lato-bolditalic.eot');
+  src: url('lato/lato-bolditalic.eot?#iefix') format('embedded-opentype'), url('lato/lato-bolditalic.woff') format('woff'), url('lato/lato-bolditalic.ttf') format('truetype'), url('lato/lato-bolditalic.svg#latobold-italic') format('svg');
+  }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: normal;
+
+  src: url('lato/lato-italic.eot');
+  src: url('lato/lato-italic.eot?#iefix') format('embedded-opentype'), url('lato/lato-italic.woff') format('woff'), url('lato/lato-italic.ttf') format('truetype'), url('lato/lato-italic.svg#latoitalic') format('svg');
+  }
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 300;
+
+  src: url('lato/lato-light.eot');
+  src: url('lato/lato-light.eot?#iefix') format('embedded-opentype'), url('lato/lato-light.woff') format('woff'), url('lato/lato-light.ttf') format('truetype'), url('lato/lato-light.svg#latolight') format('svg');
+  }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: normal;
+
+  src: url('lato/lato-regular.eot');
+  src: url('lato/lato-regular.eot?#iefix') format('embedded-opentype'), url('lato/lato-regular.woff') format('woff'), url('lato/lato-regular.ttf') format('truetype'), url('lato/lato-regular.svg#latoregular') format('svg');
+  }
+*/
+
 body {
   padding-top: 70px;
+  position: relative;
+  font-family: 'Lato', sans-serif;
+}
+
+h1, h2 {
+  font-weight: 700;
+}
+
+h3 span {
+  color: #286090;
+}
+
+section {
+  padding: 40px 0;
+  border-bottom: 1px solid #c1e1ec;
+}
+
+#web-development,
+#mobile-development {
+  padding-bottom: 0;
+}
+
+.nav {
+  background: #4baac8;
+}
+
+.nav a {
+  color: black;
+  font-style: italic;
+}
+
+.nav li a:hover,
+.nav li a:focus {
+  background: #86c5da;
+}
+
+.nav .active {
+  font-weight: bold;
+  background: #72bcd4;
+}
+
+.nav .nav {
+  display: none;
+}
+
+.nav .active .nav {
+  display: block;
+}
+
+.nav .nav a {
+  font-weight: normal;
+  font-size: .85em;
+}
+
+.nav .nav span {
+  margin: 0 5px 0 2px;
+}
+
+.nav .nav .active a,
+.nav .nav .active:hover a,
+.nav .nav .active:focus a {
+  font-weight: bold;
+  padding-left: 30px;
+  border-left: 5px solid black;
+}
+
+.nav .nav .active span,
+.nav .nav .active:hover span,
+.nav .nav .active:focus span {
+  display: none;
+}
+
+.application {
+  border-top: 1px solid #c1e1ec;
+}
+
+.affix-top {
+  position: relative;
+}
+
+.affix {
+  top: 150px;
+}
+
+.affix, 
+.affix-bottom {
+    width: 213px;
+}
+
+.affix-bottom {
+  position: absolute;
+}
+
+@media (min-width:1200px) {
+  .affix, 
+  .affix-bottom {
+    width: 263px;
+  }
+}
+
+
+.service-name {
+	font-weight: bold;
+}
+
+.service-name .glyphicon-ok-sign {
+	color: #4AC3FF;
+}
+
+.service-info {
+	color: #888;
+	font-size: .8em;
 }
 
 .navbar-nav li {
@@ -18,18 +187,6 @@ body {
 	line-height:1.4em;
 }
 
-.service-name {
-	font-weight: bold;
-}
-
-.service-name .glyphicon-ok-sign {
-	color: #4AC3FF;
-}
-
-.service-info {
-	color: #888;
-	font-size: .8em;
-}
 
 .navbar-nav .glyphicon {
 	font-size:1.4em;
@@ -48,6 +205,11 @@ body {
 
 .product-label-link:hover {
      font-weight: bold;
+}
+
+.label-image {
+    margin: 20px;
+    clear: both;
 }
 
 #drug-label-external-display > * {

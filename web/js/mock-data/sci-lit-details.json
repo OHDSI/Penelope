@@ -5,30 +5,34 @@
         "snippet": "Lorem ipsum dolor sit amet, maiores ornare ac fermentum, imperdiet ut vivamus a, nam lectus at nunc. Quam euismod sem, semper ut potenti pellentesque",
         "authors": "author 1, author 2, author 3",
         "publication": "publication",
-        "date_of_publication": "1/1/2011"
+        "date_of_publication": "1/1/2011",
+        "article_url": "http://www.ncbi.nlm.nih.gov/pubmed/26143411"
     },
     {
         "evidence_id":1118088,
         "article_name":"Article Name 2",
         "snippet": "Lorem ipsum dolor sit amet, maiores ornare ac fermentum, imperdiet ut vivamus a, nam lectus at nunc. Quam euismod sem, semper ut potenti pellentesque",
         "authors": "author 1, author 2, author 3",
-        "publication": "publication",
-        "date_of_publication": "2/1/2011"
+        "publication": "PubMed",
+        "date_of_publication": "2/1/2011",
+        "article_url": "http://www.ncbi.nlm.nih.gov/pubmed/26143411"
     },
     {
         "evidence_id":1118089,
         "article_name":"Article Name 3",
         "snippet": "Lorem ipsum dolor sit amet, maiores ornare ac fermentum, imperdiet ut vivamus a, nam lectus at nunc. Quam euismod sem, semper ut potenti pellentesque",
         "authors": "author 1, author 2, author 3",
-        "publication": "publication",
-        "date_of_publication": "3/1/2011"
+        "publication": "PubMed",
+        "date_of_publication": "3/1/2011",
+        "article_url": "http://www.ncbi.nlm.nih.gov/pubmed/26143411"
     },
     {
         "evidence_id":1118090,
         "article_name":"Article Name 4",
         "snippet": "Lorem ipsum dolor sit amet, maiores ornare ac fermentum, imperdiet ut vivamus a, nam lectus at nunc. Quam euismod sem, semper ut potenti pellentesque",
         "authors": "author 1, author 2, author 3",
-        "publication": "publication",
-        "date_of_publication": "4/1/2011"
+        "publication": "PubMed",
+        "date_of_publication": "4/1/2011",
+        "article_url": "http://www.ncbi.nlm.nih.gov/pubmed/26143411"
     }
 ]

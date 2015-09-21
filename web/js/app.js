@@ -32,7 +32,8 @@ define([
         self.selectedConditionConceptName = ko.observable('<Selected HOI Name>');
         
         // Literature Evidence Settings
-        self.literatureEvidenceResults = ko.observableArray(null);
+        self.literatureEvidenceSummary = ko.observableArray(null);
+        self.literatureEvidenceDetails = ko.observableArray(null);
         
         self.initComplete = function () {
             self.router.init('/');

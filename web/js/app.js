@@ -1,11 +1,13 @@
 define([
 	'jquery',
 	'knockout',
+    'jnj_chart',
+    'd3',
 	'components/webapi-configuration',
 	'bootstrap',
     'facets',
     'databindings'
-], function ($, ko) {
+], function ($, ko, jnj_chart, d3) {
 
 	var appModel = function () {
         var self = this;

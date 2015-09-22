@@ -13,15 +13,18 @@ requirejs.config({
 		}
 	},
 	shim: {
+        "colorbrewer": {
+			exports: 'colorbrewer'
+		},
 		"bootstrap": {
 			"deps": [
 				'jquery',
-                'jquery-ui',
-				"css!https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.min.css",
-                "css!https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap-theme.min.css",               
-                "css!https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css",
-                "css!https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.theme.min.css",
-                "css!https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.structure.min.css"
+                'jquery-ui'
+				//"css!https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.min.css",
+                //"css!https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap-theme.min.css",               
+                //"css!https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css",
+                //"css!https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.theme.min.css",
+                //"css!https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.structure.min.css"
 			]
 		},
         "facets": {
@@ -37,19 +40,26 @@ requirejs.config({
         "knockout": "https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min",
         "datatables": "https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.8/js/jquery.dataTables.min",
         "director": "https://cdnjs.cloudflare.com/ajax/libs/Director/1.2.8/director.min",
+		"d3": "d3.min",
+		"d3_tip": "d3.tip",
+		"jnj_chart": "jnj.chart",
+		"lodash": "lodash.min",
+		"packinghierarchy": "visualization.packinghierarchy",
+		"forcedirectedgraph": "visualization.forcedirectedgraph",
+		"kerneldensity": "visualization.kerneldensity",        
         "knockout.dataTables.binding": "knockout.dataTables.binding", // OHDSI CDN Candidate
         "datatable-test": "components/datatable-test",
         "drug-label": "components/drug-label",
         "faceted-datatable": "components/faceted-datatable",
         "home": "components/home",
         "search": "components/search",
-        "search-results": "components/search-results"
+        "search-results": "components/search-results"        
         //"datatablesbuttons": "https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min", // Try again when DataTables is upgraded to 1.10.10
         //"jsbuttons": "https://cdn.datatables.net/buttons/1.0.3/js/buttons.html5.min", // Try again when DataTables is upgraded to 1.10.10
 	}
 });
 
-requirejs(['knockout', './app', 'director', 'drug-label', 'faceted-datatable', 'home', 'search', 'search-results', ], function(ko, app) {
+requirejs(['knockout', './app', 'director', 'drug-label', 'faceted-datatable', 'home', 'search', 'search-results'], function(ko, app) {
     var pageModel = new app();
     var routerOptions = {
 		notfound: function () {

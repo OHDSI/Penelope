@@ -1,9 +1,16 @@
 @import url("http://fonts.googleapis.com/css?family=Roboto:400,700");
-
+html {
+    height: 100%;
+}
 body {
-  padding-top: 70px;
+  height: 100%;
+  padding-top: 65px;
   position: relative;
   font-family: 'Roboto', sans-serif;
+}
+
+body.drug-label {
+    overflow: hidden;
 }
 
 h1, h2 {
@@ -58,6 +65,18 @@ section {
 .label-image {
     margin: 20px;
     clear: both;
+}
+
+#drug-label {
+    height: 90vh; 
+    overflow-x: hidden; 
+    overflow-y: scroll;
+}
+
+#evidence-explorer {
+    height: 83.5vh; 
+    overflow-x: hidden; 
+    overflow-y: scroll;
 }
 
 #drug-label-external-display > * {

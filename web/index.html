@@ -14,11 +14,12 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.theme.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.structure.min.css"/>
     <link rel="stylesheet" type="text/css" href="js/styles/app.css"/>
+    <link rel="stylesheet" type="text/css" href="js/styles/chart.css"/>    
     <link rel="stylesheet" type="text/css" href="js/styles/dashboard.css"/>    
 	<title>Penelope</title>
 </head>
 
-<body>
+<body data-bind="css: { 'drug-label' : pageModel.currentView() == 'druglabel'}">
 	<!-- Fixed navbar -->
     <header class="navbar navbar-default navbar-fixed-top">
 		<div class="container">

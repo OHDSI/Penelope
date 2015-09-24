@@ -136,7 +136,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
         self.productLabelLinkClick = function(item, event) {
             self.model.selectedConditionConceptId(event.target.attributes["conceptid"].value);
             self.model.selectedConditionConceptName(event.target.attributes["conceptname"].value);
-            self.openEvidenceBrowser();
+            //self.openEvidenceBrowser();
         }        
         
         self.drugLabelPostProcessingLogic = function(elements){

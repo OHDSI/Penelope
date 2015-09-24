@@ -1,34 +1,27 @@
-<!-- New Layout -->
-<div class="container-fluid">
+<div class="container-fluid" style="padding: 0px;">
     <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Reports</a></li>
-            <li><a href="#">Analytics</a></li>
-            <li><a href="#">Export</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Nav item</a></li>
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-            <li><a href="">More navigation</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-          </ul>
-        </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="padding: 0px;">
-            <div class="row">
-            <div class="col-xs-8 col-sm-6">
-            <div id="drug-label-external-display" data-bind="html: model.currentDrugLabel, eventListener: { event: 'click', selector: '.product-label-link', callback: productLabelLinkClick}"></div>
+        <div id="drug-label" class="col-xs-6">
+            <div id="drug-label-external-display" style="margin-left: 15px;" data-bind="html: model.currentDrugLabel, eventListener: { event: 'click', selector: '.product-label-link', callback: productLabelLinkClick}"></div>        
             </div>
-            <div class="col-xs-8 col-sm-6">
-                <button class="btn btn-default" data-bind="click: testReportClick">Test</button>
-                <div id="reportPerson">
+        <div class="col-xs-6">
+            <ul class="nav nav-tabs">
+              <li role="presentation" class="active"><a data-bind="attr : { href : '#/druglabel/' + model.currentDrugSetId() + '/obsdata',} ">Observational Evidence</a></li>
+              <li role="presentation"><a data-bind="attr : { href : '#/druglabel/' + model.currentDrugSetId() + '/scilit' } ">Scientific Literature</a></li>
+              <li role="presentation"><a data-bind="attr : { href : '#/druglabel/' + model.currentDrugSetId() + '/sr' } ">Spontaneous Reports</a></li>
+            </ul>
+            <div id="evidence-explorer">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Debug Panel</div>
+                    <div class="panel-body">
+                        Set ID: <span id="setId" data-bind="text: model.currentDrugSetId"></span><br/>
+                        Drug Name: <span data-bind="text: model.currentDrugName"></span><br/>
+                        Selected HOI Concept_ID: <span data-bind="text: model.selectedConditionConceptId"></span><br/>
+                        Selected HOI: <span id="selectedHOI" data-bind="text: model.selectedConditionConceptName"></span><br/>
+                    </div>
+                </div>
+                <div id="tabObsEvidence">
+                    <button class="btn btn-default" data-bind="click: testReportClick">Test</button>
+                    <div id="reportPerson">
                     <div class="pad-10 report">
                         <div class="reportHeading"><i class="fa fa-area-chart"></i> Person Report</div>
                         <div class="reportSectionHeading">Year of Birth</div>
@@ -47,9 +40,15 @@
                         <div class="evidenceDescription">The number of people in this cohort stratified by ethnicity.</div>
                         <div class="evidenceVisualization" id="ethnicity"></div>
                     </div>
+                </div>
+                </div>
+                <div id="tabSciLit">
+                    Sci Lit Goes Here
+                </div>
+                <div id="tabSR">
+                    Spontaneous Reports Go Here
                 </div>                
             </div>
-            </div>
         </div>
-    </div> 
+    </div>
 </div>

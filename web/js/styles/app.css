@@ -83,3 +83,27 @@ section {
     overflow-x: hidden; 
     overflow-y: scroll;
 }
+
+.nav-tabs>li>a:hover {
+    cursor: pointer;
+    cursor: hand;
+}
+
+.nav-tabs>li>span {
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+}
+
+.nav>li>span {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    color: #337ab7;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}

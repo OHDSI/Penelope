@@ -32,6 +32,7 @@ define([
         // Drug Label settings
         self.selectedConditionConceptId = ko.observable();
         self.selectedConditionConceptName = ko.observable('<Selected HOI Name>');
+        self.drugLabelActiveTab = ko.observable('obs'); // Observational Evidence is the default
         
         // Literature Evidence Settings
         self.literatureEvidenceSummary = ko.observableArray(null);

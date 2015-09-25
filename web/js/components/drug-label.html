@@ -4,10 +4,10 @@
             <span data-bind="text: model.currentDrugName"></span>
         </div>
         <div class="col-xs-6">
-            <ul class="nav nav-tabs">
-              <li role="presentation" class="active"><a data-bind="attr : { href : '#/druglabel/' + model.currentDrugSetId() + '/obsdata',} ">Observational Evidence</a></li>
-              <li role="presentation"><a data-bind="attr : { href : '#/druglabel/' + model.currentDrugSetId() + '/scilit' } ">Scientific Literature</a></li>
-              <li role="presentation"><a data-bind="attr : { href : '#/druglabel/' + model.currentDrugSetId() + '/sr' } ">Spontaneous Reports</a></li>
+            <ul class="nav nav-tabs" data-bind="eventListener: { event: 'click', selector: '.tab', callback: tabClick}">
+              <li role="presentation" data-bind="css: {active: model.drugLabelActiveTab() == 'obs'}" tabName="obs" class="tab"><a>Observational Evidence</a></li>
+              <li role="presentation" data-bind="css: {active: model.drugLabelActiveTab() == 'sci'}" tabName="sci" class="tab"><a>Scientific Literature</a></li>
+              <li role="presentation" data-bind="css: {active: model.drugLabelActiveTab() == 'spo'}" tabName="spo" class="tab"><a>Spontaneous Reports</a></li>
             </ul>
         </div>
     </div>
@@ -26,7 +26,7 @@
                         Selected HOI: <span id="selectedHOI" data-bind="text: model.selectedConditionConceptName"></span><br/>
                     </div>
                 </div>
-                <div id="tabObsEvidence">
+                <div id="tabObsEvidence" data-bind="css: {hidden: model.drugLabelActiveTab() != 'obs'}">
                     <button class="btn btn-default" data-bind="click: testReportClick">Test</button>
                     <div id="reportPerson">
                     <div class="pad-10 report">
@@ -49,10 +49,39 @@
                     </div>
                 </div>
                 </div>
-                <div id="tabSciLit">
-                    Sci Lit Goes Here
+                <div id="tabSciLit" data-bind="css: {hidden: model.drugLabelActiveTab() != 'sci'}">
+                  <!-- ko foreach: model.literatureEvidenceSummary -->
+                      <h3 data-bind="attr: {title: evidence_group_name}, text: evidence_group_name + '  (' + evidence_count + ')'"></h3>
+                        <!-- <span data-bind="text: $parentContext"></span>   -->
+                        <!-- //ko foreach: $parentContext.model.literatureEvidenceDetails -->                    
+                          <div class="search-result row">
+                            <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                                <a href="#" target="_blank">Article Name 1</a>
+                                <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
+                                <p>Snippet of the article would go here....</p>
+                              </div>
+                            <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                                <a href="#" target="_blank">Article Name 1</a>
+                                <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
+                                <p>Snippet of the article would go here....</p>
+                              </div>
+                            <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                                <a href="#" target="_blank">Article Name 1</a>
+                                <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
+                                <p>Snippet of the article would go here....</p>
+                              </div>
+                            <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                                <!--
+                                <a data-bind="attr: {title: article_name}, text: article_name" target="_blank"></a>
+                                <p class="authors" data-bind="text: authors + ' - ' + publication + ', ' + date_of_publication"></p>
+                                <p data-bind="text: snippet"></p>
+                                -->
+                            </div>
+                          </div>
+                          <!-- /ko -->
+                  <!-- /ko -->
                 </div>
-                <div id="tabSR">
+                <div id="tabSR" data-bind="css: {hidden: model.drugLabelActiveTab() != 'spo'}">
                     Spontaneous Reports Go Here
                 </div>                
             </div>

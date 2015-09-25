@@ -24,11 +24,11 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
 				success: function (data) {
                     self.model.literatureEvidenceSummary(data);
                     //self.model.literatureEvidenceResults(data);
-                    $('#literature').accordion({heightStyle: "content"});
 				}
 			});
         }
         
+        // A test method used for loading the observational evidence from Heracles
         self.testReportClick = function() {
             $.ajax({
                 url: "http://hixbeta.jnj.com:8081/WebAPI/OPTUM/cohortresults/121/person", // self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/' + self.model.reportCohortDefinitionId() + '/person',
@@ -94,55 +94,35 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                 }
             });
         }
+        
+        // Handles the click logic for the tabbed evidence browser
+        self.tabClick = function(item, event) {
+            var listItemNode = event.target;
+            if (event.target.localName != 'li'){
+            	listItemNode = event.target.parentNode;
+            }
+            var tabName = listItemNode.attributes["tabName"].value;
+            switch (tabName)
+            {
+                case 'obs':
+                    self.testReportClick();
+                    break;
+                case 'sci':
+                    self.getLiteratureSummary();
+                    break;
+                case 'sr':
+                    // TODO: define action
+                    break;
+            }
+            self.model.drugLabelActiveTab(listItemNode.attributes["tabName"].value);
+        }
 
-/*
-        self.getLiteratureSummary = function() {
-            var litSummary = $.ajax({
-                        method: 'GET',
-                        url: 'js/mock-data/sci-lit-summary.json', //self.model.services()[0].url + 'conceptset/',
-                        dataType: 'json',
-                        async: false
-                    }).responseText;
-            
-            self.model.literatureEvidenceSummary(litSummary);
-
-                // For the first data element, get the details. Talk to FD about how to clean this up
-             var litDetails = $.ajax({
-                    method: 'GET',
-                    url: 'js/mock-data/sci-lit-details.json', //self.model.services()[0].url + 'conceptset/',
-                    dataType: 'json',
-                    async: false
-                }).responseText;
-            
-            $('#literature').accordion({heightStyle: "content"});
-        }
-        
-        self.getLiteratureSummaryFromService = function() {
-            $.ajax({
-				method: 'GET',
-				url: 'js/mock-data/sci-lit-summary.json', //self.model.services()[0].url + 'conceptset/',
-				dataType: 'json',
-				success: function (data) {
-                    self.model.literatureEvidenceSummary(data);
-				}
-			});            
-        }
-*/
-        
-        self.getSpontaneousReportsSummary = function() {
-            alert('Spontaneous Report Summary Call');
-        }
-        
+        // Click handler for the links on the drug label
         self.productLabelLinkClick = function(item, event) {
             self.model.selectedConditionConceptId(event.target.attributes["conceptid"].value);
             self.model.selectedConditionConceptName(event.target.attributes["conceptname"].value);
-            //self.openEvidenceBrowser();
         }        
         
-        self.drugLabelPostProcessingLogic = function(elements){
-            alert('got here');
-        }
-
 		// ATLAS - ReportManager.js common functions - START
 
 		self.buildHierarchyFromJSON = function (data, threshold) {

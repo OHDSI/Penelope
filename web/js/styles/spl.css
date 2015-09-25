@@ -1,0 +1,815 @@
+/*
+The contents of this file are subject to the Health Level-7 Public
+License Version 1.0 (the "License"); you may not use this file
+except in compliance with the License. You may obtain a copy of the
+License at http://www.hl7.org/HPL/hpl.txt.
+
+Software distributed under the License is distributed on an "AS IS"
+basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
+the License for the specific language governing rights and
+limitations under the License.
+
+The Original Code is all this file.
+
+The Initial Developer of the Original Code is Gunther Schadow.
+Portions created by Initial Developer are Copyright (C) 2002-2004
+Health Level Seven, Inc. All Rights Reserved.
+
+Revision: $Id: spl.css,v 1.44 2005/10/07 17:14:07 gschadow Exp $
+
+FIXME: All the combinations of styleCode attributes need to
+be represented
+*/
+
+@media screen {
+#spl-display {
+	font-family: 'Roboto', sans-serif !important;
+	font-size: 12pt;
+	background-color: rgba(255,255,255,0);
+	color: #000000;
+	/* margin-left: 1em; */
+	/* margin-right: 1em; */
+}
+}
+							
+@media print {
+@page { 
+        size:8.5in 11in; 
+	margin:0pt;
+	margin-left:0pt;
+	margin-right:0pt;
+	margin-top:0pt;
+	margin-bottom:0pt;
+	orphans:4; 
+	widows:2;
+}
+
+#spl-display {
+	font-family: 'Roboto', sans-serif !important;
+	font-size: 12pt;	
+	color: #000000;
+	margin-left: 0in;
+	margin-right: 0in;
+	margin-top: 0in;
+	margin-bottom: 0in;
+}
+
+#spl-display div.DocumentTitle {
+        display: none;
+}
+
+#spl-display .bars {
+     display:none;
+}
+
+}
+
+#spl-display div.DocumentTitle {
+    display: none;
+    visibility: hidden;
+}
+
+#spl-display .bars {
+
+}
+
+#spl-display h1, 
+#spl-display h2, 
+#spl-display h3, 
+#spl-display h4, 
+#spl-display h5, 
+#spl-display h6 {
+	page-break-before: auto;
+	page-break-after: avoid;
+}
+
+#spl-display div.Warning {
+	page-break-before: auto;
+	page-break-inside: avoid;
+        display: inline-block;
+}
+							
+#spl-display h1 {	
+	text-indent: 0em;
+	font-size: 100%;
+	font-weight: bold;
+	margin-bottom: 0ex;
+	text-align: left;
+}
+
+#spl-display div.Section h1 {	
+	text-indent: 0em;
+	font-size: 100%;
+	font-weight: bold;
+	margin-top:4ex;
+	margin-bottom: 0ex;
+	text-align: left;
+	font-family:'Roboto', sans-serif !important;
+}
+
+#spl-display div.Warning h1 {
+	margin-top: 0ex;
+}
+
+#spl-display h2 {	
+	text-indent: 0em;
+	font-size: 100%;
+	font-weight: bold;
+	margin-top: 2.2ex;
+	margin-bottom: 0ex;
+	text-align: left;
+	font-family:'Roboto', sans-serif !important;
+}
+
+#spl-display h3 {	
+	text-indent: 0em;
+	font-size: 100%;
+	font-weight: normal;
+	margin-top: 2.2ex;
+	margin-bottom: 0ex;
+	text-align: left;
+}
+
+#spl-display h4 {	
+	text-indent: 0em;
+	font-size: 100%;
+	font-weight: normal;
+	margin-top: 2.2ex;
+	margin-bottom: 0ex;
+	text-align: left;
+	font-style: italic;
+}
+
+#spl-display div.Warning h1 {
+	margin-top: 0pt;
+	margin-bottom: 4pt;
+	text-align: center;
+	text-indent: 1em;
+}
+
+#spl-display div.HighlightSection,
+#spl-display div.HighlightSubSection
+ {
+	margin-top: 1.8ex;
+	padding-bottom: .25ex;
+	border-top-style: dashed; 
+	border-top-width: thin;
+}
+
+#spl-display h1.Highlights {	
+	text-align: center;
+	margin-bottom: 0ex;
+	margin-top: -1.6ex;
+	margin-left: 5%;
+	margin-right: 5%;
+	white-space: nowrap;
+	text-indent: 0em;
+}
+
+#spl-display h1.Highlights span {
+	background: white; 
+	padding-top:.5ex;
+	padding-bottom:1ex;
+	padding-left:.25em; 
+	padding-right:.25em;
+}
+
+#spl-display .HighlightsSeeReference {
+	font-weight: bold;
+}
+
+#spl-display .HighlightsRevision {
+	text-align: right;
+	font-weight: bold;
+	margin-bottom: 1ex;
+}
+
+#spl-display h1.toc {	
+        text-indent: 0em;
+	margin-top: 0ex;
+	margin-bottom: 0ex;
+	text-align: left;
+	padding-left:.25in;
+	padding-right: .25in;
+	text-transform: uppercase;
+}
+
+#spl-display h2.toc {	
+	/*padding-left: 1em;*/
+	margin-top: 0ex;
+	font-weight: normal;
+	margin-bottom: 0ex;
+	text-align: left;
+	padding-left:.40in;
+	padding-right: .40in;
+}
+
+#spl-display h3.toc {	
+/*	padding-left: 2em;*/
+	font-size: 100%;
+	font-weight: normal;
+	margin-top: 0ex;
+	margin-bottom: 0ex;
+	text-align: left;
+	padding-left:.55in;
+	padding-right: .55in;
+}
+
+#spl-display h4.toc {	
+	padding-left: 3em;
+	margin-top: 0ex;
+	margin-bottom: 0ex;
+	text-align: left;
+	font-style: italic;
+	padding-left:.70in;
+	padding-right: .70in;
+}
+
+#spl-display span.SectionNumber {
+	position: absolute;
+	left: 10pt;
+	top: auto;
+}
+
+#spl-display .titleCase {
+	text-transform: capitalize;
+}
+
+#spl-display .lowerCase {
+	text-transform: lowercase;
+}
+#spl-display p {	
+	text-indent: 0em;
+	margin-top: 1.2ex;
+	margin-bottom: 0ex;
+}
+
+#spl-display td p {	
+	text-indent: 0em;
+	margin-top: 0ex; 
+	margin-bottom: 0ex;
+}
+				
+#spl-display th p {	
+	text-indent: 0em;
+	margin-top: 0px; 
+	margin-bottom: 0px;
+}
+				
+#spl-display p.DocumentTitle {	
+	text-indent: 0em;
+	font-size: 100%;
+	font-weight: bold;
+	margin-top: 0ex;
+	margin-bottom: 0ex;
+	text-align: left;
+}
+
+#spl-display p.DocumentSubTitle {	
+	text-indent: 0em;
+	font-size: 100%;
+	font-weight: bold;
+	margin-top: 0ex;
+	margin-bottom: 0ex;
+	text-align: center;
+}
+
+#spl-display .EffectiveDate {
+	font-size: 80%;
+	margin-top: 1ex;
+	margin-bottom: 1ex;
+	text-align: left;
+	float: left;
+	position: relative;
+}
+
+#spl-display .DocumentMetadata {
+	display:none;
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	width:30em;
+	background:white;
+}
+
+#spl-display .EffectiveDate:hover .DocumentMetadata {
+	display:inline;
+}
+
+#spl-display .DistributorName {
+	font-size: 80%;
+	margin-top: 1ex;
+	margin-bottom: 1ex;
+	float: right;
+}
+
+#spl-display span.DistributorName {	
+	font-size: 80%;
+	margin-top: 1ex;
+	margin-bottom: 1ex;
+	float: right;
+}
+
+#spl-display span.ParagraphCaption {
+	font-weight: bold;
+	text-indent: 0em;
+}
+
+#spl-display p.ListCaption {
+	font-weight: bold;
+	font-size: 90%
+}
+
+#spl-display p.MultiMediaCaption {
+	margin-top: 0; 
+	text-align: center;
+	font-weight: bold;
+	font-size: 90%
+}
+
+#spl-display p.MultiMediaCaptionNotCentered {
+	margin-top: 0; 
+	text-align: left;
+	font-weight: bold;
+	font-size: 90%
+}
+
+#spl-display p.disclaimer {
+	font-style: italic;
+}
+
+#spl-display .Italics {	
+	font-style: italic;
+}
+#spl-display .Bold {	
+	font-weight: bold;
+}
+#spl-display .Underline {
+ 	text-decoration: underline;
+}
+
+#spl-display .Insert {
+	color: green;
+	border-bottom: 3px double;
+}
+#spl-display .Delete {
+       text-decoration: line-through;
+}
+
+#spl-display a:link    { text-decoration: none; }
+#spl-display a:visited { text-decoration: none; }
+#spl-display a:active  { text-decoration: none; }
+
+/* use <span class="sub"> to avoid ugly uneven line spacing in IE */
+#spl-display .Sub { 
+	font-size: 80%;
+	position: relative;
+	bottom: -3px;
+}
+#spl-display .Sup {
+	font-size: 80%;
+	position: relative;
+	top: -5px;
+}
+
+#spl-display table	{
+	white-space: wrap;
+	font-size: 100%;
+/*
+	border-top-style: none;
+	border-bottom-style: none;
+	border-right-style: none;
+	border-left-style: none;
+*/
+	margin-top: 3ex;
+	margin-bottom: 3ex;
+	border-collapse: collapse;
+	border-color: black;
+	border-width: thin;
+}
+
+/*
+#spl-display div.HighlightSection table {
+        display: inline-block;
+}
+*/
+
+#spl-display table caption {	
+	margin-top: 10px; /* Gecko needs this, IE doesn't add any extra */
+	text-align: center;
+	font-weight: bold;
+	font-size: 100%
+}
+
+
+
+				
+#spl-display th, 
+#spl-display td { 
+`	border-top-style: none;
+	border-bottom-style: none;
+	border-right-style: none;
+	border-left-style: none;
+	border-collapse: collapse;
+	border-color: black;
+	border-width: thin;
+/*
+	padding-top: 1px;
+	padding-bottom: 1px;
+*/
+}
+
+#spl-display td.twocolumn {
+ width: 50%;
+ text-align: left;
+ vertical-align: top;
+ padding-left: 0.5em; 
+ padding-right: 0.5em;
+}
+
+#spl-display td.Warning {
+	border: 1px solid black; 
+	margin-top: 2ex;
+	margin-bottom: 2.2ex;
+	padding-left: 1em; 
+	padding-right: 1em;
+	padding-top: 0ex;
+	padding-bottom: 2ex;
+}
+
+/* the preferred way to rules in tables */
+
+#spl-display tr.Botrule td, 
+#spl-display tr.Botrule th,
+#spl-display th.Botrule, 
+#spl-display td.Botrule { 
+	border-bottom-style: solid;
+	border-bottom-width: thin;
+}
+
+#spl-display thead tr.First td,
+#spl-display thead tr.First th {
+    border-top-style: solid;
+	border-top-width: medium;
+}
+
+#spl-display thead tr.Botrule td,
+#spl-display thead tr.Botrule th {
+    border-bottom-style: solid;
+	border-bottom-width: thin;
+}
+
+#spl-display thead tr.Toprule td,
+#spl-display thead tr.Toprule th {
+    border-top-style: solid;
+	border-bottom-width: thin;
+}
+
+#spl-display thead tr.Last td, 
+#spl-display thead tr.Last th {
+        border-bottom-style: solid;
+	border-bottom-width: thin;
+  /* rule here might fail with rowspan headers */
+} 
+
+#spl-display tbody tr.First td, 
+#spl-display tbody tr.First th  { 
+        border-top-style: solid;
+	border-top-width: thin;
+}	 
+
+#spl-display tbody.Headless tr.First td, 
+#spl-display tbody.Headless tr.First th  { 
+        border-top-style: solid;
+	border-top-width: medium;
+}	 
+
+#spl-display tbody tr.Botrule td, 
+#spl-display tbody tr.Botrule th { 
+	border-bottom-style: solid;
+	border-bottom-width: thin;
+}	 
+
+
+#spl-display tbody tr.Last td,
+#spl-display tbody tr.Last th { 
+	border-bottom-style: solid;
+	border-bottom-width: medium;
+}	 
+
+/* begin of combinatorics of individual rules */
+
+/* one rule only */
+#spl-display th.Lrule,
+#spl-display td.Lrule { 
+	border-left-style: solid;
+	border-left-width: thin;
+}
+
+#spl-display th.Rrule, 
+#spl-display td.Rrule { 
+	border-right-style: solid;
+	border-right-width: thin;
+}
+
+#spl-display th.Toprule, 
+#spl-display td.Toprule { 
+	border-top-style: solid;
+	border-top-width: thin;
+}
+
+#spl-display th.Botrule, 
+#spl-display td.Botrule { 
+	border-bottom-style: solid;
+	border-bottom-width: thin;
+}
+
+/* end of table rules */
+
+#spl-display ul { 
+	margin-top: .2ex;
+	margin-left: 1.5em;
+	padding-left: 0em;
+}
+	
+#spl-display ol { 
+	margin-top: .2ex;
+	padding-left: 1.5em;
+}
+
+#spl-display li {
+   margin-top: .2ex;
+   margin-left: 0em;
+}
+
+#spl-display li p {
+   margin-top: .2ex;
+}
+
+#spl-display div.Warning ul {
+   	margin-top: .2ex;
+	margin-left: 1.5em;
+	padding-left: 0em;
+    margin-bottom:.2ex;
+}
+
+#spl-display ul.Disc { list-style-type: disc; }
+#spl-display ul.Circle { list-style-type: circle; }
+#spl-display ul.Square { list-style-type: square; }
+
+#spl-display ol.LittleRoman { list-style-type: lower-roman; }
+#spl-display ol.BigRoman { list-style-type: upper-roman; }
+#spl-display ol.LittleAlpha { list-style-type: lower-alpha; }
+#spl-display ol.BigAlpha { list-style-type: upper-alpha; }
+#spl-display ol.Arabic { list-style-type: arabic; }
+
+#spl-display dl {
+   /* display: compact; compact doesn't seem to work 
+
+     XXX: but display: inline would work
+   */
+   margin-left:.9em;
+}
+
+#spl-display dt {
+    padding-top: 0pt;
+    padding-left: 0pt;
+    padding-right: 0pt;
+    padding-bottom: 0pt;
+}
+
+#spl-display dd {
+    padding-top: 0pt;
+    padding-left: 0pt;
+    padding-right: 0pt;
+    padding-bottom: 0pt;
+    position:relative;
+    margin-top:-2.2ex;
+    margin-left:1.5em;
+}
+
+#spl-display hr.Footnoterule {
+	margin-top:2ex;
+	width: 30%;
+	text-align: left;
+	/* FIXME: make a normal line, not a grey 3d effect */		
+}
+#spl-display dl.Footnote {
+	margin-left:0em;
+	margin-bottom:0ex;
+	margin-top:0ex;
+}
+
+#spl-display dl.Footnote dt {
+	font-size:90%;
+}
+
+#spl-display dl.Footnote dd {
+	margin-left:1em;
+	font-size:90%;
+}
+
+#spl-display dl.FootnoteContents {
+	text-align: right;
+	margin-left:0em;
+	margin-bottom:0ex;
+	margin-top:0ex;
+}
+#spl-display dl.FootnoteContents dt {
+	font-size:100%;
+}
+#spl-display dl.FootnoteContents dd {
+	margin-left:1em;
+	font-size:90%;
+}
+
+#spl-display p.Footnote {
+	text-indent:-1em;
+	margin-left:1em;
+	font-size:90%;
+}
+
+#spl-display p.Footnotesize {
+	margin-bottom:0ex;
+	margin-top:0ex;
+	font-size:90%;
+}
+
+#spl-display img {
+	display: block;
+	margin-top: 0ex; 
+	margin-bottom: 0ex;
+	text-align: center;
+}
+							
+#spl-display p img {
+	display: inline;
+	margin-top: 0ex; 
+	margin-bottom: 0ex;
+}
+							
+#spl-display div.Figure {
+	margin-top: 4ex; 
+	margin-bottom: 4ex;
+}
+
+#spl-display div.Warning {
+	border: 4px solid black; 
+	margin-top: 2ex;
+	margin-bottom: 2.2ex;
+	padding-left: 1em; 
+	padding-right: 1em;
+	padding-top: 0ex;
+	padding-bottom: 1ex;
+}
+
+#spl-display div.Subject {
+	margin-top: 1ex;
+	margin-bottom: 1ex;
+	padding-top: 1ex;
+	padding-bottom: 1ex;
+	padding-left: .5em;
+	padding-right: .5em;
+	font-size: 80%;
+	background-color: #E0E0E0;
+	cursor: pointer;
+}
+
+#spl-display .contentTable {
+	border: 1px solid #999999;
+	background-color: #EAEAEA;
+}
+#spl-display .contentTablePetite {
+	border: 1px solid #999999;
+	background-color: #EAEAEA;
+	font-size: 80%;
+}
+#spl-display .contentTableTitle {
+	border-bottom: 1px solid #999999;
+	background-color: #CCCCCC;
+	font-size: 140%;
+	font-weight: bold;
+}
+#spl-display .contentTableReg {
+	border-bottom: none;
+	background-color: #CCCCCC;
+	font-size: 80%;
+	font-weight: lighter;
+}
+#spl-display .formTable {
+	border: 1px solid #FFFFFF;
+	border-collapse: collapse;
+}
+#spl-display .formTablePetite {
+	border: 1px solid #FFFFFF;
+	border-collapse: collapse;
+	font-size: 80%;
+}
+#spl-display .formTableMorePetite {
+	border: 1px solid #FFFFFF;
+	border-collapse: collapse;
+	font-size: 60%;
+}
+#spl-display .formTitle {
+	background-color: #CCCCCC;
+	border: 1px solid #FFFFFF;
+	font-size: 125%;
+	font-weight: bold;
+}
+#spl-display .formHeadingTitle {
+	border: none;
+	background-color: #CCCCCC;
+	font-size: 150%;
+	font-weight: bold;
+}
+#spl-display .formHeadingReg {
+	background-color: #CCCCCC;
+	border: 1px solid #FFFFFF;
+	font-size: 125%;
+}
+#spl-display .formTableRow {
+	background-color: #FFFFFF;
+}
+#spl-display .formTableRowAlt {
+	background-color: #F2F2F2;
+}
+#spl-display .formLabel {
+	border: 1px solid #FFFFFF;
+	background-color: #DDDDDD;
+	font-size: 115%;
+	font-weight: bold;
+}
+#spl-display .formItem {
+	border: 1px solid #CCCCCC;
+	font-size: 110%;
+}
+#spl-display .formTitle a:link {
+	font-weight: bold;
+	color: #006699;
+	text-decoration: underline;
+}
+#spl-display .formTitle a:visited {
+	/*font-family: "Arial Unicode MS"; Arial, Helvetica, sans-serif;*/
+	font-weight: bold;
+	color: #006699;
+	text-decoration: underline;
+}
+#spl-display .formTitle a:active {
+	/*font-family: "Arial Unicode MS"; Arial, Helvetica, sans-serif;*/
+	font-weight: bold;
+	/*color: #000000;*/
+	text-decoration: none;
+}
+#spl-display .formTitle a:hover {
+	/*font-family: "Arial Unicode MS"; Arial, Helvetica, sans-serif;*/
+	font-weight: bold;
+	/*color: #000000;*/
+	text-decoration: none;
+}
+#spl-display .normalizer {
+	font-size: 125%;
+	font-weight: lighter;
+}
+
+#spl-display div.Highlights {
+	font-size: 80%; 
+    font-family: "Times New Roman", Times, serif;
+    display: none;
+    visibility: none;
+}
+
+#spl-display div.HighlightsDisclaimer {
+        font-weight: bold;
+}
+
+#spl-display div.Index {
+        margin-top: 5ex;
+        margin-bottom: 5ex;
+        padding-top: 1ex;
+        padding-bottom: 1ex;
+        border-top-style: solid;
+        border-top-width: thin;
+        border-bottom-style: solid;
+        border-bottom-width: thin;
+    display: none;
+    visibility: hidden;
+}
+
+#spl-display .Colspan {
+       -moz-column-span: all;
+        -webkit-column-span: all;
+        column-span: all;
+}
+
+#spl-display div.Index h1,
+#spl-display div.Index h2 {
+	margin-top: 0pt;
+}
+
+#spl-display div.Index h2 {
+	margin-left: 1em;
+	font-weight: normal;
+}
+
+
+

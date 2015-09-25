@@ -1,14 +1,21 @@
 <div class="container-fluid" style="padding: 0px;">
     <div class="row">
-        <div id="drug-label" class="col-xs-6">
-            <div id="drug-label-external-display" style="margin-left: 15px;" data-bind="html: model.currentDrugLabel, eventListener: { event: 'click', selector: '.product-label-link', callback: productLabelLinkClick}"></div>        
-            </div>
+        <div class="col-xs-6" style="font-weight: 700 !important; font-size: 24px; border-bottom: 1px dashed #000">
+            <span data-bind="text: model.currentDrugName"></span>
+        </div>
         <div class="col-xs-6">
             <ul class="nav nav-tabs">
               <li role="presentation" class="active"><a data-bind="attr : { href : '#/druglabel/' + model.currentDrugSetId() + '/obsdata',} ">Observational Evidence</a></li>
               <li role="presentation"><a data-bind="attr : { href : '#/druglabel/' + model.currentDrugSetId() + '/scilit' } ">Scientific Literature</a></li>
               <li role="presentation"><a data-bind="attr : { href : '#/druglabel/' + model.currentDrugSetId() + '/sr' } ">Spontaneous Reports</a></li>
             </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6" style="margin-top: 5px;padding-left: 3px;padding-right: 0px;">
+            <div id="spl-display" class="drug-label" data-bind="html: model.currentDrugLabel, eventListener: { event: 'click', selector: '.product-label-link', callback: productLabelLinkClick}"></div>        
+            </div>
+        <div class="col-xs-6">
             <div id="evidence-explorer">
                 <div class="panel panel-default">
                     <div class="panel-heading">Debug Panel</div>

@@ -138,7 +138,7 @@ define([
                 self.currentDrugName(selectedDrug.drug_name);
             
                 $.ajax({
-                    url : "js/mock-data/sample-label.html",
+                    url : "js/mock-data/sample-label-lipitor.html", //"js/mock-data/sample-label.html",
                     success : function(result){
                         //self.currentLabel(result);
                         self.currentDrugLabel(result);

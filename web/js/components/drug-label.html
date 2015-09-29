@@ -30,12 +30,23 @@
                 </div>
                 <div id="tabTOC" data-bind="css: {hidden: model.drugLabelActiveTab() != 'toc'}">
                     TOC List: 
-                    <ul>
+                    <input placeholder="Search Table Of Contents" id="searchtoc" type="text" data-bind="event: { keyup: searchTOC }" />
+                    <ul class="navList">
                     <!-- ko foreach: model.currentDrugLabelTOC -->
                         <li data-bind="text: mainHeading"></li>
+                        <ul data-bind="if: HOITerms.length > 0">
+                            <!-- ko foreach: HOITerms -->
+                            <li class="TOCHOITerm" data-bind="text: $data"></li>
+                            <!-- /ko -->
+                        </ul>
                         <ul data-bind="if: subHeadings.length > 0">
                         <!-- ko foreach: subHeadings -->
-                            <li data-bind="text: $data"></li>
+                            <li data-bind="text: subHeading"></li>
+                            <ul data-bind="if: HOITerms.length > 0">
+                                <!-- ko foreach: HOITerms -->
+                                <li class="TOCHOITerm" data-bind="text: $data"></li>
+                                <!-- /ko -->
+                            </ul>
                         <!-- /ko -->
                         </ul>
                     <!-- /ko -->

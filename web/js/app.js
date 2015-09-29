@@ -42,13 +42,6 @@ define([
         
         self.initComplete = function () {
             self.router.init('/');
-            
-            $.ajax({
-                    url : "js/json/product-label-sections-loinc.json", //"js/mock-data/sample-drug.json",
-                    success : function(result){
-                        self.productLabelSectionHeadings(result);
-                    }
-            });
         }
 
 		// configure services to include at least one valid OHDSI WebAPI endpoint
@@ -162,6 +155,11 @@ define([
                         $('#spl-display a').each(function() {
                             $(this).replaceWith($(this).html());
                         });
+                        // Remove the links that refer to medication
+                        $("#spl-display span.product-label-link").each(function() {
+                            if ($(this).attr("type") == 'medication')
+                                $(this).attr("class", "");
+                        });
                     },
                     error : function(error){
                         alert('Error retrieving label: ' + error);
@@ -202,8 +200,9 @@ define([
                 // Third try
                 var sectionCodes = $("#spl-display .Contents").children("div").map(function () {
                     var mainHeading = self.getTOCMainHeading(this);
+                    var mainHeadingHOITerms = self.getTOCHOITerms(this);
                     var subHeadings = self.getTOCSubHeading(this);
-                    return {"mainHeading": mainHeading,"subHeadings": subHeadings};
+                    return {"mainHeading": mainHeading, "HOITerms": mainHeadingHOITerms, "subHeadings": subHeadings};
                 }).get();
                 
                 self.currentDrugLabelTOC(sectionCodes);
@@ -232,10 +231,22 @@ define([
         self.getTOCSubHeading = function (element) {
             // Get the sub section headings which are tagged with an <h2> tag. 
             var subHeadings = $(element).find("h2").map(function() {
-                return $(this).text();
+                var subHeadingText = $(this).text();
+                var HOITerms = self.getTOCHOITerms(this);
+                return {"subHeading": subHeadingText,"HOITerms": HOITerms};
             }).get();
             return subHeadings;
         }
+        
+        self.getTOCHOITerms = function (element) {
+            // Get the HOI terms which are tagged with an <span> tag. 
+            var HOITerms = $(element).find("span.product-label-link").map(function() {
+                if ($(this).attr("type") == "condition")
+                    return $(this).text();
+            }).get();
+            return HOITerms;
+        }
+    
         self.selectedConceptsIndex = {};
         
 		self.searchConceptsColumns = [

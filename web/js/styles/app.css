@@ -63,12 +63,14 @@ section {
     margin-bottom: 8px;   
 }
 
+.TOCHOITerm,
 .product-label-link {
      cursor:pointer;
      color:blue;
      text-decoration:underline;    
 }
 
+.TOCHOITerm:hover,
 .product-label-link:hover {
      font-weight: bold;
 }
@@ -107,3 +109,4 @@ section {
     display: none;
     visibility: hidden;
 }
+

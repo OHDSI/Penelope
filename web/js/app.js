@@ -146,8 +146,9 @@ define([
                 $.ajax({
                     url : "js/spl/" + selectedDrug.set_id + ".html", //"js/mock-data/sample-label-lipitor.html", //"js/mock-data/sample-label.html",
                     success : function(result){
-                        //self.currentLabel(result);
+                        // Bind the result to the observable
                         self.currentDrugLabel(result);
+                        // Update the view
                         self.currentView('druglabel');
                         // Build the Table of Contents from the label
                         self.buildTOCFromLabel();
@@ -175,32 +176,9 @@ define([
         
         self.buildTOCFromLabel = function () {
             if (self.currentDrugLabel != null) {
-                // select out the descendant <DIV> tags that contain the attribute "data-sectioncode" since this will 
-                // give us the LOINC codes for each section.
-                
-                // First Try
-                /*
-                var sectionCodes = $("#spl-display .Contents [data-sectionCode]").map(function () {
-                    // Within the selected codes, produce an array of section codes that were found in the label
-                    var sectionCode = $(this).attr("data-sectionCode");
-                    var sectionDisplay = ko.utils.arrayFirst(self.productLabelSectionHeadings(), function (item) {
-                            return item.code == sectionCode;
-                        });
-                    return {"code": sectionCode,"display":sectionDisplay.name};
-                }).get();
-                */
-                // Second try
-                /*
-                var sectionCodes = $("#spl-display .Contents .Section h1").map(function () {
-                    // Within the selected codes, produce an array of section codes that were found in the label
-                    var name = $(this).text();
-                    return {"name": name };
-                }).get();
-                */
-                // Third try
                 var sectionCodes = $("#spl-display .Contents").children("div").map(function () {
                     var mainHeading = self.getTOCMainHeading(this);
-                    var mainHeadingHOITerms = self.getTOCHOITerms(this);
+                    var mainHeadingHOITerms = self.getTOCHOITerms(this, "mainHeading");
                     var subHeadings = self.getTOCSubHeading(this);
                     return {"mainHeading": mainHeading, "HOITerms": mainHeadingHOITerms, "subHeadings": subHeadings};
                 }).get();
@@ -232,21 +210,35 @@ define([
             // Get the sub section headings which are tagged with an <h2> tag. 
             var subHeadings = $(element).find("h2").map(function() {
                 var subHeadingText = $(this).text();
-                var HOITerms = self.getTOCHOITerms(this);
+                var HOITerms = self.getTOCHOITerms(this.parentElement, "subHeading"); // $(this).parent().children("span.product-label-link"));
                 return {"subHeading": subHeadingText,"HOITerms": HOITerms};
             }).get();
             return subHeadings;
         }
-        
-        self.getTOCHOITerms = function (element) {
+                
+        self.getTOCHOITerms = function (element, type) {
+            var selector = null;
+            // If we are looking for HOI term in the main 
+            // heading, only search in the immediate <p> tags
+            if (type == "mainHeading") {
+                selector = $(element).children().map (function() {
+                    if ($(this).is("p")) return this;
+                }).find("span.product-label-link");
+            }
+            else
+            {
+                // Find all of the product label links that reference an HOI
+                selector = $(element).find("span.product-label-link");
+            }
+            
             // Get the HOI terms which are tagged with an <span> tag. 
-            var HOITerms = $(element).find("span.product-label-link").map(function() {
+            var HOITerms = jQuery.unique(selector.map(function() {
                 if ($(this).attr("type") == "condition")
-                    return $(this).text();
-            }).get();
+                    return $(this).text().toLowerCase();
+            }).get());
             return HOITerms;
         }
-    
+        
         self.selectedConceptsIndex = {};
         
 		self.searchConceptsColumns = [

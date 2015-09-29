@@ -20,6 +20,8 @@ define([
         self.currentDrugSetId = ko.observable();
         self.currentDrugName = ko.observable();
         self.currentDrugLabel = ko.observable();
+        self.currentDrugLabelTOC = ko.observable();
+        self.productLabelSectionHeadings = ko.observableArray(null);
         
         // Search settings
         self.currentView = ko.observable('home');
@@ -32,7 +34,7 @@ define([
         // Drug Label settings
         self.selectedConditionConceptId = ko.observable();
         self.selectedConditionConceptName = ko.observable('<Selected HOI Name>');
-        self.drugLabelActiveTab = ko.observable('obs'); // Observational Evidence is the default
+        self.drugLabelActiveTab = ko.observable('toc'); // Observational Evidence is the default
         
         // Literature Evidence Settings
         self.literatureEvidenceSummary = ko.observableArray(null);
@@ -40,6 +42,13 @@ define([
         
         self.initComplete = function () {
             self.router.init('/');
+            
+            $.ajax({
+                    url : "js/json/product-label-sections-loinc.json", //"js/mock-data/sample-drug.json",
+                    success : function(result){
+                        self.productLabelSectionHeadings(result);
+                    }
+            });
         }
 
 		// configure services to include at least one valid OHDSI WebAPI endpoint
@@ -117,12 +126,15 @@ define([
                 return item.set_id == setid;
             });
             
-            // Call the WS to get the current drug selected
+            // TODO - Call the WS to get the current drug selected. For now, fake it out
             if (selectedDrug == null) {
                 $.ajax({
-                    url : "js/mock-data/sample-drug.json",
+                    url : "js/mock-data/search-results.json", //"js/mock-data/sample-drug.json",
                     success : function(result){
-                        self.getLabel(result);
+                        var selectedDrugFromResults = ko.utils.arrayFirst(result, function (item) {
+                            return item.set_id == setid;
+                        });
+                        self.getLabel(selectedDrugFromResults);
                     }
                 });
             }
@@ -139,11 +151,17 @@ define([
                 self.currentDrugName(selectedDrug.drug_name);
             
                 $.ajax({
-                    url : "js/mock-data/sample-label-lipitor.html", //"js/mock-data/sample-label.html",
+                    url : "js/spl/" + selectedDrug.set_id + ".html", //"js/mock-data/sample-label-lipitor.html", //"js/mock-data/sample-label.html",
                     success : function(result){
                         //self.currentLabel(result);
                         self.currentDrugLabel(result);
                         self.currentView('druglabel');
+                        // Build the Table of Contents from the label
+                        self.buildTOCFromLabel();
+                        // Remove all of the links
+                        $('#spl-display a').each(function() {
+                            $(this).replaceWith($(this).html());
+                        });
                     },
                     error : function(error){
                         alert('Error retrieving label: ' + error);
@@ -156,6 +174,68 @@ define([
             }
         }
         
+        
+        self.buildTOCFromLabel = function () {
+            if (self.currentDrugLabel != null) {
+                // select out the descendant <DIV> tags that contain the attribute "data-sectioncode" since this will 
+                // give us the LOINC codes for each section.
+                
+                // First Try
+                /*
+                var sectionCodes = $("#spl-display .Contents [data-sectionCode]").map(function () {
+                    // Within the selected codes, produce an array of section codes that were found in the label
+                    var sectionCode = $(this).attr("data-sectionCode");
+                    var sectionDisplay = ko.utils.arrayFirst(self.productLabelSectionHeadings(), function (item) {
+                            return item.code == sectionCode;
+                        });
+                    return {"code": sectionCode,"display":sectionDisplay.name};
+                }).get();
+                */
+                // Second try
+                /*
+                var sectionCodes = $("#spl-display .Contents .Section h1").map(function () {
+                    // Within the selected codes, produce an array of section codes that were found in the label
+                    var name = $(this).text();
+                    return {"name": name };
+                }).get();
+                */
+                // Third try
+                var sectionCodes = $("#spl-display .Contents").children("div").map(function () {
+                    var mainHeading = self.getTOCMainHeading(this);
+                    var subHeadings = self.getTOCSubHeading(this);
+                    return {"mainHeading": mainHeading,"subHeadings": subHeadings};
+                }).get();
+                
+                self.currentDrugLabelTOC(sectionCodes);
+            }
+        }
+        
+        self.getTOCMainHeading = function (element) {
+            // Get the main section headings which are tagged with an <h1> tag. 
+            // Sometimes, the H1 tag will be present but will contain no text OR 
+            // there will be no H1 tag present. In this instance, look for the <p> tag
+            // with the class of "First" and this will be the section heading that we need.
+            var name = $(element).find("h1");
+            var returnVal = "";
+            if (name.length > 0) {
+                returnVal = $(name).text();
+            }
+            if (name.length == 0 || returnVal == "") {
+                name = $(element).find("p.First").get();
+            }
+            if (name.length > 0) {
+                returnVal = $(name).text();
+            }
+            return returnVal;
+        }
+
+        self.getTOCSubHeading = function (element) {
+            // Get the sub section headings which are tagged with an <h2> tag. 
+            var subHeadings = $(element).find("h2").map(function() {
+                return $(this).text();
+            }).get();
+            return subHeadings;
+        }
         self.selectedConceptsIndex = {};
         
 		self.searchConceptsColumns = [

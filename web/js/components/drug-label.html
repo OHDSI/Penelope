@@ -5,6 +5,7 @@
         </div>
         <div class="col-xs-6">
             <ul class="nav nav-tabs" data-bind="eventListener: { event: 'click', selector: '.tab', callback: tabClick}">
+              <li role="presentation" data-bind="css: {active: model.drugLabelActiveTab() == 'toc'}" tabName="toc" class="tab"><a>Table Of Contents</a></li>
               <li role="presentation" data-bind="css: {active: model.drugLabelActiveTab() == 'obs'}" tabName="obs" class="tab"><a>Observational Evidence</a></li>
               <li role="presentation" data-bind="css: {active: model.drugLabelActiveTab() == 'sci'}" tabName="sci" class="tab"><a>Scientific Literature</a></li>
               <li role="presentation" data-bind="css: {active: model.drugLabelActiveTab() == 'spo'}" tabName="spo" class="tab"><a>Spontaneous Reports</a></li>
@@ -24,7 +25,21 @@
                         Drug Name: <span data-bind="text: model.currentDrugName"></span><br/>
                         Selected HOI Concept_ID: <span data-bind="text: model.selectedConditionConceptId"></span><br/>
                         Selected HOI: <span id="selectedHOI" data-bind="text: model.selectedConditionConceptName"></span><br/>
+                        <br/>
                     </div>
+                </div>
+                <div id="tabTOC" data-bind="css: {hidden: model.drugLabelActiveTab() != 'toc'}">
+                    TOC List: 
+                    <ul>
+                    <!-- ko foreach: model.currentDrugLabelTOC -->
+                        <li data-bind="text: mainHeading"></li>
+                        <ul data-bind="if: subHeadings.length > 0">
+                        <!-- ko foreach: subHeadings -->
+                            <li data-bind="text: $data"></li>
+                        <!-- /ko -->
+                        </ul>
+                    <!-- /ko -->
+                    </ul>
                 </div>
                 <div id="tabObsEvidence" data-bind="css: {hidden: model.drugLabelActiveTab() != 'obs'}">
                     <button class="btn btn-default" data-bind="click: testReportClick">Test</button>
@@ -50,6 +65,46 @@
                 </div>
                 </div>
                 <div id="tabSciLit" data-bind="css: {hidden: model.drugLabelActiveTab() != 'sci'}">
+                  <!-- Trying a d3 thing here -->
+                    <style>
+                    /*
+                    .chart rect {
+                      fill: steelblue;
+                    }
+                    */
+                    .chart .legend {
+                      fill: black;
+                      font: 14px sans-serif;
+                      text-anchor: start;
+                      font-size: 12px;
+                    }
+
+                    .chart text {
+                      fill: white;
+                      font: 10px sans-serif;
+                      text-anchor: end;
+                    }
+
+                    .chart .label {
+                      fill: black;
+                      font: 14px sans-serif;
+                      text-anchor: end;
+                    }
+
+                    .bar:hover {
+                      fill: brown;
+                    }
+
+                    .axis path,
+                    .axis line {
+                      fill: none;
+                      stroke: #000;
+                      shape-rendering: crispEdges;
+                    }
+                    </style>
+                    <svg class="chart"></svg>
+                    
+                    <!-- End Try -->                
                   <!-- ko foreach: model.literatureEvidenceSummary -->
                       <h3 data-bind="attr: {title: evidence_group_name}, text: evidence_group_name + '  (' + evidence_count + ')'"></h3>
                         <!-- <span data-bind="text: $parentContext"></span>   -->

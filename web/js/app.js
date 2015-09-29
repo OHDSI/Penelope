@@ -152,11 +152,11 @@ define([
                         self.currentView('druglabel');
                         // Build the Table of Contents from the label
                         self.buildTOCFromLabel();
-                        // Remove all of the links
+                        // Remove all of the links from the drug label
                         $('#spl-display a').each(function() {
                             $(this).replaceWith($(this).html());
                         });
-                        // Remove the links that refer to medication
+                        // Moddify the <SPAN> tags that are for medication as we don't handle these just yet.
                         $("#spl-display span.product-label-link").each(function() {
                             if ($(this).attr("type") == 'medication')
                                 $(this).attr("class", "");
@@ -176,24 +176,28 @@ define([
         
         self.buildTOCFromLabel = function () {
             if (self.currentDrugLabel != null) {
-                var sectionCodes = $("#spl-display .Contents").children("div").map(function () {
-                    var mainHeading = self.getTOCMainHeading(this);
+                var sectionCodes = $("#spl-display .Contents").children("div").map(function (i, val) {
+                    var mainHeading = self.getTOCMainHeading(this, i);
                     var mainHeadingHOITerms = self.getTOCHOITerms(this, "mainHeading");
                     var subHeadings = self.getTOCSubHeading(this);
-                    return {"mainHeading": mainHeading, "HOITerms": mainHeadingHOITerms, "subHeadings": subHeadings};
+                    if (mainHeading != "")
+                    {
+                    	return {"mainHeading": mainHeading, "HOITerms": mainHeadingHOITerms, "subHeadings": subHeadings};
+                    }
                 }).get();
                 
                 self.currentDrugLabelTOC(sectionCodes);
             }
         }
         
-        self.getTOCMainHeading = function (element) {
+        self.getTOCMainHeading = function (element, i) {
             // Get the main section headings which are tagged with an <h1> tag. 
             // Sometimes, the H1 tag will be present but will contain no text OR 
             // there will be no H1 tag present. In this instance, look for the <p> tag
             // with the class of "First" and this will be the section heading that we need.
             var name = $(element).find("h1");
             var returnVal = "";
+            var id = "";
             if (name.length > 0) {
                 returnVal = $(name).text();
             }
@@ -201,9 +205,11 @@ define([
                 name = $(element).find("p.First").get();
             }
             if (name.length > 0) {
+                id = "main-" + i;
+                $(name).attr("id", id);
                 returnVal = $(name).text();
             }
-            return returnVal;
+            return {"text": returnVal, "id": id};
         }
 
         self.getTOCSubHeading = function (element) {

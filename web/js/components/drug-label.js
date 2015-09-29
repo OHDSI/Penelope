@@ -1,4 +1,4 @@
-define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 'lodash', 'knockout.dataTables.binding', 'jquery', 'jquery-ui'], function (ko, view, d3, jnj_chart, colorbrewer, _) {
+define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 'lodash', 'knockout.dataTables.binding', 'jquery', 'jquery-ui', 'jquery-scrollTo'], function (ko, view, d3, jnj_chart, colorbrewer, _) {
 	function drugLabel(params) {
 		var self = this;
 		self.model = params.model;
@@ -277,7 +277,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
             var valThis = $('#searchtoc').val().toLowerCase(),
                 lenght  = $('#searchtoc').val().length;
 
-            $('.navList li.TOCHOITerm').each(function () {
+            $('#toc li.TOCHOITerm').each(function () {
                 var text  = $(this).text(),
                     textL = text.toLowerCase(),
                     htmlR = '<b>' + text.substr(0, lenght) + '</b>' + text.substr(lenght);
@@ -285,6 +285,15 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
             });
         }
 
+        self.TOCLinkClick = function(item, event) {
+            // Here's some code that will allow us to scroll once we figure out the best way
+            // to tag the elements in the page.
+            //$("#spl-display").scrollTo($("#test1")); $("#spl-display").scrollLeft(0);
+            var scrollToElementId = event.target.attributes["id"].value;
+            $("#spl-display").scrollTo($("#" + scrollToElementId)); 
+            $("#spl-display").scrollLeft(0);
+        }
+        
         // Click handler for the links on the drug label
         self.productLabelLinkClick = function(item, event) {
             self.model.selectedConditionConceptId(event.target.attributes["conceptid"].value);

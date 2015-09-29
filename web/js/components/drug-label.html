@@ -31,9 +31,9 @@
                 <div id="tabTOC" data-bind="css: {hidden: model.drugLabelActiveTab() != 'toc'}">
                     TOC List: 
                     <input placeholder="Search Table Of Contents" id="searchtoc" type="text" data-bind="event: { keyup: searchTOC }" />
-                    <ul class="navList">
+                    <ul id="toc" data-bind="eventListener: { event: 'click', selector: '.toc-item', callback: TOCLinkClick}">
                     <!-- ko foreach: model.currentDrugLabelTOC -->
-                        <li data-bind="text: mainHeading + '(' + HOITerms.length + ')'"></li>
+                        <li class="toc-item" data-bind="attr: {id: mainHeading.id }, text: mainHeading.text + '(' + HOITerms.length + ')'"></li>
                         <ul data-bind="if: HOITerms.length > 0">
                             <!-- ko foreach: HOITerms -->
                             <li class="TOCHOITerm" data-bind="text: $data"></li>

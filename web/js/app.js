@@ -176,11 +176,11 @@ define([
         
         self.buildTOCFromLabel = function () {
             if (self.currentDrugLabel != null) {
-                var sectionCodes = $("#spl-display .Contents").children("div").map(function (i, val) {
-                    var mainHeading = self.getTOCMainHeading(this, i);
-                    var mainHeadingHOITerms = self.getTOCHOITerms(this, "mainHeading");
-                    var subHeadings = self.getTOCSubHeading(this);
-                    if (mainHeading != "")
+                var sectionCodes = $("#spl-display .Contents").children("div").map(function (mainHeadingIndex, val) {
+                    var mainHeading = self.getTOCMainHeading(this, mainHeadingIndex);
+                    var mainHeadingHOITerms = self.getTOCHOITerms(this, "mainHeading", mainHeadingIndex, "main");
+                    var subHeadings = self.getTOCSubHeading(this, mainHeadingIndex);
+                    if (mainHeading.text != "")
                     {
                     	return {"mainHeading": mainHeading, "HOITerms": mainHeadingHOITerms, "subHeadings": subHeadings};
                     }
@@ -190,7 +190,7 @@ define([
             }
         }
         
-        self.getTOCMainHeading = function (element, i) {
+        self.getTOCMainHeading = function (element, mainHeadingIndex) {
             // Get the main section headings which are tagged with an <h1> tag. 
             // Sometimes, the H1 tag will be present but will contain no text OR 
             // there will be no H1 tag present. In this instance, look for the <p> tag
@@ -205,24 +205,26 @@ define([
                 name = $(element).find("p.First").get();
             }
             if (name.length > 0) {
-                id = "main-" + i;
+                id = "main-" + mainHeadingIndex;
                 $(name).attr("id", id);
                 returnVal = $(name).text();
             }
             return {"text": returnVal, "id": id};
         }
 
-        self.getTOCSubHeading = function (element) {
+        self.getTOCSubHeading = function (element, mainHeadingIndex) {
             // Get the sub section headings which are tagged with an <h2> tag. 
-            var subHeadings = $(element).find("h2").map(function() {
+            var subHeadings = $(element).find("h2").map(function(subHeadingIndex, val) {
                 var subHeadingText = $(this).text();
-                var HOITerms = self.getTOCHOITerms(this.parentElement, "subHeading"); // $(this).parent().children("span.product-label-link"));
-                return {"subHeading": subHeadingText,"HOITerms": HOITerms};
+                var id = "sub-" + mainHeadingIndex + "-" + subHeadingIndex;
+                $(this).attr("id", id);
+                var HOITerms = self.getTOCHOITerms(this.parentElement, "subHeading", mainHeadingIndex, subHeadingIndex);
+                return {"subHeading": subHeadingText, "id": id, "HOITerms": HOITerms};
             }).get();
             return subHeadings;
         }
                 
-        self.getTOCHOITerms = function (element, type) {
+        self.getTOCHOITerms = function (element, type, mainHeadingIndex, subHeadingIndex) {
             var selector = null;
             // If we are looking for HOI term in the main 
             // heading, only search in the immediate <p> tags
@@ -240,7 +242,11 @@ define([
             // Get the HOI terms which are tagged with an <span> tag. 
             var HOITerms = jQuery.unique(selector.map(function() {
                 if ($(this).attr("type") == "condition")
-                    return $(this).text().toLowerCase();
+                {
+                    var id = "hoi-" + $(this).attr("conceptid") + "-" + mainHeadingIndex + "-" + subHeadingIndex;
+                    $(this).attr("id", id);
+                    return {"name": $(this).text().toLowerCase(), "id": id};
+                }
             }).get());
             return HOITerms;
         }

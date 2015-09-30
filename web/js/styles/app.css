@@ -63,16 +63,18 @@ section {
     margin-bottom: 8px;   
 }
 
-.toc-item,
-.TOCHOITerm,
-.product-label-link {
+.toc-item {
      cursor:pointer;
+}
+
+.toc-search-term,
+.product-label-link {
      color:blue;
      text-decoration:underline;    
 }
 
 .toc-item:hover,
-.TOCHOITerm:hover,
+.toc-search-term:hover,
 .product-label-link:hover {
      font-weight: bold;
 }

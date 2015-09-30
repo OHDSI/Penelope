@@ -29,22 +29,25 @@
                     </div>
                 </div>
                 <div id="tabTOC" data-bind="css: {hidden: model.drugLabelActiveTab() != 'toc'}">
-                    TOC List: 
-                    <input placeholder="Search Table Of Contents" id="searchtoc" type="text" data-bind="event: { keyup: searchTOC }" />
-                    <ul id="toc" data-bind="eventListener: { event: 'click', selector: '.toc-item', callback: TOCLinkClick}">
+                    <!-- Consider Segmented Buttons -->
+                    <div class="input-group sizing-addon2">
+                      <span class="input-group-addon glyphicon glyphicon-filter" id="sizing-addon1"></span>
+                      <input class="form-control" aria-describedby="sizing-addon2" placeholder="find a condition..." id="searchtoc" type="text" data-bind="event: { keyup: searchTOC }" />
+                    </div>
+                    <ul id="toc" class="list-group" data-bind="eventListener: { event: 'click', selector: '.toc-item', callback: TOCLinkClick}">
                     <!-- ko foreach: model.currentDrugLabelTOC -->
-                        <li class="toc-item" data-bind="attr: {id: mainHeading.id }, text: mainHeading.text + '(' + HOITerms.length + ')'"></li>
+                        <li class="toc-item list-group-item" data-bind="attr: {id: mainHeading.id }"><span class="badge" data-bind="text: HOITerms.length"></span><!--ko text: mainHeading.text --><!--/ko--></li>
                         <ul data-bind="if: HOITerms.length > 0">
                             <!-- ko foreach: HOITerms -->
-                            <li class="TOCHOITerm" data-bind="text: $data"></li>
+                            <li class="toc-item toc-search-term" data-bind="attr: {id: id}, text: name"></li>
                             <!-- /ko -->
                         </ul>
                         <ul data-bind="if: subHeadings.length > 0">
                         <!-- ko foreach: subHeadings -->
-                            <li data-bind="text: subHeading"></li>
+                            <li class="toc-item" data-bind="attr: {id: id }, text: subHeading"></li>
                             <ul data-bind="if: HOITerms.length > 0">
                                 <!-- ko foreach: HOITerms -->
-                                <li class="TOCHOITerm" data-bind="text: $data"></li>
+                                <li class="toc-item toc-search-term" data-bind="attr: {id: id}, text: name"></li>
                                 <!-- /ko -->
                             </ul>
                         <!-- /ko -->

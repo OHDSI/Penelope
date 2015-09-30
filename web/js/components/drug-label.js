@@ -277,10 +277,10 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
             var valThis = $('#searchtoc').val().toLowerCase(),
                 lenght  = $('#searchtoc').val().length;
 
-            $('#toc li.TOCHOITerm').each(function () {
+            $('#toc li.toc-search-term').each(function () {
                 var text  = $(this).text(),
                     textL = text.toLowerCase(),
-                    htmlR = '<b>' + text.substr(0, lenght) + '</b>' + text.substr(lenght);
+                    htmlR = '<b id=' + $(this).attr("id") + '>' + text.substr(0, lenght) + '</b>' + text.substr(lenght);
                 (textL.indexOf(valThis) == 0) ? $(this).html(htmlR).show() : $(this).hide();
             });
         }

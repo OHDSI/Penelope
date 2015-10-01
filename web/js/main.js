@@ -6,10 +6,17 @@ requirejs.config({
 		    location: "databindings"
 		}
     ],
+    config: {
+		text: {
+			useXhr: function (url, protocol, hostname, port) {
+				return true;
+			}
+		}
+	},    
 	map: {
 		'*': {
-			'css': 'plugins/css.min',
-			'text': 'plugins/text'
+			'css': 'plugins/css.min'//,
+			//'text': 'plugins/text'
 		}
 	},
 	shim: {
@@ -33,6 +40,7 @@ requirejs.config({
 		}
 	},
 	paths: {
+        "text": "plugins/text",
 		"jquery":  "https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min",
         "jquery-ui": "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min",
         "jquery-scrollTo": "https://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo",
@@ -54,13 +62,14 @@ requirejs.config({
         "faceted-datatable": "components/faceted-datatable",
         "home": "components/home",
         "search": "components/search",
-        "search-results": "components/search-results"        
+        "search-results": "components/search-results",
+        "concept-by-index" : "http://hixbeta.jnj.com/atlas/js/components/visualizations/concept-by-index" // "https://rawgit.com/OHDSI/Atlas/master/js/components/visualizations/concept-by-index" 
         //"datatablesbuttons": "https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min", // Try again when DataTables is upgraded to 1.10.10
         //"jsbuttons": "https://cdn.datatables.net/buttons/1.0.3/js/buttons.html5.min", // Try again when DataTables is upgraded to 1.10.10
 	}
 });
 
-requirejs(['knockout', './app', 'director', 'drug-label', 'faceted-datatable', 'home', 'search', 'search-results'], function(ko, app) {
+requirejs(['knockout', './app', 'director', 'drug-label', 'faceted-datatable', 'home', 'search', 'search-results', 'concept-by-index'], function(ko, app) {
     var pageModel = new app();
     var routerOptions = {
 		notfound: function () {

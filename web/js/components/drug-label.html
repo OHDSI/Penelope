@@ -56,6 +56,7 @@
                     </ul>
                 </div>
                 <div id="tabObsEvidence" data-bind="css: {hidden: model.drugLabelActiveTab() != 'obs'}">
+                    <concept-by-index params="{resultsUrl: 'http://localhost:8080/WebAPI/TRUVENMDCR/cohortresults/', cohortDefinitionId: 5, conceptId: 321319, conceptDomain: 'condition', caption: 'My cool chart.'}"></concept-by-index>
                     <button class="btn btn-default" data-bind="click: testReportClick">Test</button>
                     <div id="reportPerson">
                     <div class="pad-10 report">
@@ -119,36 +120,40 @@
                     <svg class="chart"></svg>
                     
                     <!-- End Try -->                
-                  <!-- ko foreach: model.literatureEvidenceSummary -->
-                      <h3 data-bind="attr: {title: evidence_group_name}, text: evidence_group_name + '  (' + evidence_count + ')'"></h3>
-                        <!-- <span data-bind="text: $parentContext"></span>   -->
-                        <!-- //ko foreach: $parentContext.model.literatureEvidenceDetails -->                    
-                          <div class="search-result row">
-                            <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                                <a href="#" target="_blank">Article Name 1</a>
-                                <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
-                                <p>Snippet of the article would go here....</p>
-                              </div>
-                            <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                                <a href="#" target="_blank">Article Name 1</a>
-                                <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
-                                <p>Snippet of the article would go here....</p>
-                              </div>
-                            <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                                <a href="#" target="_blank">Article Name 1</a>
-                                <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
-                                <p>Snippet of the article would go here....</p>
-                              </div>
-                            <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                                <!--
-                                <a data-bind="attr: {title: article_name}, text: article_name" target="_blank"></a>
-                                <p class="authors" data-bind="text: authors + ' - ' + publication + ', ' + date_of_publication"></p>
-                                <p data-bind="text: snippet"></p>
-                                -->
-                            </div>
+                    <!-- ko foreach: model.literatureEvidenceDetails -->                    
+                        <h3 databind="attr: {title: evidence_group_name}, text: evidence_group_name + '  (' + evidence_count + ')'"></h3>
+                      <div class="search-result row">
+                        <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                            <a data-bind="attr: {title: text, href: sourceURL}, text: sourceURL" target="_blank"></a>
+                            <p class="authors" data-bind="text: wasGeneratedBy + ' - ' + label + ', ' + lastSavedOn"></p>
+                            <p data-bind="text: description"></p>
+                        </div>
+                          <!--
+                        <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                            <a href="#" target="_blank">Article Name 1</a>
+                            <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
+                            <p>Snippet of the article would go here....</p>
                           </div>
-                          <!-- /ko -->
-                  <!-- /ko -->
+                        <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                            <a href="#" target="_blank">Article Name 1</a>
+                            <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
+                            <p>Snippet of the article would go here....</p>
+                          </div>
+                        <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                            <a href="#" target="_blank">Article Name 1</a>
+                            <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
+                            <p>Snippet of the article would go here....</p>
+                          </div>
+                        -->
+                        <!--
+                        <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                            <a data-bind="attr: {title: article_name}, text: article_name" target="_blank"></a>
+                            <p class="authors" data-bind="text: authors + ' - ' + publication + ', ' + date_of_publication"></p>
+                            <p data-bind="text: snippet"></p>
+                        </div>
+                        -->
+                      </div>
+                      <!-- /ko -->
                 </div>
                 <div id="tabSR" data-bind="css: {hidden: model.drugLabelActiveTab() != 'spo'}">
                     Spontaneous Reports Go Here

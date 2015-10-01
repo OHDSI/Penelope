@@ -63,7 +63,8 @@ section {
     margin-bottom: 8px;   
 }
 
-.toc-item {
+.toc-item,
+.product-label-link {
      cursor:pointer;
 }
 

@@ -17,9 +17,9 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
 		}    
         
         // Taken from http://bl.ocks.org/erikvullings/51cc5332439939f1f292
-        self.d3ChartTest = function() {
+        self.renderLiteratureChart = function() {
             /*
-            var data = {
+            var testData = {
               labels: [
                 'depression', '<condition 2>', '<condition 3>',
                 '<condition 4>', '<condition 5>', '<condition 6>'
@@ -39,24 +39,21 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                 },]
             };
             */
-
+ 
+            // If this property is not set, bail out
+            if (self.model.literatureEvidenceSummary == undefined) 
+                return; 
+            
+            var literatureSeries = [];
+            var conditionConceptName = self.model.selectedConditionConceptName(); 
+            var literatureEvidenceSummary = self.model.literatureEvidenceSummary();
+            for(var i = 0; i < literatureEvidenceSummary.length; i++) { 
+                literatureSeries[i] = {"label": literatureEvidenceSummary[i].evidence_type, "values": [literatureEvidenceSummary[i].evidence_count]};
+            } 
+            
             var data = {
-              labels: [
-                'depression'
-              ],
-              series: [
-                {
-                  label: 'PubMed',
-                  values: [4]
-                },
-                {
-                  label: 'Clinical Trials',
-                  values: [12]
-                },
-                {
-                  label: 'Other',
-                  values: [31]
-                },]
+              labels: [conditionConceptName],
+              series: literatureSeries
             };
 
             var chartWidth       = 300,
@@ -92,8 +89,13 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                 .orient("left");
 
             // Specify the chart area and dimensions
-            var chart = d3.select(".chart")
-                .attr("width", spaceForLabels + chartWidth + spaceForLegend)
+            var chart = d3.select(".chart");
+            
+            // Remove any existing elements inside the SVG
+            chart.selectAll("g").remove();
+
+            // Build out the chart
+            chart.attr("width", spaceForLabels + chartWidth + spaceForLegend)
                 .attr("height", chartHeight);
 
             // Create bars
@@ -110,10 +112,10 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                 .attr("class", "bar")
                 .attr("width", x)
                 .attr("height", barHeight - 1)
+                .attr("evidence_type", function(d, i) { return literatureEvidenceSummary[i].evidence_type })
                 .on('click', function (d) {
-				    alert('click');	
+                    self.literatureChartBarClick(this);
 				});
-                //.attr("onclick", function() { alert('clicky clicky');});
 
             // Add text label in bar
             bar.append("text")
@@ -169,14 +171,27 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                 .text(function (d) { return d.label; });
         }
         
-        self.getLiteratureSummary = function() {
-        	self.d3ChartTest();
+        self.literatureChartBarClick = function(element) {
+            alert(element);
+            var evidenceType = element.attributes["evidence_type"].value;
             $.ajax({
 				method: 'GET',
-				url: 'js/mock-data/sci-lit-summary.json', //self.model.services()[0].url + 'conceptset/',
+				url: 'http://localhost:8080/WebAPI/LAERTES/evidence/evidencedetails?conditionID=' + self.model.selectedConditionConceptId() + '&drugID=1115008&evidenceType=' + evidenceType,
+				dataType: 'json',
+				success: function (data) {
+                    self.model.literatureEvidenceDetails(data);
+				}
+			});            
+        }
+        
+        self.getLiteratureSummary = function() {
+            $.ajax({
+				method: 'GET',
+				url: 'http://localhost:8080/WebAPI/LAERTES/evidence/evidencesummary?conditionID=' + self.model.selectedConditionConceptId() + ' &drugID=1115008&evidenceGroup=Literature', //'js/mock-data/sci-lit-summary.json', //self.model.services()[0].url + 'conceptset/',
 				dataType: 'json',
 				success: function (data) {
                     self.model.literatureEvidenceSummary(data);
+        	        self.renderLiteratureChart();
                     //self.model.literatureEvidenceResults(data);
 				}
 			});

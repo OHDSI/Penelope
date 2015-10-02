@@ -18,10 +18,10 @@ define([
 
         // Selected Drug settings
         self.currentDrugSetId = ko.observable();
+        self.currentDrugConceptId = ko.observable();
         self.currentDrugName = ko.observable();
         self.currentDrugLabel = ko.observable();
         self.currentDrugLabelTOC = ko.observable();
-        self.productLabelSectionHeadings = ko.observableArray(null);
         
         // Search settings
         self.currentView = ko.observable('home');
@@ -29,16 +29,19 @@ define([
         //self.currentLabel = ko.observable();
         self.recentSearch = ko.observableArray(null);
         self.searchResultsConcepts = ko.observableArray();
-        
-        
+                
         // Drug Label settings
         self.selectedConditionConceptId = ko.observable();
         self.selectedConditionConceptName = ko.observable('<Selected HOI Name>');
         self.drugLabelActiveTab = ko.observable('toc'); // Observational Evidence is the default
+        self.productLabelSectionHeadings = ko.observableArray(null);
         
         // Literature Evidence Settings
         self.literatureEvidenceSummary = ko.observableArray(null);
         self.literatureEvidenceDetails = ko.observableArray(null);
+        
+        // OpenFDA Settings
+        self.openFDAConditionOccurrenceForLabel = ko.observable();
         
         self.initComplete = function () {
             self.router.init('/');
@@ -142,7 +145,8 @@ define([
             {
                 self.currentDrugSetId(selectedDrug.set_id);
                 self.currentDrugName(selectedDrug.drug_name);
-            
+                self.currentDrugConceptId(selectedDrug.drug_concept_id);
+                
                 $.ajax({
                     url : "js/spl/" + selectedDrug.set_id + ".html", //"js/mock-data/sample-label-lipitor.html", //"js/mock-data/sample-label.html",
                     success : function(result){

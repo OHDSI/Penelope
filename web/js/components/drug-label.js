@@ -61,7 +61,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                 groupHeight      = barHeight * data.series.length,
                 gapBetweenGroups = 10,
                 spaceForLabels   = 150,
-                spaceForLegend   = 150;
+                spaceForLegend   = 250;
 
             // Zip the series data together (first values, second values, etc.)
             var zippedData = [];
@@ -108,8 +108,8 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
 
             // Create rectangles of the correct width
             bar.append("rect")
-                .attr("fill", function(d,i) { return color(i % data.series.length); })
-                .attr("class", "bar")
+                //.attr("fill", function(d,i) { return color(i % data.series.length); })
+                .attr("class", function(d, i) { return "bar " + literatureEvidenceSummary[i].evidence_type})
                 .attr("width", x)
                 .attr("height", barHeight - 1)
                 .attr("evidence_type", function(d, i) { return literatureEvidenceSummary[i].evidence_type })
@@ -161,7 +161,8 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
             legend.append('rect')
                 .attr('width', legendRectSize)
                 .attr('height', legendRectSize)
-                .style('fill', function (d, i) { return color(i); })
+                //.style('fill', function (d, i) { return color(i); })
+                .attr('class', function(d, i) { return "bar " + literatureEvidenceSummary[i].evidence_type}) 
                 .style('stroke', function (d, i) { return color(i); });
 
             legend.append('text')
@@ -172,14 +173,14 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
         }
         
         self.literatureChartBarClick = function(element) {
-            alert(element);
             var evidenceType = element.attributes["evidence_type"].value;
             $.ajax({
 				method: 'GET',
-				url: 'http://localhost:8080/WebAPI/LAERTES/evidence/evidencedetails?conditionID=' + self.model.selectedConditionConceptId() + '&drugID=1115008&evidenceType=' + evidenceType,
+				url: 'http://localhost:8080/WebAPI/LAERTES/evidence/evidencedetails?conditionID=' + self.model.selectedConditionConceptId() + '&drugID=' + self.model.currentDrugConceptId() + '&evidenceType=' + evidenceType,
 				dataType: 'json',
 				success: function (data) {
-                    self.model.literatureEvidenceDetails(data);
+                    var returnVal = {"evidence_type": evidenceType, "evidence_count": data.length, "evidence": data};
+                    self.model.literatureEvidenceDetails(returnVal);
 				}
 			});            
         }
@@ -187,7 +188,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
         self.getLiteratureSummary = function() {
             $.ajax({
 				method: 'GET',
-				url: 'http://localhost:8080/WebAPI/LAERTES/evidence/evidencesummary?conditionID=' + self.model.selectedConditionConceptId() + ' &drugID=1115008&evidenceGroup=Literature', //'js/mock-data/sci-lit-summary.json', //self.model.services()[0].url + 'conceptset/',
+				url: 'http://localhost:8080/WebAPI/LAERTES/evidence/evidencesummary?conditionID=' + self.model.selectedConditionConceptId() + ' &drugID=' + self.model.currentDrugConceptId() + '&evidenceGroup=Literature', //'js/mock-data/sci-lit-summary.json', //self.model.services()[0].url + 'conceptset/',
 				dataType: 'json',
 				success: function (data) {
                     self.model.literatureEvidenceSummary(data);
@@ -280,11 +281,23 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                     self.getLiteratureSummary();
                     break;
                 case 'toc':
-                case 'sr':
                     // TODO: define action
+                case 'spo':
+                    self.getOpenFDAData();
                     break;
             }
             self.model.drugLabelActiveTab(listItemNode.attributes["tabName"].value);
+        }
+        
+        self.getOpenFDAData = function() {
+            $.ajax({
+				method: 'GET',
+				url: 'https://api.fda.gov/drug/event.json?search=(patient.drug.openfda.spl_set_id:"' + self.model.currentDrugSetId() + '")&count=patient.reaction.reactionmeddrapt.exact',
+				dataType: 'json',
+				success: function (data) {
+                    self.model.openFDAConditionOccurrenceForLabel(data);
+				}
+			});
         }
         
         // Handles the in-place search of the table of contents

@@ -21,6 +21,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Debug Panel</div>
                     <div class="panel-body">
+                        Drug Concept ID: <span id="drugConceptId" data-bind="text: model.currentDrugConceptId"></span><br/>
                         Set ID: <span id="setId" data-bind="text: model.currentDrugSetId"></span><br/>
                         Drug Name: <span data-bind="text: model.currentDrugName"></span><br/>
                         Selected HOI Concept_ID: <span data-bind="text: model.selectedConditionConceptId"></span><br/>
@@ -117,16 +118,17 @@
                       shape-rendering: crispEdges;
                     }
                     </style>
+                    TODO: Loading icon, call to action to click on the chart (or provide all results?), work through formatting/content with RKB, EV
                     <svg class="chart"></svg>
                     
-                    <!-- End Try -->                
-                    <!-- ko foreach: model.literatureEvidenceDetails -->                    
-                        <h3 databind="attr: {title: evidence_group_name}, text: evidence_group_name + '  (' + evidence_count + ')'"></h3>
-                      <div class="search-result row">
+                    <!-- End Try -->            
+                    <!-- ko if: model.literatureEvidenceDetails().evidence != undefined -->
+                      <h3 data-bind="attr: {title: model.literatureEvidenceDetails().evidence_type}, text: model.literatureEvidenceDetails().evidence_type + '  (' + model.literatureEvidenceDetails().evidence_count + ')'"></h3>
+                        <!-- ko foreach: model.literatureEvidenceDetails().evidence -->                    
+                        <div class="search-result row">
                         <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
                             <a data-bind="attr: {title: text, href: sourceURL}, text: sourceURL" target="_blank"></a>
-                            <p class="authors" data-bind="text: wasGeneratedBy + ' - ' + label + ', ' + lastSavedOn"></p>
-                            <p data-bind="text: description"></p>
+                            <p data-bind="text: exact"></p>
                         </div>
                           <!--
                         <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
@@ -153,10 +155,20 @@
                         </div>
                         -->
                       </div>
-                      <!-- /ko -->
+                        <!-- /ko -->
+                    <!-- /ko -->
                 </div>
                 <div id="tabSR" data-bind="css: {hidden: model.drugLabelActiveTab() != 'spo'}">
-                    Spontaneous Reports Go Here
+                    <!-- ko if: model.openFDAConditionOccurrenceForLabel() != undefined -->
+                      <h3 data-bind="text: 'Conditions related to ' + model.currentDrugName() + ' as reported by OpenFDA'"></h3>
+                        <!-- ko foreach: model.openFDAConditionOccurrenceForLabel().results -->                    
+                      <div class="search-result row">
+                        <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                            <p data-bind="text: term + ' (' + count + ')'"></p>
+                        </div>
+                      </div>
+                        <!-- /ko -->
+                    <!-- /ko -->
                 </div>                
             </div>
         </div>

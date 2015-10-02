@@ -1,0 +1,50 @@
+/* Using colors from http://bl.ocks.org/mbostock/5577023 */
+.aers_prr {
+    fill: rgb(239, 59, 44);
+    background-color: rgb(239, 59, 44);
+}
+
+.aers_report_count {
+    fill: rgb(165, 15, 21);
+    background-color: rgb(165, 15, 21);
+}
+
+.MEDLINE_MeSH_ClinTrial {
+    fill: rgb(107, 174, 214);
+    background-color: rgb(107, 174, 214);
+}
+
+.MEDLINE_MeSH_CR {
+    fill: rgb(33, 113, 181);
+    background-color: rgb(33, 113, 181);
+}
+
+.MEDLINE_MeSH_Other {
+    fill: rgb(8, 48, 107)
+    background-color: rgb(8, 48, 107)
+}
+
+.MEDLINE_SemMedDB_ClinTrial {
+    fill: rgb(254, 196, 79);
+    background-color: rgb(254, 196, 79);
+}
+
+.MEDLINE_SemMedDB_CR {
+    fill: rgb(236, 112, 20);
+    background-color: rgb(236, 112, 20);
+}
+
+.MEDLINE_SemMedDB_Other {
+    fill: rgb(153, 52, 4);
+    background-color: rgb(153, 52, 4);
+}
+
+.SPL_EU_SPC {
+    fill: rgb(189, 189, 189);
+    background-color: rgb(189, 189, 189);
+}
+
+.SPL_SPLICER_ADR {
+    fill: rgb(37, 37, 37);
+    background-color: rgb(37, 37, 37);
+}

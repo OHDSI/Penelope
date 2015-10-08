@@ -4,7 +4,11 @@ requirejs.config({
 		{
 		    name: "databindings",
 		    location: "databindings"
-		}
+		},
+        {
+		    name: "extenders",
+		    location: "extenders"
+        }
     ],
     config: {
 		text: {
@@ -53,6 +57,7 @@ requirejs.config({
 		"d3_tip": "d3.tip",
 		"jnj_chart": "jnj.chart",
 		"lodash": "lodash.min",
+        "lscache": "lscache.min",
 		"packinghierarchy": "visualization.packinghierarchy",
 		"forcedirectedgraph": "visualization.forcedirectedgraph",
 		"kerneldensity": "visualization.kerneldensity",        
@@ -71,7 +76,7 @@ requirejs.config({
 	}
 });
 
-requirejs(['knockout', './app', 'director', 'drug-label', 'exposure-summary', 'faceted-datatable', 'home', 'search', 'search-results', 'condition-concept-by-index', 'drug-era-report'], function(ko, app) {
+requirejs(['knockout', './app', 'lscache', 'director', 'drug-label', 'exposure-summary', 'faceted-datatable', 'home', 'search', 'search-results', 'condition-concept-by-index', 'drug-era-report'], function(ko, app) {
     var pageModel = new app();
     var routerOptions = {
 		notfound: function () {
@@ -91,71 +96,71 @@ requirejs(['knockout', './app', 'director', 'drug-label', 'exposure-summary', 'f
     pageModel.router = new Router(routes).configure(routerOptions);
     window.pageModel = pageModel;
     
-	// initialize all service information asynchronously
-	$.each(pageModel.services(), function (serviceIndex, service) {
-		service.sources = [];
-		//var servicePromise = $.Deferred();
-		//pageModel.initPromises.push(servicePromise);
+    // Get the sources from localStorage - if not found, retrieve them from the WS
+    if (pageModel.sources().length == 0)
+    {
+        // initialize all service information asynchronously
+        $.each(pageModel.services(), function (serviceIndex, service) {
+            service.sources = [];
+            //var servicePromise = $.Deferred();
+            //pageModel.initPromises.push(servicePromise);
 
-		$.ajax({
-			url: service.url + 'source/sources',
-			method: 'GET',
-			contentType: 'application/json',
-			success: function (sources) {
-				service.available = true;
-				var completedSources = 0;
+            $.ajax({
+                url: service.url + 'source/sources',
+                method: 'GET',
+                contentType: 'application/json',
+                success: function (sources) {
+                    service.available = true;
+                    var completedSources = 0;
 
-				$.each(sources, function (sourceIndex, source) {
-					source.hasVocabulary = false;
-					source.hasEvidence = false;
-					source.hasResults = false;
-					source.vocabularyUrl = '';
-					source.evidenceUrl = '';
-					source.resultsUrl = '';
-					source.error = '';
+                    $.each(sources, function (sourceIndex, source) {
+                        source.hasVocabulary = false;
+                        source.hasEvidence = false;
+                        source.hasResults = false;
+                        source.vocabularyUrl = '';
+                        source.evidenceUrl = '';
+                        source.resultsUrl = '';
+                        source.error = '';
 
-					source.initialized = true;
-					for (var d = 0; d < source.daimons.length; d++) {
-						var daimon = source.daimons[d];
+                        source.initialized = true;
+                        for (var d = 0; d < source.daimons.length; d++) {
+                            var daimon = source.daimons[d];
 
-						// evaluate vocabulary daimons
-						if (daimon.daimonType == 'Vocabulary') {
-							source.hasVocabulary = true;
-							source.vocabularyUrl = service.url + source.sourceKey + '/vocabulary/';
-						}
+                            // evaluate vocabulary daimons
+                            if (daimon.daimonType == 'Vocabulary') {
+                                source.hasVocabulary = true;
+                                source.vocabularyUrl = service.url + source.sourceKey + '/vocabulary/';
+                            }
 
-						// evaluate evidence daimons
-						if (daimon.daimonType == 'Evidence') {
-							source.hasEvidence = true;
-							source.evidenceUrl = service.url + source.sourceKey + '/evidence/';
-						}
+                            // evaluate evidence daimons
+                            if (daimon.daimonType == 'Evidence') {
+                                source.hasEvidence = true;
+                                source.evidenceUrl = service.url + source.sourceKey + '/evidence/';
+                            }
 
-						// evaluate results daimons
-						if (daimon.daimonType == 'Results') {
-							source.hasResults = true;
-							source.resultsUrl = service.url + source.sourceKey + '/cdmresults/';
-						}
-					}
+                            // evaluate results daimons
+                            if (daimon.daimonType == 'Results') {
+                                source.hasResults = true;
+                                source.resultsUrl = service.url + source.sourceKey + '/cdmresults/';
+                            }
+                        }
 
-					//service.sources.push(source);
-                    pageModel.sources.push(source);
-                    if (sourceIndex == 0 && pageModel.currentSource() == null)
-                    {
-                        pageModel.currentSource = source;
-                    }
-				});
-			},
-			error: function (xhr, ajaxOptions, thrownError) {
-				service.available = false;
-				service.xhr = xhr;
-				service.thrownError = thrownError;
-                //servicePromise.resolve();
+                        //service.sources.push(source);
+                        pageModel.sources.push(source);
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    service.available = false;
+                    service.xhr = xhr;
+                    service.thrownError = thrownError;
+                    //servicePromise.resolve();
 
-				pageModel.appInitializationFailed(true);
-			}
-		});
-	});
-    
+                    pageModel.appInitializationFailed(true);
+                }
+            });
+        });
+    }
+        
     //$.when.apply($, pageModel.initPromises).done(pageModel.initComplete);
     $.when.apply($).done(pageModel.initComplete);
     ko.applyBindings(pageModel);

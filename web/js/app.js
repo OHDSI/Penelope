@@ -6,7 +6,8 @@ define([
 	'components/webapi-configuration',
 	'bootstrap',
     'facets',
-    'databindings'
+    'databindings',
+    'extenders'
 ], function ($, ko, jnj_chart, d3) {
 
 	var appModel = function () {
@@ -67,7 +68,7 @@ define([
 				version: ko.observable('loading')
 			}*/
 		]);
-        self.sources = ko.observableArray();
+        self.sources = ko.observableArray().extend({ localStoragePersist: ['sources', '30']});
         self.currentSource = ko.observable();
         self.reportSourceKey = ko.observable();
         self.hasResults = function (source) {

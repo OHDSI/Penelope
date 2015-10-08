@@ -110,7 +110,145 @@ section {
     color: #337ab7;
 }
 
+/* start: loading spinner */
+.spinner {
+  margin: 100px auto;
+  width: 70px;
+  height: 40px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.spinner > div {
+  background-color: #333;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+  
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.spinner .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+
+.spinner .rect3 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+.spinner .rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+
+.spinner .rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+
+.spinner .rect6 {
+  -webkit-animation-delay: -0.7s;
+  animation-delay: -0.7s;
+}
+
+.spinner .rect7 {
+  -webkit-animation-delay: -0.6s;
+  animation-delay: -0.6s;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+  20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes sk-stretchdelay {
+  0%, 40%, 100% { 
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }  20% { 
+    transform: scaleY(1.0);
+    -webkit-transform: scaleY(1.0);
+  }
+}
+/* end: loading spinner */
+
+/* start: atlas */
+
+.facetedDataTable {
+	width: 100%;
+}
+
+table.datatable {
+	font-size: 11px;
+	width: 100%;
+}
+
+table.datatable thead th {
+	padding: 4px 5px !important;
+}
+
+table.dataTable {
+	background-color: #eee;
+}
+
+.dataTables_wrapper {
+	margin: 5px 3px 5px 10px;
+}
+
+.dataTables_paginate {
+	margin-bottom: 10px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+	padding: 3px 5px 3px 5px !important;
+	background-image: none !important;
+}
+
+table.dataTable.no-footer {
+	border-bottom: solid 1px #ccc !important;
+}
+
+table.dataTable thead th,
+table.dataTable thead td {
+	border-bottom: solid 1px #ccc !important;
+	border-left: solid 1px #fff;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+	color: #000 !important;
+}
+
+table.dataTable.stripe tbody tr.odd,
+table.dataTable.display tbody tr.odd {
+	background-color: #fff;
+}
+
+table.dataTable.stripe tbody tr.even,
+table.dataTable.display tbody tr.even {
+	background-color: #f0f0f0;
+}
+
+table.dataTable.stripe tbody tr.odd:hover,
+table.dataTable.display tbody tr.odd:hover {
+	background-color: #fff;
+}
+
+table.dataTable.stripe tbody tr.even:hover,
+table.dataTable.display tbody tr.even:hover {
+	background-color: #f0f0f0;
+}
+/* end: atlas */
+
 .hidden {
     display: none;
     visibility: hidden;
 }
+
+#debug {
+    display: none; 
+    visibility: hidden;
+}
+

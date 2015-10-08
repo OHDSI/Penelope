@@ -4,172 +4,189 @@
             <span data-bind="text: model.currentDrugName"></span>
         </div>
         <div class="col-xs-6">
-            <ul class="nav nav-tabs" data-bind="eventListener: { event: 'click', selector: '.tab', callback: tabClick}">
-              <li role="presentation" data-bind="css: {active: model.drugLabelActiveTab() == 'toc'}" tabName="toc" class="tab"><a>Table Of Contents</a></li>
-              <li role="presentation" data-bind="css: {active: model.drugLabelActiveTab() == 'obs'}" tabName="obs" class="tab"><a>Observational Evidence</a></li>
-              <li role="presentation" data-bind="css: {active: model.drugLabelActiveTab() == 'sci'}" tabName="sci" class="tab"><a>Scientific Literature</a></li>
-              <li role="presentation" data-bind="css: {active: model.drugLabelActiveTab() == 'spo'}" tabName="spo" class="tab"><a>Spontaneous Reports</a></li>
-            </ul>
+            <div class="panel panel-default">
+                <!-- ko if: model.selectedConditionConceptId() == null -->
+                <div class="panel-heading" data-bind="text: 'Evidence for ' + model.currentDrugName()"></div>
+                <!-- /ko -->
+                <!-- ko if: model.selectedConditionConceptId() != null -->
+                <div class="panel-heading" data-bind="text: 'Evidence for ' + model.currentDrugName() + ' with ' + model.selectedConditionConceptName()"></div>
+                <!-- /ko -->
+                <ul class="nav nav-tabs" data-bind="eventListener: { event: 'click', selector: '.tab', callback: tabClick}">
+                  <li role="presentation" data-bind="css: {active: model.drugLabelActiveTab() == 'toc'}" tabName="toc" class="tab"><a>Table Of Contents</a></li>
+                  <li role="presentation" data-bind="css: {active: model.drugLabelActiveTab() == 'obs'}" tabName="obs" class="tab"><a>Observational Evidence</a></li>
+                  <li role="presentation" data-bind="css: {active: model.drugLabelActiveTab() == 'sci'}" tabName="sci" class="tab"><a>Scientific Literature</a></li>
+                  <li role="presentation" data-bind="css: {active: model.drugLabelActiveTab() == 'spo'}" tabName="spo" class="tab"><a>Spontaneous Reports</a></li>
+                  <li role="presentation" data-bind="css: {active: model.drugLabelActiveTab() == 'lab'}" tabName="lab" class="tab"><a>Label</a></li>
+                </ul>
+            </div>
         </div>
     </div>
     <div class="row">
         <div class="col-xs-6" style="margin-top: 5px;padding-left: 3px;padding-right: 0px;">
             <div id="spl-display" class="drug-label" data-bind="html: model.currentDrugLabel, eventListener: { event: 'click', selector: '.product-label-link', callback: productLabelLinkClick}"></div>        
-            </div>
+        </div>
         <div class="col-xs-6">
             <div id="evidence-explorer">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Debug Panel</div>
                     <div class="panel-body">
-                        Drug Concept ID: <span id="drugConceptId" data-bind="text: model.currentDrugConceptId"></span><br/>
-                        Set ID: <span id="setId" data-bind="text: model.currentDrugSetId"></span><br/>
-                        Drug Name: <span data-bind="text: model.currentDrugName"></span><br/>
-                        Selected HOI Concept_ID: <span data-bind="text: model.selectedConditionConceptId"></span><br/>
-                        Selected HOI: <span id="selectedHOI" data-bind="text: model.selectedConditionConceptName"></span><br/>
-                        <br/>
-                    </div>
-                </div>
-                <div id="tabTOC" data-bind="css: {hidden: model.drugLabelActiveTab() != 'toc'}">
-                    <!-- Consider Segmented Buttons -->
-                    <div class="input-group sizing-addon2">
-                      <span class="input-group-addon glyphicon glyphicon-filter" id="sizing-addon1"></span>
-                      <input class="form-control" aria-describedby="sizing-addon2" placeholder="find a condition..." id="searchtoc" type="text" data-bind="event: { keyup: searchTOC }" />
-                    </div>
-                    <ul id="toc" class="list-group" data-bind="eventListener: { event: 'click', selector: '.toc-item', callback: TOCLinkClick}">
-                    <!-- ko foreach: model.currentDrugLabelTOC -->
-                        <li class="toc-item list-group-item" data-bind="attr: {id: mainHeading.id }"><span class="badge" data-bind="text: HOITerms.length"></span><!--ko text: mainHeading.text --><!--/ko--></li>
-                        <ul data-bind="if: HOITerms.length > 0">
-                            <!-- ko foreach: HOITerms -->
-                            <li class="toc-item toc-search-term" data-bind="attr: {id: id}, text: name"></li>
-                            <!-- /ko -->
-                        </ul>
-                        <ul data-bind="if: subHeadings.length > 0">
-                        <!-- ko foreach: subHeadings -->
-                            <li class="toc-item" data-bind="attr: {id: id }, text: subHeading"></li>
-                            <ul data-bind="if: HOITerms.length > 0">
-                                <!-- ko foreach: HOITerms -->
-                                <li class="toc-item toc-search-term" data-bind="attr: {id: id}, text: name"></li>
+                        <div id="debug">
+                            Drug Concept ID: <span id="drugConceptId" data-bind="text: model.currentDrugConceptId"></span><br/>
+                            Set ID: <span id="setId" data-bind="text: model.currentDrugSetId"></span><br/>
+                            Drug Name: <span data-bind="text: model.currentDrugName"></span><br/>
+                            Selected HOI Concept_ID: <span data-bind="text: model.selectedConditionConceptId"></span><br/>
+                            Selected HOI: <span id="selectedHOI" data-bind="text: model.selectedConditionConceptName"></span><br/>
+                            <br/>
+                        </div>
+                        <div id="tabTOC" data-bind="css: {hidden: model.drugLabelActiveTab() != 'toc'}">
+                            <!-- Consider Segmented Buttons -->
+                            <div class="input-group sizing-addon2">
+                              <span class="input-group-addon glyphicon glyphicon-filter" id="sizing-addon1"></span>
+                              <input class="form-control" aria-describedby="sizing-addon2" placeholder="find a condition..." id="searchtoc" type="text" data-bind="event: { keyup: searchTOC }" />
+                            </div>
+                            <ul id="toc" class="list-group" data-bind="eventListener: { event: 'click', selector: '.toc-item', callback: TOCLinkClick}">
+                            <!-- ko foreach: model.currentDrugLabelTOC -->
+                                <li class="toc-item list-group-item" data-bind="attr: {id: mainHeading.id }"><span class="badge" data-bind="text: HOITerms.length"></span><!--ko text: mainHeading.text --><!--/ko--></li>
+                                <ul data-bind="if: HOITerms.length > 0">
+                                    <!-- ko foreach: HOITerms -->
+                                    <li class="toc-item toc-search-term" data-bind="attr: {id: id}, text: name"></li>
+                                    <!-- /ko -->
+                                </ul>
+                                <ul data-bind="if: subHeadings.length > 0">
+                                <!-- ko foreach: subHeadings -->
+                                    <li class="toc-item" data-bind="attr: {id: id }, text: subHeading"></li>
+                                    <ul data-bind="if: HOITerms.length > 0">
+                                        <!-- ko foreach: HOITerms -->
+                                        <li class="toc-item toc-search-term" data-bind="attr: {id: id}, text: name"></li>
+                                        <!-- /ko -->
+                                    </ul>
                                 <!-- /ko -->
+                                </ul>
+                            <!-- /ko -->
                             </ul>
                         <!-- /ko -->
                         </ul>
                     <!-- /ko -->
                     </ul>
                 </div>
-                <div id="tabObsEvidence" data-bind="css: {hidden: model.drugLabelActiveTab() != 'obs'}">
-                    <concept-by-index params="{resultsUrl: 'http://localhost:8080/WebAPI/TRUVENMDCR/cohortresults/', cohortDefinitionId: 5, conceptId: 321319, conceptDomain: 'condition', caption: 'My cool chart.'}"></concept-by-index>
-                    <button class="btn btn-default" data-bind="click: testReportClick">Test</button>
-                    <div id="reportPerson">
-                    <div class="pad-10 report">
-                        <div class="reportHeading"><i class="fa fa-area-chart"></i> Person Report</div>
-                        <div class="reportSectionHeading">Year of Birth</div>
-                        <div class="evidenceDescription">The number of people in this cohort shown with respect to their year of birth.</div>
-                        <div class="evidenceVisualization" id="hist"></div>
+                        <div id="tabObsEvidence" data-bind="css: {hidden: model.drugLabelActiveTab() != 'obs'}">
+                            <div class="input-group"> 
+                                <span class="input-group-addon" data-bind="text: model.services()[0].url"></span>
+                                			<select class="selectpicker form-control" data-bind="css : { invalid: model.reportSourceKey()==undefined }, options: model.sources().filter(model.hasResults), optionsValue:'sourceKey', optionsText:'sourceName', value: model.reportSourceKey, optionsCaption:'Select a Source'"></select>
+                            </div>
+                            <!-- ko if: pageModel.reportSourceKey() == undefined-->
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    <h4>Please select a data source above</h4>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                            <!-- ko if: pageModel.reportSourceKey() != undefined-->
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    <h4>Exposure Summary</h4>
+                                    <exposure-summary params="{model: pageModel}" data-bind="visible: pageModel.currentDrugConceptId() > 0"></exposure-summary> 
+                                </div>
+                                <!-- ko if: pageModel.selectedConditionConceptId() > 0 -->
+                                <div class="list-group-item"><h4>Clinical Characterization</h4></div>
+                                <div class="list-group-item">Related Concepts
+                                    Heracles reports for exposure cohort for drug – get selected concept and all descendants
+http://hixbeta.jnj.com/heracles/viewer.html?cohortId=293. 
+                                    <drug-era-report params="{model: model}"></drug-era-report>
+                                    Create the scatter plot interactive with the table above a-la Heracles. 
+                                    <condition-concept-by-index params="{serviceEndpoint: model.services, resultsUrl: 'http://hixbeta.jnj.com:8081/WebAPI/TRUVENMDCR/cohortresults/', cohortDefinitionId: model.currentCohortId, conceptId: model.selectedConditionConceptId, conceptDomain: 'condition', conceptName: model.selectedConditionConceptName}"></condition-concept-by-index>
 
-                        <div class="reportSectionHeading">Gender</div>
-                        <div class="evidenceDescription">The number of people in this cohort stratified by gender.</div>
-                        <div class="evidenceVisualization" id="gender"></div>
-
-                        <div class="reportSectionHeading">Race</div>
-                        <div class="evidenceDescription">The number of people in this cohort stratified by race.</div>
-                        <div class="evidenceVisualization" id="race"></div>
-
-                        <div class="reportSectionHeading">Ethnicity</div>
-                        <div class="evidenceDescription">The number of people in this cohort stratified by ethnicity.</div>
-                        <div class="evidenceVisualization" id="ethnicity"></div>
-                    </div>
-                </div>
-                </div>
-                <div id="tabSciLit" data-bind="css: {hidden: model.drugLabelActiveTab() != 'sci'}">
-                  <!-- Trying a d3 thing here -->
-                    <style>
-                    /*
-                    .chart rect {
-                      fill: steelblue;
-                    }
-                    */
-                    .chart .legend {
-                      fill: black;
-                      font: 14px sans-serif;
-                      text-anchor: start;
-                      font-size: 12px;
-                    }
-
-                    .chart text {
-                      fill: white;
-                      font: 10px sans-serif;
-                      text-anchor: end;
-                    }
-
-                    .chart .label {
-                      fill: black;
-                      font: 14px sans-serif;
-                      text-anchor: end;
-                    }
-
-                    .bar:hover {
-                      fill: brown;
-                    }
-
-                    .axis path,
-                    .axis line {
-                      fill: none;
-                      stroke: #000;
-                      shape-rendering: crispEdges;
-                    }
-                    </style>
-                    TODO: Loading icon, call to action to click on the chart (or provide all results?), work through formatting/content with RKB, EV
-                    <svg class="chart"></svg>
-                    
-                    <!-- End Try -->            
-                    <!-- ko if: model.literatureEvidenceDetails().evidence != undefined -->
-                      <h3 data-bind="attr: {title: model.literatureEvidenceDetails().evidence_type}, text: model.literatureEvidenceDetails().evidence_type + '  (' + model.literatureEvidenceDetails().evidence_count + ')'"></h3>
-                        <!-- ko foreach: model.literatureEvidenceDetails().evidence -->                    
-                        <div class="search-result row">
-                        <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                            <a data-bind="attr: {title: text, href: sourceURL}, text: sourceURL" target="_blank"></a>
-                            <p data-bind="text: exact"></p>
+                                </div>
+                                <div class="list-group-item">
+                                    Other Concepts Of Interest<br/>
+                                    Pull in other concepts from hand-curated table (Penelope_related_concepts). Generate Heracles reports for exposure cohort for drug – get all descendants of the related concepts http://hixbeta.jnj.com/heracles/viewer.html?cohortId=293
+                                </div>
+                                <div class="list-group-item">
+                                    Cohorts Of Interest<br/>
+                                    Pull in report from Penelope_stats table and display similar to the one from Heracles with a link out to the Cohort definition. http://hixbeta.jnj.com/heracles/viewer.html?cohortId=293
+                                </div>                                
+                                <div class="list-group-item">
+                                    <h4>Population Level Estimation</h4>
+                                    Check table for combination of drug + HOI – if found, link to the relevant study. If not, display a message such as “If you are interested in starting a study on <drug + HOI> click here to join the journey”
+                                </div>
+                                <div class="list-group-item">
+                                    <h4>Patient Level Prediction</h4>
+                                    Check table for combination of drug + HOI – if found, link to the relevant study. If not, display a message such as “If you are interested in starting a study on <drug + HOI> click here to join the journey”
+                                </div>
+                                <!-- /ko -->
+                            </div>
+                            <!-- /ko --> <!-- report source defined -->
                         </div>
-                          <!--
-                        <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                            <a href="#" target="_blank">Article Name 1</a>
-                            <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
-                            <p>Snippet of the article would go here....</p>
-                          </div>
-                        <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                            <a href="#" target="_blank">Article Name 1</a>
-                            <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
-                            <p>Snippet of the article would go here....</p>
-                          </div>
-                        <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                            <a href="#" target="_blank">Article Name 1</a>
-                            <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
-                            <p>Snippet of the article would go here....</p>
-                          </div>
-                        -->
-                        <!--
-                        <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                            <a data-bind="attr: {title: article_name}, text: article_name" target="_blank"></a>
-                            <p class="authors" data-bind="text: authors + ' - ' + publication + ', ' + date_of_publication"></p>
-                            <p data-bind="text: snippet"></p>
+                        <div id="tabSciLit" data-bind="css: {hidden: model.drugLabelActiveTab() != 'sci'}">
+                            TODO: Group by evidence type (PubMed, SemMedDB, etc). Provide drill down area and heading. Also need a mouse over tool tip to describe the Avalec Method (JD to provide)
+                            <svg class="chart"></svg>
+                            <!-- ko if: model.literatureEvidenceDetails().evidence != undefined -->
+                              <h3 data-bind="attr: {title: model.literatureEvidenceDetails().evidence_type}, text: model.literatureEvidenceDetails().evidence_type + '  (' + model.literatureEvidenceDetails().evidence_count + ')'"></h3>
+                                <!-- ko foreach: model.literatureEvidenceDetails().evidence -->                    
+                                <div class="search-result row">
+                                <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                                    <a data-bind="attr: {title: text, href: sourceURL}, text: sourceURL" target="_blank"></a>
+                                    <p data-bind="text: exact"></p>
+                                </div>
+                                  <!--
+                                <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                                    <a href="#" target="_blank">Article Name 1</a>
+                                    <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
+                                    <p>Snippet of the article would go here....</p>
+                                  </div>
+                                <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                                    <a href="#" target="_blank">Article Name 1</a>
+                                    <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
+                                    <p>Snippet of the article would go here....</p>
+                                  </div>
+                                <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                                    <a href="#" target="_blank">Article Name 1</a>
+                                    <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
+                                    <p>Snippet of the article would go here....</p>
+                                  </div>
+                                -->
+                                <!--
+                                <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                                    <a data-bind="attr: {title: article_name}, text: article_name" target="_blank"></a>
+                                    <p class="authors" data-bind="text: authors + ' - ' + publication + ', ' + date_of_publication"></p>
+                                    <p data-bind="text: snippet"></p>
+                                </div>
+                                -->
+                              </div>
+                                <!-- /ko -->
+                            <!-- /ko -->
                         </div>
-                        -->
+                        <div id="tabSR" data-bind="css: {hidden: model.drugLabelActiveTab() != 'spo'}">
+                            <h4>FAERS SUMMARY</h4>
+                            <span id="selectedHOI" data-bind="text: 'TODO: Get ' + model.selectedConditionConceptName() + ' plus all descendants'"></span>
+                            Put a table from LAERTES that shows concept name, count, Prevalance Rate Ration (PRR)
+                            <br/>
+                            Translate the SNOMED concepts to MedDRA PT terms. Call OpenFDA and put in 2 charts:
+                            <ul>
+                                <li>Outcome</li>
+                                <li>Seriousness</li>
+                            </ul>
+                            Hamed to provide charts
+                            <h4>FAERS DRILLDOWN</h4>
+                            Case sample - show first 100 or so with drop down to show the date, ae, gender, drug, events       
+                            <!-- ko if: model.openFDAConditionOccurrenceForLabel() != undefined -->
+                              <h3 data-bind="text: 'Conditions related to ' + model.currentDrugName() + ' as reported by OpenFDA'"></h3>
+                                <!-- ko foreach: model.openFDAConditionOccurrenceForLabel().results --> 
+                                <div class="search-result row">
+                                    <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                                        <p data-bind="text: term + ' (' + count + ')'"></p>
+                                    </div>
+                                </div>
+                                <!-- /ko -->
+                            <!-- /ko -->                            
+                        </div>
+                        <div id="tabLab" data-bind="css: {hidden: model.drugLabelActiveTab() != 'lab'}">
+                            <h4>US Labels</h4>
+                            Pass in the concept plus descendants and get back ATC3, ATC5, and if those concepts do/do not appear on other labels as determined by LAERTES. Show a Y/N column for each label + concept.
+                            <h4>EU Labels</h4>
+                            Same as above but for EU labels
+                        </div>              
                       </div>
-                        <!-- /ko -->
-                    <!-- /ko -->
                 </div>
-                <div id="tabSR" data-bind="css: {hidden: model.drugLabelActiveTab() != 'spo'}">
-                    <!-- ko if: model.openFDAConditionOccurrenceForLabel() != undefined -->
-                      <h3 data-bind="text: 'Conditions related to ' + model.currentDrugName() + ' as reported by OpenFDA'"></h3>
-                        <!-- ko foreach: model.openFDAConditionOccurrenceForLabel().results -->                    
-                      <div class="search-result row">
-                        <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                            <p data-bind="text: term + ' (' + count + ')'"></p>
-                        </div>
-                      </div>
-                        <!-- /ko -->
-                    <!-- /ko -->
-                </div>                
             </div>
         </div>
     </div>

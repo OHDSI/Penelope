@@ -1,26 +1,34 @@
 [
     {
+        "cohort_id": 293,
         "drug_concept_id":1118084,
+        "drug_concept_name": "celecoxib",
         "drug_name":"celebrex",
         "set_id":"8d52185d-421f-4e34-8db7-f7676db2a226",
         "image_preview": "http://localhost"
     },
     {
-        "drug_concept_id":1525215,
-        "drug_name":"actos",
-        "set_id":"d2ddc491-88a9-4063-9150-443b4fa4330c",
+        "cohort_id": 294,
+        "drug_concept_id":715997,
+        "drug_concept_name": "donepezil",
+        "drug_name":"aricept",
+        "set_id":"98e451e1-e4d7-4439-a675-c5457ba20975",
         "image_preview": "http://localhost"
     },
     {
+        "cohort_id": 295,
         "drug_concept_id":740275,
+        "drug_concept_name": "carbamazepine",
         "drug_name":"tegretol",
         "set_id":"8d409411-aa9f-4f3a-a52c-fbcb0c3ec053",
         "image_preview": "http://localhost"
     },
     {
-        "drug_concept_id":715997,
-        "drug_name":"aricept",
-        "set_id":"98e451e1-e4d7-4439-a675-c5457ba20975",
+        "cohort_id": 296,
+        "drug_concept_id":1525215,
+        "drug_concept_name": "pioglitazone",
+        "drug_name":"actos",
+        "set_id":"d2ddc491-88a9-4063-9150-443b4fa4330c",
         "image_preview": "http://localhost"
     }
 ]

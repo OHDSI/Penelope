@@ -58,18 +58,20 @@ requirejs.config({
 		"kerneldensity": "visualization.kerneldensity",        
         "knockout.dataTables.binding": "knockout.dataTables.binding", // OHDSI CDN Candidate
         "datatable-test": "components/datatable-test",
+        "drug-era-report": "components/drug-era-report",
         "drug-label": "components/drug-label",
+        "exposure-summary": "components/exposure-summary",
         "faceted-datatable": "components/faceted-datatable",
         "home": "components/home",
         "search": "components/search",
         "search-results": "components/search-results",
-        "concept-by-index" : "http://hixbeta.jnj.com/atlas/js/components/visualizations/concept-by-index" // "https://rawgit.com/OHDSI/Atlas/master/js/components/visualizations/concept-by-index" 
+        "condition-concept-by-index" : "components/condition-concept-by-index" 
         //"datatablesbuttons": "https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min", // Try again when DataTables is upgraded to 1.10.10
         //"jsbuttons": "https://cdn.datatables.net/buttons/1.0.3/js/buttons.html5.min", // Try again when DataTables is upgraded to 1.10.10
 	}
 });
 
-requirejs(['knockout', './app', 'director', 'drug-label', 'faceted-datatable', 'home', 'search', 'search-results', 'concept-by-index'], function(ko, app) {
+requirejs(['knockout', './app', 'director', 'drug-label', 'exposure-summary', 'faceted-datatable', 'home', 'search', 'search-results', 'condition-concept-by-index', 'drug-era-report'], function(ko, app) {
     var pageModel = new app();
     var routerOptions = {
 		notfound: function () {
@@ -88,6 +90,73 @@ requirejs(['knockout', './app', 'director', 'drug-label', 'faceted-datatable', '
 	}
     pageModel.router = new Router(routes).configure(routerOptions);
     window.pageModel = pageModel;
+    
+	// initialize all service information asynchronously
+	$.each(pageModel.services(), function (serviceIndex, service) {
+		service.sources = [];
+		//var servicePromise = $.Deferred();
+		//pageModel.initPromises.push(servicePromise);
+
+		$.ajax({
+			url: service.url + 'source/sources',
+			method: 'GET',
+			contentType: 'application/json',
+			success: function (sources) {
+				service.available = true;
+				var completedSources = 0;
+
+				$.each(sources, function (sourceIndex, source) {
+					source.hasVocabulary = false;
+					source.hasEvidence = false;
+					source.hasResults = false;
+					source.vocabularyUrl = '';
+					source.evidenceUrl = '';
+					source.resultsUrl = '';
+					source.error = '';
+
+					source.initialized = true;
+					for (var d = 0; d < source.daimons.length; d++) {
+						var daimon = source.daimons[d];
+
+						// evaluate vocabulary daimons
+						if (daimon.daimonType == 'Vocabulary') {
+							source.hasVocabulary = true;
+							source.vocabularyUrl = service.url + source.sourceKey + '/vocabulary/';
+						}
+
+						// evaluate evidence daimons
+						if (daimon.daimonType == 'Evidence') {
+							source.hasEvidence = true;
+							source.evidenceUrl = service.url + source.sourceKey + '/evidence/';
+						}
+
+						// evaluate results daimons
+						if (daimon.daimonType == 'Results') {
+							source.hasResults = true;
+							source.resultsUrl = service.url + source.sourceKey + '/cdmresults/';
+						}
+					}
+
+					//service.sources.push(source);
+                    pageModel.sources.push(source);
+                    if (sourceIndex == 0 && pageModel.currentSource() == null)
+                    {
+                        pageModel.currentSource = source;
+                    }
+				});
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+				service.available = false;
+				service.xhr = xhr;
+				service.thrownError = thrownError;
+                //servicePromise.resolve();
+
+				pageModel.appInitializationFailed(true);
+			}
+		});
+	});
+    
+    //$.when.apply($, pageModel.initPromises).done(pageModel.initComplete);
     $.when.apply($).done(pageModel.initComplete);
     ko.applyBindings(pageModel);
 });

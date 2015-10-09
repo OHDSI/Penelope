@@ -47,6 +47,9 @@
     <home params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'home'"></home>
     <penelope-search-results params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'searchResults'"></penelope-search-results>
     <drug-label params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'druglabel'"></drug-label>
+    <div id="cache-flush" data-bind="if: pageModel.currentView() == 'cache'">
+        <cache-flush params="{model: pageModel}"></cache-flush>
+    </div>
     <!-- REQUIRES UPGRADE OF DATA TABLES TO 1.10.10 -->
     <!-- <datatable-test params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'datatabletest'"></datatable-test> -->
     <!-- DEBUG currentView = <span id="debug" data-bind="text: pageModel.currentView()"></span> -->

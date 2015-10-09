@@ -69,8 +69,11 @@ define([
 			}*/
 		]);
         self.sources = ko.observableArray().extend({ localStoragePersist: ['sources', '30']});
-        self.currentSource = ko.observable();
-        self.reportSourceKey = ko.observable();
+        self.reportSourceKey = ko.observable().extend({ localStoragePersist: ['reportSourceKey', '30']});
+		self.vocabularyUrl = ko.observable();
+		self.evidenceUrl = ko.observable();
+		self.resultsUrl = ko.observable();
+
         self.hasResults = function (source) {
 			for (var d = 0; d < source.daimons.length; d++) {
 				if (source.daimons[d].daimonType == 'Results') {
@@ -687,7 +690,7 @@ define([
         self.formatPercent = d3.format('.2%');
         self.formatFixed = d3.format('.2f');
         self.formatComma = d3.format(',');
-
+        
 		// ATLAS - ReportManager.js common functions - END
 	}
 

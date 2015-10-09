@@ -62,6 +62,7 @@ requirejs.config({
 		"forcedirectedgraph": "visualization.forcedirectedgraph",
 		"kerneldensity": "visualization.kerneldensity",        
         "knockout.dataTables.binding": "knockout.dataTables.binding", // OHDSI CDN Candidate
+        "cache-flush": "components/cache-flush",
         "datatable-test": "components/datatable-test",
         "drug-era-report": "components/drug-era-report",
         "drug-label": "components/drug-label",
@@ -76,7 +77,7 @@ requirejs.config({
 	}
 });
 
-requirejs(['knockout', './app', 'lscache', 'director', 'drug-label', 'exposure-summary', 'faceted-datatable', 'home', 'search', 'search-results', 'condition-concept-by-index', 'drug-era-report'], function(ko, app) {
+requirejs(['knockout', './app', 'lscache', 'director', 'cache-flush', 'drug-label', 'exposure-summary', 'faceted-datatable', 'home', 'search', 'search-results', 'condition-concept-by-index', 'drug-era-report'], function(ko, app) {
     var pageModel = new app();
     var routerOptions = {
 		notfound: function () {
@@ -91,6 +92,9 @@ requirejs(['knockout', './app', 'lscache', 'director', 'drug-label', 'exposure-s
         '/druglabel/:setid:': pageModel.displayLabel,
         '/datatabletest/': function() {
             pageModel.currentView('datatabletest');
+        },
+        '/cache': function () {
+            pageModel.currentView('cache');
         }
 	}
     pageModel.router = new Router(routes).configure(routerOptions);
@@ -130,18 +134,36 @@ requirejs(['knockout', './app', 'lscache', 'director', 'drug-label', 'exposure-s
                             if (daimon.daimonType == 'Vocabulary') {
                                 source.hasVocabulary = true;
                                 source.vocabularyUrl = service.url + source.sourceKey + '/vocabulary/';
+                                /*
+                                if (daimon.priority >= vocabularyPriority) {
+                                    vocabularyPriority = daimon.priority;
+                                    pageModel.vocabularyUrl(source.vocabularyUrl);
+                                }
+                                */
                             }
 
                             // evaluate evidence daimons
                             if (daimon.daimonType == 'Evidence') {
                                 source.hasEvidence = true;
                                 source.evidenceUrl = service.url + source.sourceKey + '/evidence/';
+                                /*
+                                if (daimon.priority >= evidencePriority) {
+                                    evidencePriority = daimon.priority;
+                                    pageModel.evidenceUrl(source.evidenceUrl);
+                                }
+                                */
                             }
 
                             // evaluate results daimons
                             if (daimon.daimonType == 'Results') {
                                 source.hasResults = true;
                                 source.resultsUrl = service.url + source.sourceKey + '/cdmresults/';
+                                /*
+                                if (daimon.priority >= densityPriority) {
+                                    densityPriority = daimon.priority;
+                                    pageModel.resultsUrl(source.resultsUrl);
+                                }
+                                */
                             }
                         }
 
@@ -158,6 +180,45 @@ requirejs(['knockout', './app', 'lscache', 'director', 'drug-label', 'exposure-s
                     pageModel.appInitializationFailed(true);
                 }
             });
+        });
+    }
+    
+    // Get the sources and set the pageModel variables appropriately
+    if (pageModel.sources().length > 0)
+    {
+        $.each(pageModel.sources(), function(sourceIndex, source) {
+            // establish base priorities for daimons
+            var evidencePriority = 0;
+            var vocabularyPriority = 0;
+            var densityPriority = 0;
+
+            for (var d = 0; d < source.daimons.length; d++) {
+                var daimon = source.daimons[d];
+
+                // evaluate vocabulary daimons
+                if (daimon.daimonType == 'Vocabulary') {
+                    if (daimon.priority >= vocabularyPriority) {
+                        vocabularyPriority = daimon.priority;
+                        pageModel.vocabularyUrl(source.vocabularyUrl);
+                    }
+                }
+
+                // evaluate evidence daimons
+                if (daimon.daimonType == 'Evidence') {
+                    if (daimon.priority >= evidencePriority) {
+                        evidencePriority = daimon.priority;
+                        pageModel.evidenceUrl(source.evidenceUrl);
+                    }
+                }
+
+                // evaluate results daimons
+                if (daimon.daimonType == 'Results') {
+                    if (daimon.priority >= densityPriority) {
+                        densityPriority = daimon.priority;
+                        pageModel.resultsUrl(source.resultsUrl);
+                    }
+                }
+            }        
         });
     }
         

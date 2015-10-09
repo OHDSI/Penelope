@@ -11,11 +11,7 @@
 </div>
 <!-- /ko --> <!-- loading -->
 <!-- ko if: $component.loading() == false --> <!-- start: loading -->
-<ul>
-    <li>- Pull full data for exposure cohort on heracles: http://hixbeta.jnj.com/heracles/viewer.html?cohortId=293</li>
-    <li>- Retrieve list of other related drugs using getDescendentOfAncestorConcepts.sql + getDrugEraTreemap.sql.</li>
-    <li>- Create trellis plot for selected drug a la Achilles http://hixbeta.jnj.com/achilles/#/optum/drugeras</li>
-</ul>
+<h5>Pull full data for exposure cohort on heracles: http://hixbeta.jnj.com/heracles/viewer.html?cohortId=293</h5>
 <div class="pad-10 report">
     <div class="reportHeading"><i class="fa fa-area-chart"></i> Conditions by Index Report</div>
     <div class="reportSectionHeading">Condition Prevalence</div>
@@ -60,5 +56,31 @@
         </div>
         <div class="evidenceVisualization" id="conditionDrilldownScatterplot"></div>
     </div>
+</div>
+<h5>Retrieve list of other related drugs using getDescendentOfAncestorConcepts.sql + getDrugEraTreemap.sql.</h5>
+<div class="panel-body">
+    <div class="col-sm-12">
+        <ul class="nav nav-tabs" id="myTab">
+            <li>Drug Prevalence</li>
+        </ul>
+        <table id="drugera_table" class="display">
+            <thead>
+                <tr>
+                    <th>Concept Id</th>
+                    <th>ATC 1</th>
+                    <th>ATC 3</th>
+                    <th>ATC 5</th>
+                    <th>Ingredient</th>
+                    <th>Person Count</th>
+                    <th>Prevalence</th>
+                    <th>Length of Era</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<h5>Create trellis plot for selected drug a la Achilles http://hixbeta.jnj.com/achilles/#/optum/drugeras</h5>
+<div id="reportDrugEras" class="report">
+    <div class="drilldown" id="trellisLinePlot"></div>
 </div>
 <!-- /ko --> <!-- end: loading -->

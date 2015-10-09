@@ -73,9 +73,9 @@ define(['knockout', 'text!./drug-era-report.html','d3', 'jnj_chart', 'datatables
 
             // TODO: HACK - take out later
             var sourceKey = 'TRUVENCCAE';
-            if (self.model.currentSource() != null)
+            if (self.model.reportSourceKey() != null)
             {
-            	sourceKey = self.model.currentSource().sourceKey;
+            	sourceKey = self.model.reportSourceKey().sourceKey;
             }
             
             $.ajax({

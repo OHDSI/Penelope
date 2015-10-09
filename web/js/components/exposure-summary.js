@@ -9,6 +9,8 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
         
         self.render = function() {
         	self.loading(true);
+            
+            // Get treemap
 			$.ajax({
 				type: "GET",
                 url: self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/' + self.model.currentCohortId() + '/cohortspecifictreemap',
@@ -148,6 +150,169 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
                     }                    
 				}
 			});
+            
+            // Get related drugs
+            $.ajax({
+				type: "POST",
+                data: ko.toJSON({
+                    "CONCEPT_ID" : self.model.currentDrugConceptId(),
+                    "ANCESTOR_VOCABULARY_ID" : "ATC",
+                    "ANCESTOR_CLASS_ID" : "ATC 3rd",
+                    "SIBLING_VOCABULARY_ID": "RxNorm",
+                    "SIBLING_CLASS_ID": "Ingredient"
+                }),
+                url: self.model.vocabularyUrl() + "descendantofancestor",
+				contentType: "application/json; charset=utf-8",
+				success: function (data) {
+                    // Pass the resulting concept IDs into the drug era treemap call
+                    var result = data.map(function (d, i) { return d.CONCEPT_ID });
+                    $.ajax({
+                        type: "POST",
+                        data: ko.toJSON(result),
+                        url: self.model.services()[0].url + self.model.reportSourceKey() +  '/cdmresults/drugeratreemap',
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            if (data && data.length > 0) {
+                                //var normalizedData = self.normalizeDataFrame(data);
+                                var table_data = data.map(function (d, i) {
+                                    conceptDetails = d.conceptPath.split('||');
+                                    return {
+                                        concept_id: d.conceptId,
+                                        atc1: conceptDetails[0],
+                                        atc3: conceptDetails[1],
+                                        atc5: conceptDetails[2],
+                                        ingredient: conceptDetails[3],
+                                        num_persons: self.model.formatComma(d.numPersons),
+                                        percent_persons: self.model.formatPercent(d.percentPersons),
+                                        length_of_era: self.model.formatFixed(d.lengthOfEra)
+                                    }
+                                }, data);
+
+                                datatable = $('#drugera_table').DataTable({
+                                    order: [ 5, 'desc' ],
+                                    dom: 'Clfrtip',
+                                    data: table_data,
+                                    columns: [
+                                        {
+                                            data: 'concept_id',
+                                            visible: false
+                                        },
+                                        {
+                                            data: 'atc1'
+                                        },
+                                        {
+                                            data: 'atc3',
+                                            visible: false
+                                        },
+                                        {
+                                            data: 'atc5'
+                                        },
+                                        {
+                                            data: 'ingredient'
+                                        },
+                                        {
+                                            data: 'num_persons',
+                                            className: 'numeric'
+                                        },
+                                        {
+                                            data: 'percent_persons',
+                                            className: 'numeric'
+                                        },
+                                        {
+                                            data: 'length_of_era',
+                                            className: 'numeric'
+                                        }
+                                    ],
+                                    pageLength: 5,
+                                    lengthChange: false,
+                                    deferRender: true,
+                                    destroy: true
+                                });
+                            }
+                        }
+                    });
+                }
+            });            
+
+            // Get trellis plot
+            $.ajax({
+				type: "GET",
+                url: self.model.services()[0].url + self.model.reportSourceKey() + '/cdmresults/' + self.model.currentDrugConceptId() + '/drugeraprevalence',
+				contentType: "application/json; charset=utf-8",
+				success: function (data) {
+                    // render trellis
+                    var trellisData = self.model.normalizeArray(data, true);
+
+                    if (!trellisData.empty) {
+                        var allDeciles = ["0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80-89", "90-99"];
+                        var minYear = d3.min(trellisData.xCalendarYear),
+                            maxYear = d3.max(trellisData.xCalendarYear);
+
+                        var seriesInitializer = function (tName, sName, x, y) {
+                            return {
+                                trellisName: tName,
+                                seriesName: sName,
+                                xCalendarYear: x,
+                                yPrevalence1000Pp: y
+                            };
+                        };
+
+                        var nestByDecile = d3.nest()
+                            .key(function (d) {
+                                return d.trellisName;
+                            })
+                            .key(function (d) {
+                                return d.seriesName;
+                            })
+                            .sortValues(function (a, b) {
+                                return a.xCalendarYear - b.xCalendarYear;
+                            });
+
+                        // map data into chartable form
+                        var normalizedSeries = trellisData.trellisName.map(function (d, i) {
+                            var item = {};
+                            var container = this;
+                            d3.keys(container).forEach(function (p) {
+                                item[p] = container[p][i];
+                            });
+                            return item;
+                        }, trellisData);
+
+                        var dataByDecile = nestByDecile.entries(normalizedSeries);
+                        // fill in gaps
+                        var yearRange = d3.range(minYear, maxYear, 1);
+
+                        dataByDecile.forEach(function (trellis) {
+                            trellis.values.forEach(function (series) {
+                                series.values = yearRange.map(function (year) {
+                                    var yearData = series.values.filter(function (f) {
+                                        return f.xCalendarYear === year;
+                                    })[0] || seriesInitializer(trellis.key, series.key, year, 0);
+                                    yearData.date = new Date(year, 0, 1);
+                                    return yearData;
+                                });
+                            });
+                        });
+
+                        // create svg with range bands based on the trellis names
+                        var chart = new jnj_chart.trellisline();
+                        chart.render(dataByDecile, "#trellisLinePlot", 400, 200, {
+                            trellisSet: allDeciles,
+                            trellisLabel: "Age Decile",
+                            seriesLabel: "Year",
+                            yLabel: "Prevalence Per 1000 People",
+                            xFormat: d3.time.format("%Y"),
+                            yFormat: d3.format("0.2f"),
+                            tickPadding: 20,
+                            colors: d3.scale.ordinal()
+                                .domain(["MALE", "FEMALE", "UNKNOWN"])
+                                .range(["#1F78B4", "#FB9A99", "#33A02C"])
+
+                        });
+                    }               
+                }
+            });            
+
         }
 
         self.drilldown = function (id, name, type) {
@@ -226,6 +391,8 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
 					self.loadingReportDrilldown(false);
 				}
 			});
+            
+            
 		}    
 
         self.render()

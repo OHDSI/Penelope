@@ -37,7 +37,7 @@ define([
                 
         // Drug Label settings
         self.selectedConditionConceptId = ko.observable(0);
-        self.selectedConditionConceptName = ko.observable('<Selected HOI Name>');
+        self.selectedConditionConceptName = ko.observable('');
         self.drugLabelActiveTab = ko.observable('toc'); // Observational Evidence is the default
         self.productLabelSectionHeadings = ko.observableArray(null);
         
@@ -150,6 +150,9 @@ define([
             
             // TODO - Call the WS to get the current drug selected. For now, fake it out
             if (selectedDrug == null) {
+                // Reset the selected concept id and information
+                self.selectedConditionConceptId(0);
+                self.selectedConditionConceptName('');
                 $.ajax({
                     url : "js/mock-data/search-results.json", //"js/mock-data/sample-drug.json",
                     success : function(result){
@@ -378,8 +381,8 @@ define([
 					}
 						}
 					]
-		};        
-        
+		};       
+                
 		// ATLAS - ReportManager.js common functions - START
 
 		self.buildHierarchyFromJSON = function (data, threshold) {

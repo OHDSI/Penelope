@@ -240,6 +240,9 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
                 url: self.model.services()[0].url + self.model.reportSourceKey() + '/cdmresults/' + self.model.currentDrugConceptId() + '/drugeraprevalence',
 				contentType: "application/json; charset=utf-8",
 				success: function (data) {
+                    // Remove the loading dialog
+                    self.loading(false);
+                    
                     // render trellis
                     var trellisData = self.model.normalizeArray(data, true);
 
@@ -395,7 +398,15 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
             
 		}    
 
-        self.render()
+        self.model.currentDrugConceptId.subscribe(function(newValue) {
+            self.render();
+        }); 
+        
+        self.model.reportSourceKey.subscribe(function(newValue) {
+            self.render();
+        });        
+        
+        self.render();
 	}
     
 

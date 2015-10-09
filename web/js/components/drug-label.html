@@ -69,9 +69,10 @@
                     </ul>
                 </div>
                         <div id="tabObsEvidence" data-bind="css: {hidden: model.drugLabelActiveTab() != 'obs'}">
+                            <!-- START: Data Source Selection -->
                             <div class="input-group"> 
                                 <span class="input-group-addon" data-bind="text: model.services()[0].url"></span>
-                                			<select class="selectpicker form-control" data-bind="css : { invalid: model.reportSourceKey()==undefined }, options: model.sources().filter(model.hasResults), optionsValue:'sourceKey', optionsText:'sourceName', value: model.reportSourceKey, optionsCaption:'Select a Source'"></select>
+                                <select class="selectpicker form-control" data-bind="css : { invalid: model.reportSourceKey()==undefined }, options: model.sources().filter(model.hasResults), optionsValue:'sourceKey', optionsText:'sourceName', value: model.reportSourceKey, optionsCaption:'Select a Source'"></select>
                             </div>
                             <!-- ko if: pageModel.reportSourceKey() == undefined-->
                             <div class="list-group">
@@ -80,44 +81,80 @@
                                 </div>
                             </div>
                             <!-- /ko -->
-                            <!-- ko if: pageModel.reportSourceKey() != undefined-->
-                            <div class="list-group">
-                                <div class="list-group-item">
-                                    <h4>Exposure Summary</h4>
-                                    <exposure-summary params="{model: pageModel}" data-bind="visible: pageModel.currentDrugConceptId() > 0"></exposure-summary> 
+                            <!-- END: Data Source Selection -->
+                            <!-- START: Collapsable Panel -->
+                            <!-- ko if: pageModel.reportSourceKey() != undefined--><!-- start: report source defined -->
+                            <div class="row">
+                                <div class="fancy-collapse-panel">
+                                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                        <div id="exposure-summary" class="panel panel-default">
+                                            <div class="panel-heading" role="tab" id="headingOne">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Exposure Summary
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                                <div class="panel-body">
+                                                    <exposure-summary params="{model: pageModel}" data-bind="visible: pageModel.currentDrugConceptId() > 0"></exposure-summary>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- ko if: pageModel.selectedConditionConceptId() > 0 -->
+                                        <div id="clinical-characterization" class="panel panel-default">
+                                            <div class="panel-heading" role="tab" id="headingTwo">
+                                                <h4 class="panel-title">
+                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Clinical Characterization
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                <div class="panel-body">
+                                                    <h4>Related Concepts</h4>
+                                                    Heracles reports for exposure cohort for drug – get selected concept and all descendants
+                                                    http://hixbeta.jnj.com/heracles/viewer.html?cohortId=293. Show table + scatter plot when table row is selected<br/>
+                                                    <h4>Other Concepts Of Interest</h4>
+                                                     Pull in other concepts from hand-curated table (Penelope_related_concepts). Generate Heracles reports for exposure cohort for drug – get all descendants of the related concepts http://hixbeta.jnj.com/heracles/viewer.html?cohortId=293<br/>
+                                                    <h4>Cohorts Of Interest</h4>
+                                                    Pull in report from Penelope_stats table and display similar to the one from Heracles with a link out to the Cohort definition. http://hixbeta.jnj.com/heracles/viewer.html?cohortId=293<br/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="pop-level-estimation" class="panel panel-default">
+                                            <div class="panel-heading" role="tab" id="headingThree">
+                                                <h4 class="panel-title">
+                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Population Level Estimation
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                                <div class="panel-body">
+                                                    Check table for combination of drug + HOI – if found, link to the relevant study. If not, display a message such as “If you are interested in starting a study on <drug + HOI> click here to join the journey”
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="pop-level-prediction" class="panel panel-default">
+                                            <div class="panel-heading" role="tab" id="headingFour">
+                                                <h4 class="panel-title">
+                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseThree">Patient Level Prediction
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                                                <div class="panel-body">
+                                                    Check table for combination of drug + HOI – if found, link to the relevant study. If not, display a message such as “If you are interested in starting a study on <drug + HOI> click here to join the journey”
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /ko -->
+                                    </div>
                                 </div>
-                                <!-- ko if: pageModel.selectedConditionConceptId() > 0 -->
-                                <div class="list-group-item"><h4>Clinical Characterization</h4></div>
-                                <div class="list-group-item">Related Concepts
-                                    Heracles reports for exposure cohort for drug – get selected concept and all descendants
-http://hixbeta.jnj.com/heracles/viewer.html?cohortId=293. 
-                                    <drug-era-report params="{model: model}"></drug-era-report>
-                                    Create the scatter plot interactive with the table above a-la Heracles. 
-                                    <condition-concept-by-index params="{serviceEndpoint: model.services, resultsUrl: 'http://hixbeta.jnj.com:8081/WebAPI/TRUVENMDCR/cohortresults/', cohortDefinitionId: model.currentCohortId, conceptId: model.selectedConditionConceptId, conceptDomain: 'condition', conceptName: model.selectedConditionConceptName}"></condition-concept-by-index>
-
-                                </div>
-                                <div class="list-group-item">
-                                    Other Concepts Of Interest<br/>
-                                    Pull in other concepts from hand-curated table (Penelope_related_concepts). Generate Heracles reports for exposure cohort for drug – get all descendants of the related concepts http://hixbeta.jnj.com/heracles/viewer.html?cohortId=293
-                                </div>
-                                <div class="list-group-item">
-                                    Cohorts Of Interest<br/>
-                                    Pull in report from Penelope_stats table and display similar to the one from Heracles with a link out to the Cohort definition. http://hixbeta.jnj.com/heracles/viewer.html?cohortId=293
-                                </div>                                
-                                <div class="list-group-item">
-                                    <h4>Population Level Estimation</h4>
-                                    Check table for combination of drug + HOI – if found, link to the relevant study. If not, display a message such as “If you are interested in starting a study on <drug + HOI> click here to join the journey”
-                                </div>
-                                <div class="list-group-item">
-                                    <h4>Patient Level Prediction</h4>
-                                    Check table for combination of drug + HOI – if found, link to the relevant study. If not, display a message such as “If you are interested in starting a study on <drug + HOI> click here to join the journey”
-                                </div>
-                                <!-- /ko -->
                             </div>
-                            <!-- /ko --> <!-- report source defined -->
+                            <!-- END: Collapsable Panel -->
+                            <!-- /ko --> <!-- end: report source defined -->                            
                         </div>
                         <div id="tabSciLit" data-bind="css: {hidden: model.drugLabelActiveTab() != 'sci'}">
-                            TODO: Group by evidence type (PubMed, SemMedDB, etc). Provide drill down area and heading. Also need a mouse over tool tip to describe the Avalec Method (JD to provide)
+                            <span></span>TODO: Group by evidence type (PubMed, SemMedDB, etc). Provide drill down area and heading. Also need a mouse over tool tip to describe the Avalec Method (JD to provide)</span>
                             <svg class="chart"></svg>
                             <!-- ko if: model.literatureEvidenceDetails().evidence != undefined -->
                               <h3 data-bind="attr: {title: model.literatureEvidenceDetails().evidence_type}, text: model.literatureEvidenceDetails().evidence_type + '  (' + model.literatureEvidenceDetails().evidence_count + ')'"></h3>

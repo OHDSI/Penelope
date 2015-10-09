@@ -53,10 +53,6 @@ requirejs.config({
         "knockout": "https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min",
         "datatables": "https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.8/js/jquery.dataTables.min",
         "director": "https://cdnjs.cloudflare.com/ajax/libs/Director/1.2.8/director.min",
-		"d3": "d3.min",
-		"d3_tip": "d3.tip",
-		"jnj_chart": "jnj.chart",
-		"lodash": "lodash.min",
         "lscache": "lscache.min",
 		"packinghierarchy": "visualization.packinghierarchy",
 		"forcedirectedgraph": "visualization.forcedirectedgraph",
@@ -71,7 +67,11 @@ requirejs.config({
         "home": "components/home",
         "search": "components/search",
         "search-results": "components/search-results",
-        "condition-concept-by-index" : "components/condition-concept-by-index" 
+        "condition-concept-by-index" : "components/condition-concept-by-index",
+		"d3": "d3.min",
+		"d3_tip": "d3.tip",
+		"jnj_chart": "jnj.chart",
+		"lodash": "lodash.min"
         //"datatablesbuttons": "https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min", // Try again when DataTables is upgraded to 1.10.10
         //"jsbuttons": "https://cdn.datatables.net/buttons/1.0.3/js/buttons.html5.min", // Try again when DataTables is upgraded to 1.10.10
 	}

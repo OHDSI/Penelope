@@ -3,21 +3,27 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
 		var self = this;
 		self.model = params.model;
 		self.datatables = {};
-        self.loading = ko.observable(false);
+        //self.loading = ko.observable(false);
+        self.loadingConditionPrevalence = ko.observable(false);
+        self.loadingDrugPrevalence = ko.observable(false);
+        self.loadingDrugEras = ko.observable(false);
         self.loadingReportDrilldown = ko.observable(false);
         self.activeReportDrilldown = ko.observable(false);
         
         self.render = function() {
-        	self.loading(true);
+        	self.loadingConditionPrevalence(true);
+            self.loadingDrugPrevalence(true);
+            self.loadingDrugEras(true);
+            //self.loading(true);
             
-            // Get treemap
+            // Get Condition Prevalence
 			$.ajax({
 				type: "GET",
                 url: self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/' + self.model.currentCohortId() + '/cohortspecifictreemap',
 				contentType: "application/json; charset=utf-8",
 				success: function (data) {
                     // Remove the loading dialog
-                    self.loading(false);
+                    self.loadingConditionPrevalence(false);
 
                     // Finish the rendering now that we have data
                     var width = 1000;
@@ -151,7 +157,7 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
 				}
 			});
             
-            // Get related drugs
+            // Get drug prevalance
             $.ajax({
 				type: "POST",
                 data: ko.toJSON({
@@ -172,6 +178,7 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
                         url: self.model.services()[0].url + self.model.reportSourceKey() +  '/cdmresults/drugeratreemap',
                         contentType: "application/json; charset=utf-8",
                         success: function (data) {
+                            self.loadingDrugPrevalence(false);
                             if (data && data.length > 0) {
                                 //var normalizedData = self.normalizeDataFrame(data);
                                 var table_data = data.map(function (d, i) {
@@ -241,7 +248,7 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
 				contentType: "application/json; charset=utf-8",
 				success: function (data) {
                     // Remove the loading dialog
-                    self.loading(false);
+                    self.loadingDrugEras(false);
                     
                     // render trellis
                     var trellisData = self.model.normalizeArray(data, true);

@@ -245,6 +245,7 @@ table.dataTable.display tbody tr.even:hover {
 /* start: atlas - reporting */
 
 .reportHeading {
+	background-color: #eee;
 	font-size: 14px;
 	margin-bottom: 25px;
 	margin-top: 0px;
@@ -279,7 +280,7 @@ g.trellisLegend {}
 }
 
 .report {
-	background-color: #eee;
+	background-color: #fff;
 	margin: 10px 10px 10px 10px;
 	border: solid 1px #ccc;
 }

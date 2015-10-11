@@ -63,11 +63,7 @@
                                 </ul>
                             <!-- /ko -->
                             </ul>
-                        <!-- /ko -->
-                        </ul>
-                    <!-- /ko -->
-                    </ul>
-                </div>
+                        </div>
                         <div id="tabObsEvidence" data-bind="css: {hidden: model.drugLabelActiveTab() != 'obs'}">
                             <!-- START: Data Source Selection -->
                             <div class="input-group"> 
@@ -83,14 +79,14 @@
                             <!-- /ko -->
                             <!-- END: Data Source Selection -->
                             <!-- START: Collapsable Panel -->
-                            <!-- ko if: pageModel.reportSourceKey() != undefined--><!-- start: report source defined -->
+                            <!-- ko if: pageModel.reportSourceKey() != undefined && pageModel.currentCohortId() != undefined --><!-- start: report source defined -->
                             <div class="row">
                                 <div class="fancy-collapse-panel">
                                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                                         <div id="exposure-summary" class="panel panel-default">
                                             <div class="panel-heading" role="tab" id="headingOne">
                                                 <h4 class="panel-title">
-                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Exposure Summary
+                                                    <a data-toggle="collapse" id="headingOneLink" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Exposure Summary
                                                     </a>
                                                 </h4>
                                             </div>
@@ -100,11 +96,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- ko if: pageModel.selectedConditionConceptId() > 0 -->
-                                        <div id="clinical-characterization" class="panel panel-default">
+                                        <div id="clinical-characterization" data-bind="visible: pageModel.selectedConditionConceptId() > 0" class="panel panel-default">
                                             <div class="panel-heading" role="tab" id="headingTwo">
                                                 <h4 class="panel-title">
-                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Clinical Characterization
+                                                    <a class="collapsed" data-toggle="collapse" id="headingTwoLink" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Clinical Characterization
                                                     </a>
                                                 </h4>
                                             </div>
@@ -120,10 +115,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div id="pop-level-estimation" class="panel panel-default">
+                                        <div id="pop-level-estimation" data-bind="visible: pageModel.selectedConditionConceptId() > 0" class="panel panel-default">
                                             <div class="panel-heading" role="tab" id="headingThree">
                                                 <h4 class="panel-title">
-                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Population Level Estimation
+                                                    <a class="collapsed" data-toggle="collapse" id="headingThreeLink" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Population Level Estimation
                                                     </a>
                                                 </h4>
                                             </div>
@@ -133,10 +128,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div id="pop-level-prediction" class="panel panel-default">
+                                        <div id="pop-level-prediction" data-bind="visible: pageModel.selectedConditionConceptId() > 0" class="panel panel-default">
                                             <div class="panel-heading" role="tab" id="headingFour">
                                                 <h4 class="panel-title">
-                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseThree">Patient Level Prediction
+                                                    <a class="collapsed" data-toggle="collapse" id="headingFourLink" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">Patient Level Prediction
                                                     </a>
                                                 </h4>
                                             </div>
@@ -146,7 +141,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- /ko -->
                                     </div>
                                 </div>
                             </div>

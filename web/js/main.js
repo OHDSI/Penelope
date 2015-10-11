@@ -60,7 +60,7 @@ requirejs.config({
         "knockout.dataTables.binding": "knockout.dataTables.binding", // OHDSI CDN Candidate
         "cache-flush": "components/cache-flush",
         "datatable-test": "components/datatable-test",
-        "drug-era-report": "components/drug-era-report",
+        //"drug-era-report": "components/drug-era-report",
         "drug-label": "components/drug-label",
         "exposure-summary": "components/exposure-summary",
         "faceted-datatable": "components/faceted-datatable",
@@ -77,7 +77,7 @@ requirejs.config({
 	}
 });
 
-requirejs(['knockout', './app', 'lscache', 'director', 'cache-flush', 'drug-label', 'exposure-summary', 'faceted-datatable', 'home', 'search', 'search-results', 'condition-concept-by-index', 'drug-era-report'], function(ko, app) {
+requirejs(['knockout', './app', 'lscache', 'director', 'cache-flush', 'drug-label', 'exposure-summary', 'faceted-datatable', 'home', 'search', 'search-results', 'condition-concept-by-index'], function(ko, app) {
     var pageModel = new app();
     var routerOptions = {
 		notfound: function () {

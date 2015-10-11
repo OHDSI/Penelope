@@ -172,6 +172,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                 .text(function (d) { return d.label; });
         }
         
+        // Handles the literature drill down to Laertes
         self.literatureChartBarClick = function(element) {
             var evidenceType = element.attributes["evidence_type"].value;
             $.ajax({
@@ -185,6 +186,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
 			});            
         }
         
+        // Retrieves the literature summary from Laertes
         self.getLiteratureSummary = function() {
             $.ajax({
 				method: 'GET',
@@ -197,76 +199,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
 				}
 			});
         }
-        
-        // A test method used for loading the observational evidence from Heracles
-        self.testReportClick = function() {
-            /*
-            $.ajax({
-                url: "http://hixbeta.jnj.com:8081/WebAPI/OPTUM/cohortresults/121/person", // self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/' + self.model.reportCohortDefinitionId() + '/person',
-                success: function (data) {
-                    //self.model.currentReport(self.model.reportReportName());
-                    //self.model.loadingReport(false);
-
-                    if (data.yearOfBirth.length > 0 && data.yearOfBirthStats.length > 0) {
-                        var yearHistogram = new jnj_chart.histogram();
-                        var histData = {};
-                        histData.intervalSize = 1;
-                        histData.min = data.yearOfBirthStats[0].minValue;
-                        histData.max = data.yearOfBirthStats[0].maxValue;
-                        histData.intervals = 100;
-                        histData.data = (self.normalizeArray(data.yearOfBirth));
-                        yearHistogram.render(self.mapHistogram(histData), "#reportPerson #hist", 460, 195, {
-                            xFormat: d3.format('d'),
-                            xLabel: 'Year',
-                            yLabel: 'People'
-                        });
-                    }
-
-                    var genderDonut = new jnj_chart.donut();
-                    genderDonut.render(self.mapConceptData(data.gender), "#reportPerson #gender", 260, 130, {
-                        colors: d3.scale.ordinal()
-                            .domain([8507, 8551, 8532])
-                            .range(["#1F78B4", "#33A02C", "#FB9A99"]),
-                        margin: {
-                            top: 5,
-                            bottom: 10,
-                            right: 150,
-                            left: 10
-                        }
-
-                    });
-
-                    var raceDonut = new jnj_chart.donut();
-                    raceDonut.render(self.mapConceptData(data.race), "#reportPerson #race", 260, 130, {
-                        margin: {
-                            top: 5,
-                            bottom: 10,
-                            right: 150,
-                            left: 10
-                        },
-                        colors: d3.scale.ordinal()
-                            .domain(data.race)
-                            .range(colorbrewer.Paired[10])
-                    });
-
-                    var ethnicityDonut = new jnj_chart.donut();
-                    ethnicityDonut.render(self.mapConceptData(data.ethnicity), "#reportPerson #ethnicity", 260, 130, {
-                        margin: {
-                            top: 5,
-                            bottom: 10,
-                            right: 150,
-                            left: 10
-                        },
-                        colors: d3.scale.ordinal()
-                            .domain(data.ethnicity)
-                            .range(colorbrewer.Paired[10])
-                    });
-                    self.model.loadingReport(false);
-                }
-            });
-            */
-        }
-        
+                
         // Handles the click logic for the tabbed evidence browser
         self.tabClick = function(item, event) {
             var listItemNode = event.target;
@@ -277,7 +210,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
             switch (tabName)
             {
                 case 'obs':
-                    self.testReportClick();
+                    // Handled by sub-components
                     break;
                 case 'sci':
                     self.getLiteratureSummary();
@@ -292,6 +225,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
             self.model.drugLabelActiveTab(listItemNode.attributes["tabName"].value);
         }
         
+        // Test function for retrieving data from OpenFDA
         self.getOpenFDAData = function() {
             $.ajax({
 				method: 'GET',
@@ -316,6 +250,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
             });
         }
 
+        // Handles the click event on the table of contents
         self.TOCLinkClick = function(item, event) {
             // Here's some code that will allow us to scroll once we figure out the best way
             // to tag the elements in the page.
@@ -329,7 +264,19 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
         self.productLabelLinkClick = function(item, event) {
             self.model.selectedConditionConceptId(event.target.attributes["conceptid"].value);
             self.model.selectedConditionConceptName(event.target.attributes["conceptname"].value);
-        }                
+        }   
+        
+        self.model.selectedConditionConceptId.subscribe(function(newValue) {
+            if (newValue > 0) {
+                // If a condition concept has been selected, ensure that the exposure summary is collapsed
+                // and that the clinical characterization section is expanded
+                if ($("#collapseOne").hasClass("in")) {
+                    $("#headingOneLink").trigger("click");
+                    $("#headingTwoLink").trigger("click");
+                }
+            }
+                
+        });         
     }
 
 	var component = {

@@ -190,6 +190,7 @@
                         </div>
                         <div id="tabSR" data-bind="css: {hidden: model.drugLabelActiveTab() != 'spo'}">
                             <h4>FAERS SUMMARY</h4>
+                            <open-fda params="{drug: 'celecoxib+celebrex', condition: 'myocardial+infarction', model: pageModel}"></open-fda>
                             <span id="selectedHOI" data-bind="text: 'TODO: Get ' + model.selectedConditionConceptName() + ' plus all descendants'"></span>
                             Put a table from LAERTES that shows concept name, count, Prevalance Rate Ration (PRR)
                             <br/>

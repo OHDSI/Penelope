@@ -1,5 +1,5 @@
-define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 'colorbrewer', 'lodash', 'knockout.dataTables.binding'], function (ko, view, d3, jnj_chart, colorbrewer, _) {
-	function conceptByIndex(params) {
+define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 'colorbrewer', 'lodash', 'knockout.dataTables.binding'], function (ko, view, d3, jnj_chart, colorbrewer, _) {
+	function otherConceptsOfInterest(params) {
 		var self = this;
 		self.model = params.model;
 		self.datatables = {};
@@ -15,9 +15,9 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
 			if (self.model.selectedConditionConceptId() <= 0 && self.model.selectedConditionOccurrencePrevalence() == undefined)
 				return;
 
-            $('#condition-concept-by-index-caption').html('First Condition Occurrence Of ' + self.model.selectedConditionConceptName() + ' Relative To Index');
+            $('#other-concepts-of-interest-caption').html('Other Concepts Of Interest For ' + self.model.selectedConditionConceptName());
 			
-            // Get the descendant concepts - this may be centralized to a model event instead of nested in this component
+            // TODO: Get the concepts of interest
 			$.ajax({
 				type: "GET",
 				url: self.model.vocabularyUrl() + "concept/" + self.model.selectedConditionConceptId() + "/descendants",
@@ -46,18 +46,18 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
                     });
                     
                     // Set the callback click event for the table row
-                    $(document).on('click', '.condition_concept_table tbody tr', function () {
-                        var datatable = self.datatables[$(this).parents('.condition_concept_table').attr('id')];
+                    $(document).on('click', '.other_concepts_of_interest_table tbody tr', function () {
+                        var datatable = self.datatables[$(this).parents('.other_concepts_of_interest_table').attr('id')];
                         var data = datatable.data()[datatable.row(this)[0]];
                         if (data) {
                             var did = data.concept_id;
                             var concept_name = data.name;
-                            self.drilldown(did, concept_name, $(this).parents('.condition_concept_table').attr('type'));
+                            self.drilldown(did, concept_name, $(this).parents('.other_concepts_of_interest_table').attr('type'));
                         }
                     });
                     
                     // Show the subset of the overall cohort conditions in this section.
-                    var datatable = $('#condition_concept_table').DataTable({
+                    var datatable = $('#other_concepts_of_interest_table').DataTable({
                         order: [6, 'desc'],
                         dom: 'T<"clear">lfrtip',
                         data: table_data_subset_no_nulls,
@@ -99,72 +99,7 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
                         deferRender: true,
                         destroy: true
                     });
-                    self.datatables['condition_concept_table'] = datatable;
-                                
-                    /*
-					if (result && result.length > 0) {
-						var normalized = self.model.dataframeToArray(self.model.normalizeArray(result));
-
-						// nest dataframe data into key->values pair
-						var totalRecordsData = d3.nest()
-							.key(function (d) {
-								return d.recordType;
-							})
-							.entries(normalized)
-							.map(function (d) {
-								return {
-									name: d.key,
-									values: d.values
-								};
-							});
-
-						var scatter = new jnj_chart.scatterplot();
-
-						scatter.render(totalRecordsData,'#condition-concept-by-index-scatterplot', 460, 150, {
-							yFormat: d3.format('0.2%'),
-							xValue: "duration",
-							yValue: "pctPersons",
-							xLabel: "Duration Relative to Index",
-							yLabel: "% Persons",
-							seriesName: "recordType",
-							showLegend: true,
-							colors: d3.scale.category10(),
-							tooltips: [
-								{
-									label: 'Series',
-									accessor: function (o) {
-										return o.recordType;
-									}
-											},
-								{
-									label: 'Percent Persons',
-									accessor: function (o) {
-										return d3.format('0.2%')(o.pctPersons);
-									}
-										},
-								{
-									label: 'Duration Relative to Index',
-									accessor: function (o) {
-										var years = Math.round(o.duration / 365);
-										var days = o.duration % 365;
-										var result = '';
-										if (years != 0)
-											result += years + 'y ';
-
-										result += days + 'd'
-										return result;
-									}
-										},
-								{
-									label: 'Person Count',
-									accessor: function (o) {
-										return o.countValue;
-									}
-										}
-									]
-						});
-					}
-                    */
+                    self.datatables['other_concepts_of_interest_table'] = datatable;                                
 				}
 			});
 		}
@@ -179,7 +114,7 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
 				contentType: "application/json; charset=utf-8"
 			}).done(function (result) {
 				if (result && result.length > 0) {
-					$("#" + type + "ConceptByIndexDrilldownScatterplot").empty();
+					$("#" + type + "OtherConceptsOfInterestDrilldownScatterplot").empty();
 					var normalized = self.model.dataframeToArray(self.model.normalizeArray(result));
 
 					// nest dataframe data into key->values pair
@@ -197,9 +132,9 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
 
 					var scatter = new jnj_chart.scatterplot();
 					self.activeReportDrilldown(true);
-					$('#' + type + 'ConceptByIndexDrilldownScatterplotHeading').html(name);
+					$('#' + type + 'OtherConceptsOfInterestDrilldownScatterplotHeading').html(name);
 
-					scatter.render(totalRecordsData, "#" + type + "ConceptByIndexDrilldownScatterplot", 460, 150, {
+					scatter.render(totalRecordsData, "#" + type + "OtherConceptsOfInterestDrilldownScatterplot", 460, 150, {
 						yFormat: d3.format('0.2%'),
 						xValue: "duration",
 						yValue: "pctPersons",
@@ -257,10 +192,10 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
 	}
 
 	var component = {
-		viewModel: conceptByIndex,
+		viewModel: otherConceptsOfInterest,
 		template: view
 	};
 
-	ko.components.register('condition-concept-by-index', component);
+	ko.components.register('other-concepts-of-interest', component);
 	return component;
 });

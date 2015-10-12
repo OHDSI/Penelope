@@ -8,7 +8,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<script data-main="js/main" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.16/require.min.js"></script>
-    <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css"/> 
+	<!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.theme.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.structure.min.css"/> -->
 	<link rel="stylesheet" type="text/css" href="js/styles/font-awesome.min.css">
@@ -17,17 +17,17 @@
 	<link rel="stylesheet" type="text/css" href="js/styles/jquery.dataTables.min.css">
 	<link rel="stylesheet" type="text/css" href="js/styles/jquery.dataTables.colVis.css">
 	<link rel="stylesheet" type="text/css" href="js/styles/penelope.dataTables.css">
-    <link rel="stylesheet" type="text/css" href="js/styles/app.css"/>
-    <link rel="stylesheet" type="text/css" href="js/styles/chart.css"/>  
-    <link rel="stylesheet" type="text/css" href="js/styles/dashboard.css"/>
-    <link rel="stylesheet" type="text/css" href="js/styles/sci-lit-chart.css"/>      
-    <link rel="stylesheet" type="text/css" href="js/styles/spl.css"/>    
+	<link rel="stylesheet" type="text/css" href="js/styles/app.css" />
+	<link rel="stylesheet" type="text/css" href="js/styles/chart.css" />
+	<link rel="stylesheet" type="text/css" href="js/styles/dashboard.css" />
+	<link rel="stylesheet" type="text/css" href="js/styles/sci-lit-chart.css" />
+	<link rel="stylesheet" type="text/css" href="js/styles/spl.css" />
 	<title>Penelope</title>
 </head>
 
 <body data-bind="css: { 'drug-label' : pageModel.currentView() == 'druglabel'}">
 	<!-- Fixed navbar -->
-    <header class="navbar navbar-default navbar-fixed-top">
+	<header class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -39,19 +39,21 @@
 				<a class="navbar-brand" href="#">Penelope</a>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse navbar-ex1-collapse">
-                <penelope-search params="{model: pageModel}"></penelope-search>
-            </div>
+				<penelope-search params="{model: pageModel}"></penelope-search>
+			</div>
 		</div>
 	</header>
 
-    <home params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'home'"></home>
-    <penelope-search-results params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'searchResults'"></penelope-search-results>
-    <drug-label params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'druglabel'"></drug-label>
-    <div id="cache-flush" data-bind="if: pageModel.currentView() == 'cache'">
-        <cache-flush params="{model: pageModel}"></cache-flush>
-    </div>
-    <!-- REQUIRES UPGRADE OF DATA TABLES TO 1.10.10 -->
-    <!-- <datatable-test params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'datatabletest'"></datatable-test> -->
-    <!-- DEBUG currentView = <span id="debug" data-bind="text: pageModel.currentView()"></span> -->
+	<home params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'home'"></home>
+	<penelope-search-results params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'searchResults'"></penelope-search-results>
+	<drug-label params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'druglabel'"></drug-label>
+	<div id="cache-flush" data-bind="if: pageModel.currentView() == 'cache'">
+		<cache-flush params="{model: pageModel}"></cache-flush>
+	</div>
+
+	<!-- REQUIRES UPGRADE OF DATA TABLES TO 1.10.10 -->
+	<!-- <datatable-test params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'datatabletest'"></datatable-test> -->
+	<!-- DEBUG currentView = <span id="debug" data-bind="text: pageModel.currentView()"></span> -->
 </body>
+
 </html>

@@ -101,7 +101,6 @@
 	module.donut = function () {
 
 		this.render = function (data, target, w, h, options) {
-
 			var defaults = {
 				colors: d3.scale.category10(),
 				margin: {

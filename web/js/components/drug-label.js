@@ -266,14 +266,23 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
             self.model.selectedConditionConceptName(event.target.attributes["conceptname"].value);
         }   
         
+        self.setClinicalCharacterizationActive = function() {
+            if ($("#collapseOne").hasClass("in")) {
+                $("#headingOneLink").trigger("click");
+                $("#headingTwoLink").trigger("click");
+            }
+        }
+        
+        self.loadConditionConceptReports = function() {
+        }
+        
+        // Subscription to the Condition Concept ID change
         self.model.selectedConditionConceptId.subscribe(function(newValue) {
             if (newValue > 0) {
                 // If a condition concept has been selected, ensure that the exposure summary is collapsed
                 // and that the clinical characterization section is expanded
-                if ($("#collapseOne").hasClass("in")) {
-                    $("#headingOneLink").trigger("click");
-                    $("#headingTwoLink").trigger("click");
-                }
+                self.setClinicalCharacterizationActive();
+                
             }
                 
         });         

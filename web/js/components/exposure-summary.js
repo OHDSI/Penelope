@@ -55,7 +55,8 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
                                     risk_difference: self.model.formatFixed(this.riskDiffAfterBefore[i])
                                 };
                             }, conditionOccurrencePrevalence);
-
+                            self.model.selectedConditionOccurrencePrevalence(table_data);
+                            
                             $(document).on('click', '.treemap_table tbody tr', function () {
                                 var datatable = self.datatables[$(this).parents('.treemap_table').attr('id')];
                                 var data = datatable.data()[datatable.row(this)[0]];

@@ -213,7 +213,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                     // Handled by sub-components
                     break;
                 case 'sci':
-                    self.getLiteratureSummary();
+                    //self.getLiteratureSummary();
                     break;
                 case 'toc':
                     // TODO: define action
@@ -282,9 +282,8 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                 // If a condition concept has been selected, ensure that the exposure summary is collapsed
                 // and that the clinical characterization section is expanded
                 self.setClinicalCharacterizationActive();
-                
+                self.getLiteratureSummary();
             }
-                
         });         
     }
 

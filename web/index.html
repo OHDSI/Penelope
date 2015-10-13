@@ -22,7 +22,7 @@
 	<link rel="stylesheet" type="text/css" href="js/styles/dashboard.css" />
 	<link rel="stylesheet" type="text/css" href="js/styles/sci-lit-chart.css" />
 	<link rel="stylesheet" type="text/css" href="js/styles/spl.css" />
-	<link rel="stylesheet" type="text/css" href="js/styles/sidebar.css" />
+	<!-- <link rel="stylesheet" type="text/css" href="js/styles/sidebar.css" /> -->
 	<link rel="stylesheet" type="text/css" href="js/styles/jquery.sidr.dark.css" />
 	<title>Penelope</title>
 </head>
@@ -48,7 +48,7 @@
 
 	<home params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'home'"></home>
 	<penelope-search-results params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'searchResults'"></penelope-search-results>
-	<drug-label-v2 params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'druglabel'"></drug-label-v2>
+	<drug-label params="{model: pageModel}" data-bind="visible: pageModel.currentView() == 'druglabel'"></drug-label>
 	<div id="cache-flush" data-bind="if: pageModel.currentView() == 'cache'">
 		<cache-flush params="{model: pageModel}"></cache-flush>
 	</div>

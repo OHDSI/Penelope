@@ -291,7 +291,31 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                 self.setClinicalCharacterizationActive();
                 self.getLiteratureSummary();
             }
-        });         
+        });
+        
+        self.setSliders = function () {
+            $('#sidebar-toggle').sidr({
+              name: 'sidr-left',
+              side: 'left' // By default
+            });
+            $('#evidence-explorer-toggle').sidr({
+              name: 'sidr-right',
+              side: 'right',
+              displace: false
+            });
+            $('#eeClose').sidr({
+              name: 'sidr-right',
+              side: 'right',
+              displace: false
+            });
+        }
+        
+        self.toggleFull = function () {
+            $('#sidr-right').toggleClass("sidr-full");
+            $('#eeFullScreen').toggleClass("glyphicon-circle-arrow-left").toggleClass("glyphicon-circle-arrow-right");
+        }
+        
+        self.setSliders();
     }
 
 	var component = {

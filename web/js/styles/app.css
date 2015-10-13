@@ -87,9 +87,25 @@ section {
 }
 
 #evidence-explorer {
-    height: 83.5vh; 
-    overflow-x: hidden; 
-    overflow-y: scroll;
+    /* height: 83.5vh; */
+    /* overflow-x: hidden; */
+    /* overflow-y: scroll; */
+}
+
+.evidence-explorer-heading {
+    font-size: 1.4em
+}
+
+.evidence-explorer-button {
+    font-size: 1.4em;
+    vertical-align: middle;
+    margin-top: -5px;
+    display: inline-block;
+}
+
+.evidence-explorer-close-button {
+    float: right;
+    margin-top: 0px;
 }
 
 .nav-tabs>li>a:hover {
@@ -337,3 +353,22 @@ g.trellisLegend {}
     visibility: hidden;
 }
 
+#sidebar-toggle {
+    border: 1px #ccc solid;
+    padding: 5px;
+    font-size: 1.4em;
+    margin-right: 5px;
+}
+
+span#evidence-explorer-toggle {
+    border: 1px #ccc solid;
+    padding: 5px;
+    font-size: 1.4em;
+    float: right;
+    display: inline-block;
+    height: 30px;
+}
+
+.drug-label-title {
+    font-size: 1.5em;
+}

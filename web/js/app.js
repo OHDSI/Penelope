@@ -40,7 +40,7 @@ define([
         self.selectedConditionConceptName = ko.observable('');
         self.selectedConditionConceptAndDescendants = ko.observableArray(null);
         self.selectedConditionOccurrencePrevalence = ko.observable();
-        self.drugLabelActiveTab = ko.observable('toc'); // Observational Evidence is the default
+        self.drugLabelActiveTab = ko.observable('obs'); // Observational Evidence is the default
         self.productLabelSectionHeadings = ko.observableArray(null);
         
         // Literature Evidence Settings

@@ -8,7 +8,8 @@ body {
   padding-top: 65px;
   position: relative;
   font-family: 'Roboto', sans-serif !important;
-    font-weight: 400 !important;
+  font-weight: 400 !important;
+  /* height: 20px; */
 }
 
 .drug-label {

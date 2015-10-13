@@ -3,7 +3,11 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
 		var self = this;
 		self.model = params.model;
 
-		self.openEvidenceBrowser = function () {
+        self.sidebarClick = function () {
+            $('.drug-label-main-container').toggleClass("open-sidebar");
+        }
+
+        self.openEvidenceBrowser = function () {
           $.ajax({
 				method: 'GET',
 				url: 'js/mock-data/search-results.json', //self.model.services()[0].url + 'conceptset/',
@@ -216,9 +220,6 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                     break;
                 case 'sci':
                     //self.getLiteratureSummary();
-                    break;
-                case 'toc':
-                    // TODO: define action
                     break;
                 case 'spo':
                     self.getOpenFDAData();

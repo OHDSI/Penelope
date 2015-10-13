@@ -1,0 +1,97 @@
+/*
+    body, html {
+    height: 100%;
+    margin: 0;
+    overflow:hidden;
+    font-family: helvetica;
+    font-weight: 100;
+}
+*/
+.drug-label-main-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    -webkit-transition:  left 0.4s ease-in-out;
+    -moz-transition:  left 0.4s ease-in-out;
+    -ms-transition:  left 0.4s ease-in-out;
+    -o-transition:  left 0.4s ease-in-out;
+    transition:  left 0.4s ease-in-out;
+}
+
+.drug-label-main-container.open-sidebar {
+    left: 240px;
+}
+
+#sidebar {
+    position: absolute;
+    left: -255px;
+    /*background: #DF314D;*/
+    width: 240px;
+    height: 100%;
+    box-sizing: border-box;
+}
+/*
+#sidebar ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+#sidebar ul li {
+    margin: 0;
+}
+#sidebar ul li a {
+    padding: 15px 20px;
+    font-size: 16px;
+    font-weight: 100;
+    color: white;
+    text-decoration: none;
+    display: block;
+    border-bottom: 1px solid #C9223D;
+    -webkit-transition:  background 0.3s ease-in-out;
+    -moz-transition:  background 0.3s ease-in-out;
+    -ms-transition:  background 0.3s ease-in-out;
+    -o-transition:  background 0.3s ease-in-out;
+    transition:  background 0.3s ease-in-out;
+}
+#sidebar ul li:hover a {
+    background: #C9223D;
+}
+*/
+.drug-label-content {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    position: relative;
+}
+.drug-label-content .content{
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+padding-left: 60px;
+width: 100%;
+}
+#sidebar-toggle {
+    background: #20425B;
+    border-radius: 3px;
+    display: block;
+    position: relative;
+    padding: 10px 7px;
+    float: left;
+    margin-right: 5px;
+}
+#sidebar-toggle:hover {
+    cursor: pointer;
+}
+#sidebar-toggle .toc{
+    display: block;
+    width: 18px;
+    margin-bottom: 3px;
+    height: 2px;
+    background-color: #fff;
+    /*border-radius: 1px;*/
+}
+#sidebar-toggle .toc:last-child{
+     margin-bottom: 0;   
+}

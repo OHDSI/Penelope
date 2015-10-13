@@ -1,12 +1,24 @@
-/*
-    body, html {
-    height: 100%;
-    margin: 0;
-    overflow:hidden;
-    font-family: helvetica;
-    font-weight: 100;
+.rotate {
+
+    -webkit-transform: rotate(90deg);
+    -webkit-transform-origin: left top;
+    -moz-transform: rotate(90deg);
+    -moz-transform-origin: left top;
+    -ms-transform: rotate(90deg);
+    -ms-transform-origin: left top;
+    -o-transform: rotate(90deg);
+    -o-transform-origin: left top;
+    transform: rotate(90deg);
+    transform-origin: left top;
+
+    position: absolute;
+    top: 0;
+    left: 100%;
+    white-space: nowrap;    
+    font-size: 24px;
+    height: 30px;
 }
-*/
+
 .drug-label-main-container {
     position: relative;
     height: 100%;
@@ -19,8 +31,34 @@
     transition:  left 0.4s ease-in-out;
 }
 
+.drug-label-ee-main-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    -webkit-transition:  right 0.4s ease-in-out;
+    -moz-transition:  right 0.4s ease-in-out;
+    -ms-transition:  right 0.4s ease-in-out;
+    -o-transition:  right 0.4s ease-in-out;
+    transition:  right 0.4s ease-in-out;
+}
+
 .drug-label-main-container.open-sidebar {
     left: 240px;
+}
+
+.drug-label-ee-main-container.open-ee-sidebar {
+    left: 50%;
+}
+
+#evidence-explorer-RENAMED
+{
+    position: absolute;
+    left: 100%;
+    background: #DF314D;
+    width: 240px;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 #sidebar {
@@ -31,47 +69,7 @@
     height: 100%;
     box-sizing: border-box;
 }
-/*
-#sidebar ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-#sidebar ul li {
-    margin: 0;
-}
-#sidebar ul li a {
-    padding: 15px 20px;
-    font-size: 16px;
-    font-weight: 100;
-    color: white;
-    text-decoration: none;
-    display: block;
-    border-bottom: 1px solid #C9223D;
-    -webkit-transition:  background 0.3s ease-in-out;
-    -moz-transition:  background 0.3s ease-in-out;
-    -ms-transition:  background 0.3s ease-in-out;
-    -o-transition:  background 0.3s ease-in-out;
-    transition:  background 0.3s ease-in-out;
-}
-#sidebar ul li:hover a {
-    background: #C9223D;
-}
-*/
-.drug-label-content {
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    position: relative;
-}
-.drug-label-content .content{
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-padding-left: 60px;
-width: 100%;
-}
+
 #sidebar-toggle {
     background: #20425B;
     border-radius: 3px;

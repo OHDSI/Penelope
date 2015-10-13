@@ -1,35 +1,57 @@
+<style>
+.rotate {
+
+    -webkit-transform: rotate(90deg);
+    -webkit-transform-origin: left top;
+    -moz-transform: rotate(90deg);
+    -moz-transform-origin: left top;
+    -ms-transform: rotate(90deg);
+    -ms-transform-origin: left top;
+    -o-transform: rotate(90deg);
+    -o-transform-origin: left top;
+    transform: rotate(90deg);
+    transform-origin: left top;
+
+    position: absolute;
+    top: 0;
+    left: 100%;
+    white-space: nowrap;    
+    font-size: 24px;
+}
+</style>
 <div class="container-fluid drug-label-main-container" style="padding: 0px;">
     <div class="row">
         <div id="sidebar">
-            <div style="background-color: #20425B; color: white; font-weight: 700 !important; font-size: 24px; text-align: center;">Table Of Contents</div>
-            <div class="input-group sizing-addon2">
-              <span class="input-group-addon glyphicon glyphicon-filter" id="sizing-addon1"></span>
-              <input class="form-control" aria-describedby="sizing-addon2" placeholder="find a condition..." id="searchtoc" type="text" data-bind="event: { keyup: searchTOC }" />
-            </div>
-            
-            <ul id="toc" class="list-group" data-bind="eventListener: { event: 'click', selector: '.toc-item', callback: TOCLinkClick}">
-                <!-- ko foreach: model.currentDrugLabelTOC -->
-                <li class="toc-item list-group-item" data-bind="attr: {id: mainHeading.id }"><span class="badge" data-bind="text: HOITerms.length"></span><!--ko text: mainHeading.text --><!--/ko--></li>
-                <ul data-bind="if: HOITerms.length > 0">
-                    <!-- ko foreach: HOITerms -->
-                    <li class="toc-item toc-search-term" data-bind="attr: {id: id}, text: name"></li>
-                    <!-- /ko -->
-                </ul>
-                <ul data-bind="if: subHeadings.length > 0">
-                <!-- ko foreach: subHeadings -->
-                    <li class="toc-item" data-bind="attr: {id: id }, text: subHeading"></li>
+            <div class="panel panel-default">
+                <div class="panel-heading">Table Of Contents</div>
+                <div class="input-group sizing-addon2">
+                  <span class="input-group-addon glyphicon glyphicon-filter" id="sizing-addon1"></span>
+                  <input class="form-control" aria-describedby="sizing-addon2" placeholder="find a condition..." id="searchtoc" type="text" data-bind="event: { keyup: searchTOC }" />
+                </div>
+                <ul id="toc" class="list-group" data-bind="eventListener: { event: 'click', selector: '.toc-item', callback: TOCLinkClick}">
+                    <!-- ko foreach: model.currentDrugLabelTOC -->
+                    <li class="toc-item list-group-item" data-bind="attr: {id: mainHeading.id }"><span class="badge" data-bind="text: HOITerms.length"></span><!--ko text: mainHeading.text --><!--/ko--></li>
                     <ul data-bind="if: HOITerms.length > 0">
                         <!-- ko foreach: HOITerms -->
                         <li class="toc-item toc-search-term" data-bind="attr: {id: id}, text: name"></li>
                         <!-- /ko -->
                     </ul>
+                    <ul data-bind="if: subHeadings.length > 0">
+                    <!-- ko foreach: subHeadings -->
+                        <li class="toc-item" data-bind="attr: {id: id }, text: subHeading"></li>
+                        <ul data-bind="if: HOITerms.length > 0">
+                            <!-- ko foreach: HOITerms -->
+                            <li class="toc-item toc-search-term" data-bind="attr: {id: id}, text: name"></li>
+                            <!-- /ko -->
+                        </ul>
+                    <!-- /ko -->
+                    </ul>
                 <!-- /ko -->
                 </ul>
-            <!-- /ko -->
-            </ul>
+            </div>
         </div>        
         <div class="col-xs-6" style="font-weight: 700 !important; font-size: 24px; border-bottom: 1px dashed #000">
-          <div id="sidebar-toggle" data-bind="click: sidebarClick">
+            <div id="sidebar-toggle" data-bind="click: sidebarClick">
               <span class="toc"></span>
               <span class="toc"></span>
               <span class="toc"></span>
@@ -54,6 +76,7 @@
         </div>
     </div>
     <div class="row">
+        <span id="evidence-explorer" class="rotate" data-bind="click: evidenceExplorerClick">Evidence Explorer....</span>
         <div class="col-xs-6" style="margin-top: 5px;padding-left: 3px;padding-right: 0px;">
             <div id="spl-display" class="drug-label" data-bind="html: model.currentDrugLabel, eventListener: { event: 'click', selector: '.product-label-link', callback: productLabelLinkClick}"></div>        
         </div>

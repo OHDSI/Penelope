@@ -48,6 +48,7 @@ requirejs.config({
 		"jquery":  "https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min",
         "jquery-ui": "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min",
         "jquery-scrollTo": "https://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo",
+        "jquery-sidr": "jquery.sidr.min",
 		"bootstrap": "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min",
 		"colvis": "https://cdnjs.cloudflare.com/ajax/libs/datatables-colvis/1.1.0/js/datatables.colvis.min",
         "knockout": "https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min",
@@ -67,6 +68,7 @@ requirejs.config({
         "datatable-test": "components/datatable-test",
         //"drug-era-report": "components/drug-era-report",
         "drug-label": "components/drug-label",
+        "drug-label-v2": "components/drug-label-v2",
         "exposure-summary": "components/exposure-summary",
         "faceted-datatable": "components/faceted-datatable",
         "home": "components/home",
@@ -79,7 +81,7 @@ requirejs.config({
 	}
 });
 
-requirejs(['knockout', './app', 'lscache', 'director', 'cache-flush', 'condition-concept-by-index', 'drug-label', 'exposure-summary', 'faceted-datatable', 'home', 'other-concepts-of-interest', 'search', 'search-results', 'openFDA'], function(ko, app) {
+requirejs(['knockout', './app', 'lscache', 'director', 'cache-flush', 'condition-concept-by-index', 'drug-label', 'exposure-summary', 'faceted-datatable', 'home', 'other-concepts-of-interest', 'search', 'search-results', 'openFDA', 'drug-label-v2'], function(ko, app) {
     var pageModel = new app();
     var routerOptions = {
 		notfound: function () {

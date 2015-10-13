@@ -1,4 +1,4 @@
-define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 'lodash', 'knockout.dataTables.binding', 'jquery', 'jquery-ui', 'jquery-scrollTo'], function (ko, view, d3, jnj_chart, colorbrewer, _) {
+define(['knockout', 'text!./drug-label-v2.html', 'd3', 'jnj_chart', 'colorbrewer', 'lodash', 'knockout.dataTables.binding', 'jquery', 'jquery-ui', 'jquery-scrollTo', 'jquery-sidr'], function (ko, view, d3, jnj_chart, colorbrewer, _) {
 	function drugLabel(params) {
 		var self = this;
 		self.model = params.model;
@@ -8,7 +8,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
         }
         
         self.evidenceExplorerClick = function() {
-            alert("hello world");
+            $('.drug-label-ee-main-container').toggleClass("open-ee-sidebar");
         }
 
         self.openEvidenceBrowser = function () {
@@ -292,6 +292,24 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                 self.getLiteratureSummary();
             }
         });         
+        
+        self.setSidebar = function () {
+            $('#left-menu-link').sidr({
+              name: 'sidr-left',
+              side: 'left' // By default
+            });
+            $('#right-menu-link').sidr({
+              name: 'sidr-right',
+              side: 'right',
+              displace: false
+            });
+        }
+        
+        self.toggleFull = function () {
+            $('#sidr-right').toggleClass("sidr-full");
+        }
+        
+        self.setSidebar();
     }
 
 	var component = {
@@ -299,6 +317,6 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
 		template: view
 	};
 
-	ko.components.register('drug-label', component);
+	ko.components.register('drug-label-v2', component);
 	return component;
 });

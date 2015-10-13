@@ -188,6 +188,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
         
         // Retrieves the literature summary from Laertes
         self.getLiteratureSummary = function() {
+        	/*
             $.ajax({
 				method: 'GET',
 				url: 'http://localhost:8080/WebAPI/LAERTES/evidence/evidencesummary?conditionID=' + self.model.selectedConditionConceptId() + ' &drugID=' + self.model.currentDrugConceptId() + '&evidenceGroup=Literature', //'js/mock-data/sci-lit-summary.json', //self.model.services()[0].url + 'conceptset/',
@@ -198,6 +199,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                     //self.model.literatureEvidenceResults(data);
 				}
 			});
+			*/
         }
                 
         // Handles the click logic for the tabbed evidence browser

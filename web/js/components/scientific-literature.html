@@ -1,0 +1,48 @@
+<span>TODO: Group by evidence type (PubMed, SemMedDB, etc). Provide drill down area and heading. Also need a mouse over tool tip to describe the Avalec Method</span>
+<!-- start: loading -->
+<div id="es-loading" data-bind="if: $component.loadingSummary() == true">
+    <div class="spinner">
+      <h4>Loading</h4>
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+      <div class="rect6"></div>
+      <div class="rect7"></div>
+    </div>
+</div>
+<!-- end: loading -->  
+<div data-bind="if: $component.loadingSummary() == false">
+    <svg class="chart"></svg>
+</div>
+<!-- start: loading -->
+<div id="es-loading" data-bind="if: $component.loadingDetails() == true">
+    <div class="spinner">
+      <h4>Loading</h4>
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+      <div class="rect6"></div>
+      <div class="rect7"></div>
+    </div>
+</div>
+<!-- end: loading -->
+<div data-bind="if: $component.loadingDetails() == false">
+    <div data-bind="if: model.literatureEvidenceDetails() != null && model.literatureEvidenceDetails().length > 0">
+        <h3 data-bind="attr: {title: model.literatureEvidenceDetails().evidence_type}, text: model.literatureEvidenceDetails().evidence_type + '  (' +  model.literatureEvidenceDetails().evidence_count + ')'"></h3>
+        <!-- ko foreach: model.literatureEvidenceDetails().evidence -->                    
+        <div class="search-result row">
+            <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                <a data-bind="attr: {title: text, href: sourceURL}, text: sourceURL" target="_blank"></a>
+                <p data-bind="text: exact"></p>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+    <div data-bind="$if: $component.hasDetailError() == true">
+        <span data-bind="text: $component.detailErrorMsg()"></span>
+    </div>
+</div>

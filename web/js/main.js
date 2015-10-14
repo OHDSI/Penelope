@@ -68,20 +68,21 @@ requirejs.config({
         "datatable-test": "components/datatable-test",
         //"drug-era-report": "components/drug-era-report",
         "drug-label": "components/drug-label",
-        "drug-label-v2": "components/drug-label-v2",
+        //"drug-label-v2": "components/drug-label-v2",
         "exposure-summary": "components/exposure-summary",
         "faceted-datatable": "components/faceted-datatable",
         "home": "components/home",
         "other-concepts-of-interest" : "components/other-concepts-of-interest",
         "search": "components/search",
         "search-results": "components/search-results",
-        "openFDA" : "components/openFDA"
+        "openFDA" : "components/openFDA",
+        "scientific-literature": "components/scientific-literature"
         //"datatablesbuttons": "https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min", // Try again when DataTables is upgraded to 1.10.10
         //"jsbuttons": "https://cdn.datatables.net/buttons/1.0.3/js/buttons.html5.min", // Try again when DataTables is upgraded to 1.10.10
 	}
 });
 
-requirejs(['knockout', './app', 'lscache', 'director', 'cache-flush', 'condition-concept-by-index', 'drug-label', 'exposure-summary', 'faceted-datatable', 'home', 'other-concepts-of-interest', 'search', 'search-results', 'openFDA', 'drug-label-v2'], function(ko, app) {
+requirejs(['knockout', './app', 'lscache', 'director', 'cache-flush', 'condition-concept-by-index', 'drug-label', 'exposure-summary', 'faceted-datatable', 'home', 'other-concepts-of-interest', 'search', 'search-results', 'openFDA', 'scientific-literature'], function(ko, app) {
     var pageModel = new app();
     var routerOptions = {
 		notfound: function () {

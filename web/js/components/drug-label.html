@@ -117,10 +117,12 @@
                                 </div>
                                 <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                                     <div class="panel-body">
-                                        <h4>Related Concepts</h4>
-                                        Heracles reports for exposure cohort for drug – get selected concept and all descendants
-                                        http://hixbeta.jnj.com/heracles/viewer.html?cohortId=293. Show table + scatter plot when table row is selected<br/>
-                                        <condition-concept-by-index params="{model: pageModel, conceptDomain: 'condition'}"></condition-concept-by-index>
+                                        <div data-bind="if: pageModel.selectedConditionConceptAndDescendants().length > 0">
+                                            <h4>Related Concepts</h4>
+                                            Heracles reports for exposure cohort for drug – get selected concept and all descendants
+                                            http://hixbeta.jnj.com/heracles/viewer.html?cohortId=293. Show table + scatter plot when table row is selected<br/>
+                                            <condition-concept-by-index params="{model: pageModel, conceptDomain: 'condition'}"></condition-concept-by-index>
+                                        </div>
                                         <h4>Other Concepts Of Interest</h4>
                                          Pull in other concepts from hand-curated table (Penelope_related_concepts). Generate Heracles reports for exposure cohort for drug – get all descendants of the related concepts http://hixbeta.jnj.com/heracles/viewer.html?cohortId=293<br/>
                                         <other-concepts-of-interest params="{model: pageModel, conceptDomain: 'condition'}"></other-concepts-of-interest>                                                    
@@ -162,43 +164,7 @@
                 <!-- /ko --> <!-- end: report source defined -->                            
             </div>
             <div id="tabSciLit" data-bind="css: {hidden: model.drugLabelActiveTab() != 'sci'}">
-                <span></span>TODO: Group by evidence type (PubMed, SemMedDB, etc). Provide drill down area and heading. Also need a mouse over tool tip to describe the Avalec Method (JD to provide)</span>
-                <svg class="chart"></svg>
-                <!-- ko if: model.literatureEvidenceDetails().evidence != undefined -->
-                  <h3 data-bind="attr: {title: model.literatureEvidenceDetails().evidence_type}, text: model.literatureEvidenceDetails().evidence_type + '  (' + model.literatureEvidenceDetails().evidence_count + ')'"></h3>
-                    <!-- ko foreach: model.literatureEvidenceDetails().evidence -->                    
-                    <div class="search-result row">
-                    <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                        <a data-bind="attr: {title: text, href: sourceURL}, text: sourceURL" target="_blank"></a>
-                        <p data-bind="text: exact"></p>
-                    </div>
-                      <!--
-                    <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                        <a href="#" target="_blank">Article Name 1</a>
-                        <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
-                        <p>Snippet of the article would go here....</p>
-                      </div>
-                    <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                        <a href="#" target="_blank">Article Name 1</a>
-                        <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
-                        <p>Snippet of the article would go here....</p>
-                      </div>
-                    <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                        <a href="#" target="_blank">Article Name 1</a>
-                        <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
-                        <p>Snippet of the article would go here....</p>
-                      </div>
-                    -->
-                    <!--
-                    <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                        <a data-bind="attr: {title: article_name}, text: article_name" target="_blank"></a>
-                        <p class="authors" data-bind="text: authors + ' - ' + publication + ', ' + date_of_publication"></p>
-                        <p data-bind="text: snippet"></p>
-                    </div>
-                    -->
-                  </div>
-                    <!-- /ko -->
-                <!-- /ko -->
+                <scientific-literature params="{model: pageModel}"></scientific-literature>
             </div>
             <div id="tabSR" data-bind="css: {hidden: model.drugLabelActiveTab() != 'spo'}">
                 <h4>FAERS SUMMARY</h4>

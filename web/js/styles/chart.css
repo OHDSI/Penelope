@@ -221,3 +221,13 @@ table.data td {
   shape-rendering: crispEdges;
 }
 
+path.slice{
+	stroke-width:2px;
+}
+
+polyline{
+	opacity: .3;
+	stroke: black;
+	stroke-width: 2px;
+	fill: none;
+}

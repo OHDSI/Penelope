@@ -170,46 +170,10 @@
 				<!-- end: report source defined -->
 			</div>
 			<div id="tabSciLit" data-bind="css: {hidden: model.drugLabelActiveTab() != 'sci'}">
-				<span></span>TODO: Group by evidence type (PubMed, SemMedDB, etc). Provide drill down area and heading. Also need a mouse over tool tip to describe the Avalec Method (JD to provide)</span>
-				<svg class="chart"></svg>
-				<!-- ko if: model.literatureEvidenceDetails().evidence != undefined -->
-				<h3 data-bind="attr: {title: model.literatureEvidenceDetails().evidence_type}, text: model.literatureEvidenceDetails().evidence_type + '  (' + model.literatureEvidenceDetails().evidence_count + ')'"></h3>
-				<!-- ko foreach: model.literatureEvidenceDetails().evidence -->
-				<div class="search-result row">
-					<div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-						<a data-bind="attr: {title: text, href: sourceURL}, text: sourceURL" target="_blank"></a>
-						<p data-bind="text: exact"></p>
-					</div>
-					<!--
-                    <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                        <a href="#" target="_blank">Article Name 1</a>
-                        <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
-                        <p>Snippet of the article would go here....</p>
-                      </div>
-                    <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                        <a href="#" target="_blank">Article Name 1</a>
-                        <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
-                        <p>Snippet of the article would go here....</p>
-                      </div>
-                    <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                        <a href="#" target="_blank">Article Name 1</a>
-                        <p class="authors">author 1, author 2, author 3 - publication, 02/12/2014</p>
-                        <p>Snippet of the article would go here....</p>
-                      </div>
-                    -->
-					<!--
-                    <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                        <a data-bind="attr: {title: article_name}, text: article_name" target="_blank"></a>
-                        <p class="authors" data-bind="text: authors + ' - ' + publication + ', ' + date_of_publication"></p>
-                        <p data-bind="text: snippet"></p>
-                    </div>
-                    -->
-				</div>
-				<!-- /ko -->
-				<!-- /ko -->
+                <scientific-literature params="{model: pageModel}"></scientific-literature>
 			</div>
 			<div id="tabSR" data-bind="css: {hidden: model.drugLabelActiveTab() != 'spo'}">
-				<h4>FAERS SUMMARY</h4>
+                <spontaneous-reports params="model: pageModel"></spontaneous-reports>
 				<open-fda params="{drug: 'celecoxib+celebrex', condition: 'myocardial+infarction', model: pageModel}"></open-fda>
 				<span id="selectedHOI" data-bind="text: 'TODO: Get ' + model.selectedConditionConceptName() + ' plus all descendants'"></span> Put a table from LAERTES that shows concept name, count, Prevalance Rate Ration (PRR)
 				<br/> Translate the SNOMED concepts to MedDRA PT terms. Call OpenFDA and put in 2 charts:

@@ -37,7 +37,9 @@
 }
 .sidr.right {
     left: auto;
-    right: -400px
+    right: -400px;
+    box-shadow: -5px 0px 50px #222;
+    border-left: solid 1px #888;
 }
 .sidr.left {
     left: -260px;

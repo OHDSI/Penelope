@@ -31,7 +31,7 @@
 </div>
 <!-- end: loading -->
 <div data-bind="if: $component.loadingDetails() == false">
-    <div data-bind="if: model.literatureEvidenceDetails() != null && model.literatureEvidenceDetails().length > 0">
+    <div data-bind="if: model.literatureEvidenceDetails() != null && model.literatureEvidenceDetails().evidence.length > 0">
         <h3 data-bind="attr: {title: model.literatureEvidenceDetails().evidence_type}, text: model.literatureEvidenceDetails().evidence_type + '  (' +  model.literatureEvidenceDetails().evidence_count + ')'"></h3>
         <!-- ko foreach: model.literatureEvidenceDetails().evidence -->                    
         <div class="search-result row">

@@ -40,14 +40,14 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                     //self.getLiteratureSummary();
                     break;
                 case 'spo':
-                    self.getOpenFDAData();
+                    //self.getOpenFDAData();
                     break;
             }
             self.model.drugLabelActiveTab(listItemNode.attributes["tabName"].value);
         }
         
         // Test function for retrieving data from OpenFDA
-        self.getOpenFDAData = function() {
+        /* self.getOpenFDAData = function() {
             $.ajax({
 				method: 'GET',
 				url: 'https://api.fda.gov/drug/event.json?search=(patient.drug.openfda.spl_set_id:"' + self.model.currentDrugSetId() + '")&count=patient.reaction.reactionmeddrapt.exact',
@@ -56,7 +56,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                     self.model.openFDAConditionOccurrenceForLabel(data);
 				}
 			});
-        }
+        } */
         
         // Handles the in-place search of the table of contents
         self.searchTOC = function() {

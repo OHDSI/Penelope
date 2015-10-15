@@ -19,7 +19,7 @@ define(['knockout', 'text!./label-evidence.html', 'knockout.dataTables.binding',
                     "INGREDIENT_CONCEPT_LIST" : ingredientConceptList,
                     "EVIDENCE_TYPE_LIST": ["SPL_SPLICER_ADR"]
                 }),
-				url: self.model.evidenceUrl() + 'evidencesearch',
+				url: self.model.evidenceUrl() + 'labelevidence',
 				contentType: "application/json; charset=utf-8",
 				success: function (data) {
                     self.loadingSummary(false);
@@ -27,6 +27,7 @@ define(['knockout', 'text!./label-evidence.html', 'knockout.dataTables.binding',
                     // stored in self.model.selectedDrugAndAncestorDescendants() merged with 
                     // the data returned from this service to indicate if there is evidence that
                     // the label contains evidence for the selected condition concept + descendants
+                    /*
                     var labelEvidenceResult = self.model.selectedDrugAndAncestorDescendants().map(
                         function(d, i) {
                             var ingredientConceptId = d.concept_id;
@@ -41,11 +42,27 @@ define(['knockout', 'text!./label-evidence.html', 'knockout.dataTables.binding',
                                 "HAS_EVIDENCE": matchAgainstEvidence.length > 0
                             };
                         });
+                    */
+                    
+                    var labelEvidenceResult = data.map(
+                        function(d, i) {
+                            var ingredientConceptId = d.ingredient_concept_id;
+                            var findlookup = $.grep(self.model.selectedDrugAndAncestorDescendants(), function(n, i) {
+                                return n.concept_id == ingredientConceptId;
+                            });
+                            return {
+                                "CONCEPT_ID": d.ingredient_concept_id,
+                                "CONCEPT_NAME": d.ingredient_concept_name,
+                                "ATC3": findlookup[0].atc3,
+                                "ATC5": findlookup[0].atc5,
+                                "HAS_EVIDENCE": d.hasEvidence
+                            };
+                        });
 
                     var datatable = $('#label-evidence-summary-table').DataTable({
                         order: [2, 'desc'],
                         dom: 'T<"clear">lfrtip',
-                        data: labelEvidenceResult, //table_data,
+                        data: labelEvidenceResult, 
                         columns: [
                             {
                                 data: 'CONCEPT_NAME'

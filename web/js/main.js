@@ -77,13 +77,14 @@ requirejs.config({
         "search-results": "components/search-results",
         "openFDA" : "components/openFDA",
         "scientific-literature": "components/scientific-literature",
-        "spontaneous-reports": "components/spontaneous-reports"
+        "spontaneous-reports": "components/spontaneous-reports",
+        "label-evidence": "components/label-evidence"
         //"datatablesbuttons": "https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min", // Try again when DataTables is upgraded to 1.10.10
         //"jsbuttons": "https://cdn.datatables.net/buttons/1.0.3/js/buttons.html5.min", // Try again when DataTables is upgraded to 1.10.10
 	}
 });
 
-requirejs(['knockout', './app', 'lscache', 'director', 'cache-flush', 'condition-concept-by-index', 'drug-label', 'exposure-summary', 'faceted-datatable', 'home', 'other-concepts-of-interest', 'search', 'search-results', 'openFDA', 'scientific-literature', 'spontaneous-reports'], function(ko, app) {
+requirejs(['knockout', './app', 'lscache', 'director', 'cache-flush', 'condition-concept-by-index', 'drug-label', 'exposure-summary', 'faceted-datatable', 'home', 'other-concepts-of-interest', 'search', 'search-results', 'openFDA', 'scientific-literature', 'spontaneous-reports', 'label-evidence'], function(ko, app) {
     var pageModel = new app();
     var routerOptions = {
 		notfound: function () {

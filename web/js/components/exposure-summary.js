@@ -195,7 +195,7 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
                                         length_of_era: self.model.formatFixed(d.lengthOfEra)
                                     }
                                 }, data);
-
+                                self.model.selectedDrugAndAncestorDescendants(table_data);
                                 datatable = $('#drugera_table').DataTable({
                                     order: [ 5, 'desc' ],
                                     dom: 'Clfrtip',

@@ -174,14 +174,8 @@
 			</div>
 			<div id="tabSR" data-bind="css: {hidden: model.drugLabelActiveTab() != 'spo'}">
                 <spontaneous-reports params="model: pageModel"></spontaneous-reports>
+                <h4>TODO: Make the section below dynamic and a drill down:</h4>
 				<open-fda params="{drug: 'celecoxib+celebrex', condition: 'myocardial+infarction', model: pageModel}"></open-fda>
-				<span id="selectedHOI" data-bind="text: 'TODO: Get ' + model.selectedConditionConceptName() + ' plus all descendants'"></span> Put a table from LAERTES that shows concept name, count, Prevalance Rate Ration (PRR)
-				<br/> Translate the SNOMED concepts to MedDRA PT terms. Call OpenFDA and put in 2 charts:
-				<ul>
-					<li>Outcome</li>
-					<li>Seriousness</li>
-				</ul>
-				Hamed to provide charts
 				<h4>FAERS DRILLDOWN</h4> Case sample - show first 100 or so with drop down to show the date, ae, gender, drug, events
 				<!-- ko if: model.openFDAConditionOccurrenceForLabel() != undefined -->
 				<h3 data-bind="text: 'Conditions related to ' + model.currentDrugName() + ' as reported by OpenFDA'"></h3>
@@ -195,8 +189,7 @@
 				<!-- /ko -->
 			</div>
 			<div id="tabLab" data-bind="css: {hidden: model.drugLabelActiveTab() != 'lab'}">
-				<h4>US Labels</h4> Pass in the concept plus descendants and get back ATC3, ATC5, and if those concepts do/do not appear on other labels as determined by LAERTES. Show a Y/N column for each label + concept.
-				<h4>EU Labels</h4> Same as above but for EU labels
+                <label-evidence params="model: pageModel"></label-evidence>
 			</div>
 		</div>
 	</div>

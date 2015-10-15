@@ -307,7 +307,7 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
 
                         // create svg with range bands based on the trellis names
                         var chart = new jnj_chart.trellisline();
-                        chart.render(dataByDecile, "#trellisLinePlot", 400, 200, {
+                        chart.render(dataByDecile, "#trellisLinePlot", 500, 250, {
                             trellisSet: allDeciles,
                             trellisLabel: "Age Decile",
                             seriesLabel: "Year",

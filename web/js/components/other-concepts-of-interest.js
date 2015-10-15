@@ -3,27 +3,22 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
 		var self = this;
 		self.model = params.model;
 		self.datatables = {};
-        //self.loading = ko.observable(false);
-        self.loadingConditionPrevalence = ko.observable(false);
-        self.loadingDrugPrevalence = ko.observable(false);
-        self.loadingDrugEras = ko.observable(false);
+        self.loading = ko.observable(false);
+        self.hasNoResults = ko.observable(false);
         self.loadingReportDrilldown = ko.observable(false);
         self.activeReportDrilldown = ko.observable(false);
         
 		self.render = function () {
-			// If there is no concept specified, there is no need to retrieve the data....
-			if (self.model.selectedConditionConceptId() <= 0 && self.model.selectedConditionOccurrencePrevalence() == undefined)
-				return;
-
-            $('#other-concepts-of-interest-caption').html('Other Concepts Of Interest For ' + self.model.selectedConditionConceptName());
-            
+            self.loading(true);            
+            self.hasNoResults(false);
             var conceptsOfInterest = [];
             
             // Get the matching concepts of interest
             $.ajax({
 				type: "GET",
-				url: 'js/mock-data/other-concepts-of-interest.json', //self.vocabularyUrl() + 'search/' + query,
+				url: 'js/mock-data/other-concepts-of-interest.json',
             }).done(function (results) {
+                var table_data = null;
                 if (results != null && results.length > 0) {
                     var matches = $.grep(results, function(n, i) { 
                         return n.concept_id == self.model.selectedConditionConceptId();
@@ -39,14 +34,15 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
                             url: self.model.vocabularyUrl() + "conceptlist/descendants",
                             contentType: "application/json; charset=utf-8",
                             success: function (result) {
+                                self.loading(false);
                                 // Pull back the full list of conditions for the selected drug cohort
-                                var table_data = self.model.selectedConditionOccurrencePrevalence();
+                                var allConditions = self.model.selectedConditionOccurrencePrevalence();
 
                                 // The result object contains the descendant concepts - use this to pull out this subset
-                                // of concepts from the table_data object
-                                var table_data_subset = result.map(function (val, index) {
+                                // of concepts from the allConditions object
+                                var allConditions_subset = result.map(function (val, index) {
                                     var concept_id = val.CONCEPT_ID;
-                                    var matchingResult = $.grep(table_data, function(n, i) { 
+                                    var matchingResult = $.grep(allConditions, function(n, i) { 
                                         return n.concept_id == concept_id;
                                     });
                                     if (matchingResult.length > 0){
@@ -57,7 +53,7 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
                                 });
 
                                 // Remove the NULL values from the subset
-                                var table_data_subset_no_nulls = $.grep(table_data_subset, function(n, i) {
+                                var table_data = $.grep(allConditions_subset, function(n, i) {
                                     return n != null
                                 });
 
@@ -76,7 +72,7 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
                                 var datatable = $('#other_concepts_of_interest_table').DataTable({
                                     order: [6, 'desc'],
                                     dom: 'T<"clear">lfrtip',
-                                    data: table_data_subset_no_nulls,
+                                    data: table_data,
                                     columns: [{
                                             data: 'concept_id'
                                 },
@@ -120,7 +116,8 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
                         });                        
                     }
                     else {
-                        // TODO: Write out something or potentially hide this section?
+                        self.loading(false);
+                        self.hasNoResults(true);
                     }
                 }
             });
@@ -205,12 +202,35 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
             
             
 		}    
-
+        
         self.model.selectedConditionConceptId.subscribe(function(newValue) {
-            self.render();
+        	if (newValue > 0) {
+				self.evaluateRender();        		
+        	}
         });
         
-		self.render();
+        self.model.selectedConditionOccurrencePrevalence.subscribe(function(newValue) {
+        	if (newValue != undefined) {        		
+				self.evaluateRender();            
+        	}
+        });
+
+        self.evaluateRender = function() {
+            try
+            {
+                if (self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionOccurrencePrevalence() != undefined && self.model.selectedConditionConceptAndDescendants().length > 0){
+                    self.render();
+                }
+                else{
+                    self.loading(true);
+                }                
+            }
+            catch (e)
+            {
+                self.loading(true);
+            }
+
+        }
 	}
 
 	var component = {

@@ -4,18 +4,15 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
 		self.model = params.model;
 		self.datatables = {};
         //self.loading = ko.observable(false);
-        self.loadingConditionPrevalence = ko.observable(false);
+        self.loadingRelatedConcepts = ko.observable(false);
         self.loadingDrugPrevalence = ko.observable(false);
         self.loadingDrugEras = ko.observable(false);
         self.loadingReportDrilldown = ko.observable(false);
         self.activeReportDrilldown = ko.observable(false);
         
 		self.render = function () {
-			// If there is no concept specified, there is no need to retrieve the data....
-			if (self.model.selectedConditionConceptId() <= 0 && self.model.selectedConditionOccurrencePrevalence() == undefined && self.model.selectedConditionConceptAndDescendants() > 0)
-				return;
+            self.loadingRelatedConcepts(true);
 
-            $('#condition-concept-by-index-caption').html('First Condition Occurrence Of ' + self.model.selectedConditionConceptName() + ' Relative To Index');
             var result = self.model.selectedConditionConceptAndDescendants();
             // Pull back the full list of conditions for the selected drug cohort
             var table_data = self.model.selectedConditionOccurrencePrevalence();
@@ -39,7 +36,9 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
                 return n != null
             });
                     
-                    // Set the callback click event for the table row
+            self.loadingRelatedConcepts(false);
+
+            // Set the callback click event for the table row
             $(document).on('click', '.condition_concept_table tbody tr', function () {
                 var datatable = self.datatables[$(this).parents('.condition_concept_table').attr('id')];
                 var data = datatable.data()[datatable.row(this)[0]];
@@ -57,43 +56,43 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
                 data: table_data_subset_no_nulls,
                 columns: [{
                         data: 'concept_id'
-            },
+                    },
                     {
                         data: 'soc'
-},
+                    },
                     {
                         data: 'hlgt',
                         visible: false
-            },
+                    },
                     {
                         data: 'hlt'
-},
+                    },
                     {
                         data: 'pt',
                         visible: false
-},
+                    },
                     {
                         data: 'snomed'
-},
+                    },
                     {
                         data: 'num_persons',
                         className: 'numeric'
-},
+                    },
                     {
                         data: 'percent_persons',
                         className: 'numeric'
-},
+                    },
                     {
                         data: 'relative_risk',
                         className: 'numeric'
-}
-],
+                    }
+                ],
                 pageLength: 5,
                 lengthChange: false,
                 deferRender: true,
                 destroy: true
             });
-            self.datatables['condition_concept_table'] = datatable;                                
+            self.datatables['condition_concept_table'] = datatable;   
 		}
 
         self.drilldown = function (id, name, type) {
@@ -177,10 +176,39 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
 		}    
 
         self.model.selectedConditionConceptAndDescendants.subscribe(function(newValue) {
-            self.render();
+        	if (newValue != null) {
+				self.evaluateRender();        		
+        	}
         });
         
-		self.render();
+        self.model.selectedConditionConceptId.subscribe(function(newValue) {
+        	if (newValue > 0) {
+				self.evaluateRender();        		
+        	}
+        });
+        
+        self.model.selectedConditionOccurrencePrevalence.subscribe(function(newValue) {
+        	if (newValue != undefined) {        		
+				self.evaluateRender();            
+        	}
+        });
+        
+        self.evaluateRender = function() {
+            try
+            {
+                if (self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionOccurrencePrevalence() != undefined && self.model.selectedConditionConceptAndDescendants().length > 0){
+                    self.render();
+                }
+                else{
+                    self.loadingRelatedConcepts(true);
+                }                
+            }
+            catch (e)
+            {
+                self.loadingRelatedConcepts(true);
+            }
+
+        }
 	}
 
 	var component = {

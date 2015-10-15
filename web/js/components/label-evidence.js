@@ -95,7 +95,9 @@ define(['knockout', 'text!./label-evidence.html', 'knockout.dataTables.binding',
         }
         
         self.model.selectedConditionConceptAndDescendants.subscribe(function(newValue) {
-            self.render();
+        	if (newValue != null) {        		
+            	self.render();
+        	}
         });        
         
     }

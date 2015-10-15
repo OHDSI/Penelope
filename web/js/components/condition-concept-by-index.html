@@ -1,28 +1,44 @@
-<div>
-	<div id="condition-concept-by-index-caption"></div>
-    <div>
-        <table id="condition_concept_table" class="display condition_concept_table" type="condition">
-            <thead>
-                <tr>
-                    <th>Concept Id</th>
-                    <th>SOC</th>
-                    <th>HLGT</th>
-                    <th>HLT</th>
-                    <th>PT</th>
-                    <th>SNOMED</th>
-                    <th>Person Count</th>
-                    <th>Prevalence</th>
-                    <th>Relative Risk per Person</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-    <div class="loader" data-bind="if:$component.loadingReportDrilldown">
-        <i class="fa fa-refresh fa-spin"></i> Loading Drilldown...
-    </div>
-    <div data-bind="if:$component.activeReportDrilldown">
-        <div id="conditionConceptByIndexDrilldownScatterplotHeading" class="reportSectionHeading">
+<div class="panel panel-default">
+    <div class="pad-10 report">
+        <div class="reportHeading"><i class="fa fa-area-chart"></i>Related Concepts</div>
+        <div class="reportSectionHeading" data-bind="text: 'First Condition Occurrence Of ' + model.selectedConditionConceptName() + ' Relative To Index'"></div>
+        <!-- start: loading -->
+        <div id="es-loading" data-bind="if: $component.loadingRelatedConcepts() == true">
+            <div class="spinner">
+              <h4>Loading</h4>
+              <div class="rect1"></div>
+              <div class="rect2"></div>
+              <div class="rect3"></div>
+              <div class="rect4"></div>
+              <div class="rect5"></div>
+              <div class="rect6"></div>
+              <div class="rect7"></div>
+            </div>
         </div>
-        <div class="evidenceVisualization" id="conditionConceptByIndexDrilldownScatterplot"></div>
+        <!-- end: loading -->
+        <div data-bind="if: $component.loadingRelatedConcepts() == false">
+            <table id="condition_concept_table" class="display condition_concept_table" type="condition">
+                <thead>
+                    <tr>
+                        <th>Concept Id</th>
+                        <th>SOC</th>
+                        <th>HLGT</th>
+                        <th>HLT</th>
+                        <th>PT</th>
+                        <th>SNOMED</th>
+                        <th>Person Count</th>
+                        <th>Prevalence</th>
+                        <th>Relative Risk per Person</th>
+                    </tr>
+                </thead>
+            </table>
+            <div class="loader" data-bind="if:$component.loadingReportDrilldown">
+                <i class="fa fa-refresh fa-spin"></i> Loading Drilldown...
+            </div>
+            <div data-bind="if:$component.activeReportDrilldown">
+                <div id="conditionConceptByIndexDrilldownScatterplotHeading" class="reportSectionHeading"></div>
+                <div class="evidenceVisualization" id="conditionConceptByIndexDrilldownScatterplot"></div>
+            </div>
+        </div>
     </div>
 </div>

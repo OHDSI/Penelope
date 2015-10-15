@@ -61,7 +61,9 @@ define(['knockout', 'text!./spontaneous-reports.html', 'knockout.dataTables.bind
         }
         
         self.model.selectedConditionConceptAndDescendants.subscribe(function(newValue) {
-            self.render();
+        	if (newValue != null) {        		
+            	self.render();
+        	}
         });        
         
     }

@@ -106,6 +106,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                 // If a condition concept has been selected, ensure that the exposure summary is collapsed
                 // and that the clinical characterization section is expanded
                 self.setClinicalCharacterizationActive();
+                self.model.selectedConditionConceptAndDescendants(null);
                 self.getConceptDescendants(self.model.selectedConditionConceptId());
             }
         });

@@ -19,7 +19,7 @@ define(['knockout', 'text!./label-evidence.html', 'knockout.dataTables.binding',
                     "INGREDIENT_CONCEPT_LIST" : ingredientConceptList,
                     "EVIDENCE_TYPE_LIST": ["SPL_SPLICER_ADR"]
                 }),
-				url: self.model.evidenceUrl() + 'spontaneousreports',
+				url: self.model.evidenceUrl() + 'evidencesearch',
 				contentType: "application/json; charset=utf-8",
 				success: function (data) {
                     self.loadingSummary(false);
@@ -31,7 +31,7 @@ define(['knockout', 'text!./label-evidence.html', 'knockout.dataTables.binding',
                         function(d, i) {
                             var ingredientConceptId = d.concept_id;
                             var matchAgainstEvidence = $.grep(data, function(n, i) {
-                                return n.INGREDIENT_CONCEPT_ID == ingredientConceptId;
+                                return n.ingredient_concept_id == ingredientConceptId;
                             });
                             return {
                                 "CONCEPT_ID": d.concept_id,
@@ -41,20 +41,7 @@ define(['knockout', 'text!./label-evidence.html', 'knockout.dataTables.binding',
                                 "HAS_EVIDENCE": matchAgainstEvidence.length > 0
                             };
                         });
-                    /*
-                    var labelEvidenceResult = result.map(function (val, index) {
-                        var concept_id = val.CONCEPT_ID;
-                        var matchingResult = $.grep(table_data, function(n, i) { 
-                            return n.concept_id == concept_id;
-                        });
-                        if (matchingResult.length > 0){
-                            return matchingResult[0];
-                        } else {
-                            return null;
-                        }
-                    });
-                    */
-                    
+
                     var datatable = $('#label-evidence-summary-table').DataTable({
                         order: [2, 'desc'],
                         dom: 'T<"clear">lfrtip',
@@ -94,12 +81,39 @@ define(['knockout', 'text!./label-evidence.html', 'knockout.dataTables.binding',
             self.detailErrorMsg('');
         }
         
+        self.model.selectedConditionConceptId.subscribe(function(newValue) {
+        	if (newValue > 0) {
+				self.evaluateRender();        		
+        	}
+        });
+        
         self.model.selectedConditionConceptAndDescendants.subscribe(function(newValue) {
         	if (newValue != null) {        		
-            	self.render();
+            	self.evaluateRender();
         	}
         });        
         
+        self.model.selectedDrugAndAncestorDescendants.subscribe(function(newValue) {
+            if (newValue != null) {
+                self.evaluateRender();
+            }
+        });
+        
+        self.evaluateRender = function() {
+            try
+            {
+                if (self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionConceptAndDescendants().length > 0 && self.model.selectedDrugAndAncestorDescendants().length > 0){
+                    self.render();
+                }
+                else{
+                    self.loadingSummary(true);
+                }                
+            }
+            catch (e)
+            {
+                self.loadingSummary(true);
+            }
+        }
     }
 
 	var component = {

@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+    <div class="pad-10 report">
+        <div class="reportHeading"><i class="fa fa-area-chart"></i>Cohorts Of Interest</div>
+        <div class="reportSectionHeading"></div>
+        <!-- start: loading -->
+        <div id="es-loading" data-bind="if: $component.loading() == true">
+            <div class="spinner">
+              <h4>Loading</h4>
+              <div class="rect1"></div>
+              <div class="rect2"></div>
+              <div class="rect3"></div>
+              <div class="rect4"></div>
+              <div class="rect5"></div>
+              <div class="rect6"></div>
+              <div class="rect7"></div>
+            </div>
+        </div>
+        <!-- end: loading -->
+        <div data-bind="if: $component.loading() == false">
+            Pull in report from Penelope_stats table and display similar to the one from Heracles with a link out to the Cohort definition. http://hixbeta.jnj.com/heracles/viewer.html?cohortId=293 
+        </div>
+    </div>
+</div>

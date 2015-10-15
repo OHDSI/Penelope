@@ -10,11 +10,13 @@ define(['knockout', 'text!./spontaneous-reports.html', 'knockout.dataTables.bind
         self.render = function() {
             self.loadingSummary(true);
             self.resetDetailError();
+            var conditionConceptList = self.model.selectedConditionConceptAndDescendants().map(function(d, i) { return d.CONCEPT_ID });
+            var ingredientConceptList = [self.model.currentDrugConceptId()];
             $.ajax({
 				method: 'POST',
                 data: ko.toJSON({
-                    "CONDITION_CONCEPT_LIST" : self.model.selectedConditionConceptAndDescendants().map(function(d, i) { return d.CONCEPT_ID }),
-                    "INGREDIENT_CONCEPT_LIST" : [self.model.currentDrugConceptId]
+                    "CONDITION_CONCEPT_LIST" : conditionConceptList,
+                    "INGREDIENT_CONCEPT_LIST" : ingredientConceptList
                 }),
 				url: self.model.evidenceUrl() + 'spontaneousreports',
 				contentType: "application/json; charset=utf-8",
@@ -60,12 +62,40 @@ define(['knockout', 'text!./spontaneous-reports.html', 'knockout.dataTables.bind
             self.detailErrorMsg('');
         }
         
+        self.model.selectedConditionConceptId.subscribe(function(newValue) {
+        	if (newValue > 0) {
+				self.evaluateRender();        		
+        	}
+        });
+
         self.model.selectedConditionConceptAndDescendants.subscribe(function(newValue) {
         	if (newValue != null) {        		
-            	self.render();
+            	self.evaluateRender();
         	}
         });        
         
+        self.model.currentDrugConceptId.subscribe(function(newValue) { 
+            if (newValue > 0) {
+            	self.evaluateRender();
+            }
+        });
+                                                  
+        self.evaluateRender = function() {
+            try
+            {
+                if (self.model.selectedConditionConceptId() > 0 && self.model.currentDrugConceptId() > 0 && self.model.selectedConditionConceptAndDescendants() != null){
+                    self.render();
+                }
+                else{
+                    self.loadingSummary(true);
+                }                
+            }
+            catch (e)
+            {
+                self.loadingSummary(true);
+            }
+        }
+                                                  
     }
 
 	var component = {

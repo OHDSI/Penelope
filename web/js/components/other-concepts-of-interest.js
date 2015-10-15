@@ -218,7 +218,7 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
         self.evaluateRender = function() {
             try
             {
-                if (self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionOccurrencePrevalence() != undefined && self.model.selectedConditionConceptAndDescendants().length > 0){
+                if (self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionOccurrencePrevalence() != undefined){
                     self.render();
                 }
                 else{
@@ -229,7 +229,6 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
             {
                 self.loading(true);
             }
-
         }
 	}
 

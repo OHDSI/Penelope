@@ -31,11 +31,6 @@ requirejs.config({
 			"deps": [
 				'jquery',
                 'jquery-ui'
-				//"css!https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.min.css",
-                //"css!https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap-theme.min.css",               
-                //"css!https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css",
-                //"css!https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.theme.min.css",
-                //"css!https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.structure.min.css"
 			]
 		},
         "facets": {
@@ -59,9 +54,6 @@ requirejs.config({
 		"d3_tip": "d3.tip",
 		"jnj_chart": "jnj.chart",
 		"lodash": "lodash.min",
-		"packinghierarchy": "visualization.packinghierarchy",
-		"forcedirectedgraph": "visualization.forcedirectedgraph",
-		"kerneldensity": "visualization.kerneldensity",        
         "knockout.dataTables.binding": "knockout.dataTables.binding", // OHDSI CDN Candidate
         "cache-flush": "components/cache-flush",
         "condition-concept-by-index" : "components/condition-concept-by-index",

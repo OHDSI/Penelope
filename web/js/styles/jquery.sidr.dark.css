@@ -7,14 +7,7 @@
     z-index: 999999;
     overflow-x: none;
     overflow-y: auto;
-    /*font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
-    font-size: 15px;
-    background: #333;
-    color: #fff;*/
     width: 260px;
-    /* -webkit-box-shadow: inset 0 0 5px 5px #222; */
-    -moz-box-shadow: inset 0 0 5px 5px #222;/* box-shadow: inset 0 0 5px 5px #222
-
  */
 }
 .sidr.sidr-left {
@@ -55,18 +48,9 @@
     font-size: 18px;
     font-weight: bold;
     padding: 0 15px;
-    margin: 0 0 5px;
+    /* margin: 0 0 5px; */
     color: #fff;
-    line-height: 24px;
-    background-image: 
-    -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #4d4d4d), color-stop(100%, #1a1a1a));
-    background-image: -webkit-linear-gradient(#4d4d4d, #1a1a1a);
-    background-image: -moz-linear-gradient(#4d4d4d, #1a1a1a);
-    background-image: -o-linear-gradient(#4d4d4d, #1a1a1a);
-    background-image: linear-gradient(#4d4d4d, #1a1a1a);
-    -webkit-box-shadow: 0 5px 5px 3px rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: 0 5px 5px 3px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 5px 5px 3px rgba(0, 0, 0, 0.2)
+    line-height: 20px;
 }
 .sidr.sidr-left p {
     font-size: 13px;
@@ -91,65 +75,45 @@
 .sidr ul li {
     display: block;
     margin: 0;
-    line-height: 48px;
+    /* line-height: 12px; */
     border-top: 1px solid #4d4d4d;
     border-bottom: 1px solid #1a1a1a
-}
-.sidr.sidr-left ul li:hover,
-.sidr.sidr-left ul li.active,
-.sidr.sidr-left ul li.sidr-class-active {
-    border-top: none;
-    line-height: 49px
-}
-.sidr.sidr-left ul li:hover>a,
-.sidr.sidr-left ul li:hover>span,
-.sidr.sidr-left ul li.active>a,
-.sidr.sidr-left ul li.active>span,
-.sidr.sidr-left ul li.sidr-class-active>a,
-.sidr.sidr-left ul li.sidr-class-active>span {
-    -webkit-box-shadow: inset 0 0 15px 3px #222;
-    -moz-box-shadow: inset 0 0 15px 3px #222;
-    box-shadow: inset 0 0 15px 3px #222
-}
-.sidr.sidr-left ul li a,
-.sidr.sidr-left ul li span {
-    padding: 0 15px;
-    display: block;
-    text-decoration: none;
-    color: #fff
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 .sidr.sidr-left ul li ul {
     border-bottom: none;
     margin: 0
 }
 .sidr.sidr-left ul li ul li {
-    line-height: 40px;
-    font-size: 13px
+    line-height: 20px;
+    font-size: 12px;
 }
 .sidr.sidr-left ul li ul li:last-child {
     border-bottom: none
 }
-.sidr.sidr-left ul li ul li:hover,
-.sidr.sidr-left ul li ul li.active,
-.sidr.sidr-left ul li ul li.sidr-class-active {
-    border-top: none;
-    line-height: 41px
-}
-.sidr.sidr-left ul li ul li:hover>a,
-.sidr.sidr-left ul li ul li:hover>span,
-.sidr.sidr-left ul li ul li.active>a,
-.sidr.sidr-left ul li ul li.active>span,
-.sidr.sidr-left ul li ul li.sidr-class-active>a,
-.sidr.sidr-left ul li ul li.sidr-class-active>span {
-    -webkit-box-shadow: inset 0 0 15px 3px #222;
-    -moz-box-shadow: inset 0 0 15px 3px #222;
-    box-shadow: inset 0 0 15px 3px #222
-}
-.sidr.sidr-left ul li ul li a,
-.sidr.sidr-left ul li ul li span {
-    color: rgba(255, 255, 255, 0.8);
-    padding-left: 30px
-}
+
 .sidr.sidr-left form {
     margin: 0 15px
 }
@@ -197,8 +161,4 @@
 .sidr.sidr-left input[type=submit] {
     color: #333;
     background: #fff
-}
-.sidr.sidr-left input[type=button]:hover,
-.sidr.sidr-left input[type=submit]:hover {
-    background: rgba(255, 255, 255, 0.9)
 }

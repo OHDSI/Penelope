@@ -64,23 +64,6 @@ section {
 	margin-bottom: 8px;
 }
 
-.toc-item,
-.product-label-link {
-	cursor: pointer;
-}
-
-.toc-search-term,
-.product-label-link {
-	color: blue;
-	text-decoration: underline;
-}
-
-.toc-item:hover,
-.toc-search-term:hover,
-.product-label-link:hover {
-	font-weight: bold;
-}
-
 .label-image {
 	margin: 20px;
 	clear: both;
@@ -380,4 +363,26 @@ g.trellisLegend {}
 	color: #000;
 	fill: #000;
 	font-size: 11px;
+}
+
+#toc li {
+	padding: 0px 0px 0px 5px;
+	border: none;
+}
+
+#toc a {
+	color:#ccc;
+	cursor: pointer;
+}
+
+li.toc-item.toc-search-term {
+    color: #eef;
+}
+
+.toc-item {
+    border: none;
+}
+
+ul {
+    border: none !important;
 }

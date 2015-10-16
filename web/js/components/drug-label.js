@@ -65,14 +65,23 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
         // Handles the in-place search of the table of contents
         self.searchTOC = function() {
             var valThis = $('#searchtoc').val().toLowerCase(),
-                lenght  = $('#searchtoc').val().length;
+                length  = $('#searchtoc').val().length;
 
+			if (length > 0) {
             $('#toc li.toc-search-term').each(function () {
-                var text  = $(this).text(),
+                var text  = $(this).text().trim(),
                     textL = text.toLowerCase(),
-                    htmlR = '<b id=' + $(this).attr("id") + '>' + text.substr(0, lenght) + '</b>' + text.substr(lenght);
-                (textL.indexOf(valThis) == 0) ? $(this).html(htmlR).show() : $(this).hide();
+                    htmlR = text.substr(0,textL.indexOf(valThis)) + '<b id=' + $(this).attr("id") + '>' + text.substr(textL.indexOf(valThis), length) + '</b>' + text.substr(textL.indexOf(valThis) + length);
+                    if (textL.indexOf(valThis)>=0) {
+						$(this).html(htmlR);
+						$(this).show();
+                    } else {
+						$(this).hide();
+                    }
             });
+			} else {
+				$('.toc-search-term').hide();
+			}
         }
 
         // Handles the click event on the table of contents
@@ -141,6 +150,8 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
         }
         
         self.setSliders();
+        // hide search terms by default
+       	$('.toc-search-term').hide();
     }
 
 	var component = {

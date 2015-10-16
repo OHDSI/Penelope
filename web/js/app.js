@@ -198,6 +198,11 @@ define([
                             if ($(this).attr("type") == 'medication')
                                 $(this).attr("class", "");
                         });
+                        // Remove the links from the Indications section
+                        var labelSectionPrefix = $("#spl-display div[data-sectioncode='34067-9']").children("h1").attr("id").replace("main", "");
+                        $("#spl-display span.product-label-link[id*='" + labelSectionPrefix + "-']").attr("class", "");
+                        // Hide the product packaging section
+                        $("#spl-display div[data-sectioncode='51945-4']").attr("class", "hidden");
                     },
                     error : function(error){
                         alert('Error retrieving label: ' + error);

@@ -386,3 +386,9 @@ li.toc-item.toc-search-term {
 ul {
     border: none !important;
 }
+
+.product-label-link {
+	cursor: pointer;
+	color: blue;
+	text-decoration: underline;
+}

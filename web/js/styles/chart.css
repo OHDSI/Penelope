@@ -80,6 +80,9 @@ table.boxplotValues tr td
 	stroke: #ccc;
 	stroke-width: .6;
 }
+.g-label-trellis text {
+    font-size: 10px;
+}
 .axis path,
 .axis line {
 	fill: none;
@@ -87,11 +90,12 @@ table.boxplotValues tr td
 }
 .axis text {
 	font-family: arial;
-	font-size: 6px;
+	font-size: 8px;
 }
 .axislabel {
 	font-family: arial;
 	font-weight: bold;
+	font-size: 12px;
 }
 table.data td:first-child {
 	text-align: right;
@@ -107,12 +111,12 @@ table.data td {
 }
 .g-label-value,
 .g-label-year {
-	font-size: 5px;
+	font-size: 6px;
 }
 .trellisLegend {
-	font-size: 6px;
+	font-size: 8px;
 	font-family: arial;
-	/* margin: 10px; */
+	line-height: 4px
 }
 .grouper {
 	fill: none;

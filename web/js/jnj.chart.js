@@ -2182,9 +2182,9 @@
 
 					legendItem.append("line")
 						.attr("x1", 0)
-						.attr("y1", 10)
+						.attr("y1", (textBBox.height/2) + 1)
 						.attr("x2", 10)
-						.attr("y2", 10)
+						.attr("y2", (textBBox.height/2) + 1)
 						.style("stroke", options.colors(d));
 
 					legendItem.attr("transform", "translate(" + offset + ",0)");

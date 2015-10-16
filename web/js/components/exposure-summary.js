@@ -106,7 +106,7 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
                                         className: 'numeric'
             }
             ],
-                                pageLength: 5,
+                                pageLength: 10,
                                 lengthChange: false,
                                 deferRender: true,
                                 destroy: true
@@ -235,7 +235,7 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
                                             className: 'numeric'
                                         }
                                     ],
-                                    pageLength: 5,
+                                    pageLength: 10,
                                     lengthChange: false,
                                     deferRender: true,
                                     destroy: true
@@ -280,7 +280,7 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
                                             className: 'numeric'
                                         }
                                     ],
-                                    pageLength: 5,
+                                    pageLength: 10,
                                     lengthChange: false,
                                     deferRender: true,
                                     destroy: true
@@ -456,14 +456,41 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
 		}    
 
         self.model.currentDrugConceptId.subscribe(function(newValue) {
-            self.render();
+            if (newValue > 0) {
+                self.render();
+            }
         }); 
         
         self.model.reportSourceKey.subscribe(function(newValue) {
-            self.render();
+            if (newValue != undefined) {
+                self.render();
+            }
         });        
         
-        self.render();
+        self.evaluateRender = function() {
+            try
+            {
+                if (self.model.reportSourceKey() != undefined && self.model.currentDrugConceptId() > 0){
+                    self.render();
+                }
+                else{
+                    self.setAllToLoading();
+                }                
+            }
+            catch (e)
+            {
+                self.setAllToLoading();
+            }
+        }
+        
+        self.setAllToLoading = function() {
+            self.loadingConditionPrevalence = ko.observable(true);
+            self.loadingDrugPrevalence = ko.observable(true);
+            self.loadingDrugEras = ko.observable(true);
+            self.loadingDrugSummary = ko.observable(true);            
+        }
+        
+        self.evaluateRender();
 	}
     
 

@@ -77,7 +77,7 @@ define(['knockout', 'text!./label-evidence.html', 'knockout.dataTables.binding',
                             	data: 'HAS_EVIDENCE'
                             }
                         ],
-                        pageLength: 5,
+                        pageLength: 10,
                         lengthChange: false,
                         deferRender: true,
                         destroy: true

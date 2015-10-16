@@ -64,7 +64,7 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
                                 className: 'numeric'
                             }
                         ],
-                        pageLength: 5,
+                        pageLength: 10,
                         lengthChange: false,
                         deferRender: true,
                         destroy: true

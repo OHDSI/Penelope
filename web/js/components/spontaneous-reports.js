@@ -41,7 +41,7 @@ define(['knockout', 'text!./spontaneous-reports.html', 'knockout.dataTables.bind
                                 className: 'numeric'
                             }
                         ],
-                        pageLength: 5,
+                        pageLength: 10,
                         lengthChange: false,
                         deferRender: true,
                         destroy: true

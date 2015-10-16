@@ -87,7 +87,7 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
                         className: 'numeric'
                     }
                 ],
-                pageLength: 5,
+                pageLength: 10,
                 lengthChange: false,
                 deferRender: true,
                 destroy: true
@@ -207,7 +207,6 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
             {
                 self.loadingRelatedConcepts(true);
             }
-
         }
 	}
 

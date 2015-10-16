@@ -99,7 +99,12 @@ requirejs(['knockout', './app', 'lscache', 'director', 'cache-flush', 'condition
 	}
     pageModel.router = new Router(routes).configure(routerOptions);
     window.pageModel = pageModel;
-    
+
+	// establish base priorities for daimons
+	var evidencePriority = 0;
+	var vocabularyPriority = 0;
+	var densityPriority = 0;
+
     // Get the sources from localStorage - if not found, retrieve them from the WS
     if (pageModel.sources().length == 0)
     {
@@ -134,36 +139,30 @@ requirejs(['knockout', './app', 'lscache', 'director', 'cache-flush', 'condition
                             if (daimon.daimonType == 'Vocabulary') {
                                 source.hasVocabulary = true;
                                 source.vocabularyUrl = service.url + source.sourceKey + '/vocabulary/';
-                                /*
                                 if (daimon.priority >= vocabularyPriority) {
                                     vocabularyPriority = daimon.priority;
                                     pageModel.vocabularyUrl(source.vocabularyUrl);
                                 }
-                                */
                             }
 
                             // evaluate evidence daimons
                             if (daimon.daimonType == 'Evidence') {
                                 source.hasEvidence = true;
                                 source.evidenceUrl = service.url + source.sourceKey + '/evidence/';
-                                /*
                                 if (daimon.priority >= evidencePriority) {
                                     evidencePriority = daimon.priority;
                                     pageModel.evidenceUrl(source.evidenceUrl);
                                 }
-                                */
                             }
 
                             // evaluate results daimons
                             if (daimon.daimonType == 'Results') {
                                 source.hasResults = true;
                                 source.resultsUrl = service.url + source.sourceKey + '/cdmresults/';
-                                /*
                                 if (daimon.priority >= densityPriority) {
                                     densityPriority = daimon.priority;
                                     pageModel.resultsUrl(source.resultsUrl);
                                 }
-                                */
                             }
                         }
 

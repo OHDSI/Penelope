@@ -152,7 +152,7 @@ define(['knockout', 'text!./drug-era-report.html','d3', 'jnj_chart', 'datatables
                                             className: 'numeric'
                                         }
                                     ],
-                                    pageLength: 5,
+                                    pageLength: 10,
                                     lengthChange: false,
                                     deferRender: true,
                                     destroy: true

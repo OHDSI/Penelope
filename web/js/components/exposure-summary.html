@@ -1,6 +1,6 @@
 <div class="panel panel-default">
     <div class="pad-10 report">
-        <div class="reportHeading"><i class="fa fa-table"></i>Exposure Summary For <span data-bind="text: self.model.currentDrugName"></span></div>
+        <div class="reportHeading"><i class="fa fa-table"></i>Exposure Summary For <span data-bind="text: model.currentDrugName"></span></div>
         <!-- start: loading -->
         <div id="es-loading" data-bind="if: $component.loadingDrugSummary() == true">
             <div class="spinner">
@@ -16,7 +16,7 @@
         </div>
         <!-- end: loading --> 
         <div data-bind="if: $component.loadingDrugSummary() == false">
-            <table id="drug_summary_table" class="display">
+            <table id="drug_summary_table" class="display" style="width: 100%">
             <thead>
                 <tr>
                     <th>Concept Id</th>
@@ -73,7 +73,7 @@
         </div>
         <!-- end: loading -->  
         <div data-bind="if: $component.loadingDrugPrevalence() == false">
-            <table id="drugera_table" class="display">
+            <table id="drugera_table" class="display" style="width: 100%">
             <thead>
                 <tr>
                     <th>Concept Id</th>
@@ -111,14 +111,14 @@
         <div data-bind="if: $component.loadingConditionPrevalence() == false">
             <div>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="active" id="treemap-tab"><a href="#condition-treemap-panel" role="tab" data-toggle="tab">Treemap</a>
+                    <li class="active"><a href="#condition-table-panel" role="tab" data-toggle="tab">Table</a>
                     </li>
-                    <li><a href="#condition-table-panel" role="tab" data-toggle="tab">Table</a>
+                    <li id="treemap-tab"><a href="#condition-treemap-panel" role="tab" data-toggle="tab">Treemap</a>
                     </li>
                 </ul>
                 <div id='content' class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="condition-table-panel">
-                        <table id="condition_table" class="display treemap_table" type="condition">
+                        <table id="condition_table" class="display treemap_table" style="width: 100%" type="condition">
                             <thead>
                                 <tr>
                                     <th>Concept Id</th>

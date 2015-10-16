@@ -106,7 +106,7 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
                                             className: 'numeric'
                 }
                 ],
-                                    pageLength: 5,
+                                    pageLength: 10,
                                     lengthChange: false,
                                     deferRender: true,
                                     destroy: true

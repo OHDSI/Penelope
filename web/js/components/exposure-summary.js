@@ -1,4 +1,4 @@
-define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrewer', 'lodash', 'knockout.dataTables.binding'], function (ko, view, d3, jnj_chart, colorbrewer, _) {
+define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrewer', 'lodash', 'knockout.dataTables.binding', 'colvis'], function (ko, view, d3, jnj_chart, colorbrewer, _) {
 	function exposureSummary(params) {
 		var self = this;
 		self.model = params.model;
@@ -21,7 +21,7 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
             // Get Condition Prevalence
 			$.ajax({
 				type: "GET",
-                url: self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/' + self.model.currentCohortId() + '/cohortspecifictreemap',
+                url: self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/' + self.model.currentExposureCohortId() + '/cohortspecifictreemap',
 				contentType: "application/json; charset=utf-8",
 				success: function (data) {
                     // Remove the loading dialog
@@ -73,39 +73,45 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
                                 order: [6, 'desc'],
                                 dom: 'T<"clear">lfrtip',
                                 data: table_data,
-                                columns: [{
-                                        data: 'concept_id'
-                            },
+                                columns: [
                                     {
-                                        data: 'soc'
-            },
+                                        data: 'snomed',
+                                        "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                                            $(nTd).html("<a target='_blank' href='" + self.model.services()[0].atlas + "/#/concept/"+oData.concept_id+"'>"+oData.snomed+"</a>");
+                                        }
+                                    },
+                                    {
+                                        data: 'concept_id',
+                                        visible: false
+                                    },
+                                    {
+                                        data: 'soc',
+                                        visible: false
+                                    },
                                     {
                                         data: 'hlgt',
                                         visible: false
-                            },
+                                    },
                                     {
                                         data: 'hlt'
-            },
+                                    },
                                     {
                                         data: 'pt',
                                         visible: false
-            },
-                                    {
-                                        data: 'snomed'
-            },
+                                    },
                                     {
                                         data: 'num_persons',
                                         className: 'numeric'
-            },
+                                    },
                                     {
                                         data: 'percent_persons',
                                         className: 'numeric'
-            },
+                                    },
                                     {
                                         data: 'relative_risk',
                                         className: 'numeric'
-            }
-            ],
+                                    }
+                                ],
                                 pageLength: 10,
                                 lengthChange: false,
                                 deferRender: true,
@@ -210,14 +216,16 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
                                             visible: false
                                         },
                                         {
-                                            data: 'atc1'
+                                            data: 'atc1',
+                                            visible: false
                                         },
                                         {
                                             data: 'atc3',
                                             visible: false
                                         },
                                         {
-                                            data: 'atc5'
+                                            data: 'atc5',
+                                            visible: false
                                         },
                                         {
                                             data: 'ingredient'
@@ -255,14 +263,16 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
                                             visible: false
                                         },
                                         {
-                                            data: 'atc1'
+                                            data: 'atc1', 
+                                            visible: false
                                         },
                                         {
                                             data: 'atc3',
                                             visible: false
                                         },
                                         {
-                                            data: 'atc5'
+                                            data: 'atc5',
+                                            visible: false
                                         },
                                         {
                                             data: 'ingredient'
@@ -381,7 +391,7 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
 
 			$.ajax({
 				type: "GET",
-				url: self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/' + self.model.currentCohortId() + '/cohortspecific' + type + "/" + id,
+				url: self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/' + self.model.currentExposureCohortId() + '/cohortspecific' + type + "/" + id,
 				contentType: "application/json; charset=utf-8"
 			}).done(function (result) {
 				if (result && result.length > 0) {

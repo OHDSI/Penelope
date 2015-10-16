@@ -7,6 +7,7 @@ define([
 	'bootstrap',
     'facets',
     'databindings',
+    'colvis',
     'extenders'
 ], function ($, ko, jnj_chart, d3) {
 
@@ -21,7 +22,7 @@ define([
 		self.appBody = ko.observable('Personalized Exploratory Navigation and Evaluation for Labels Of Product Effects');
 
         // Selected Drug settings
-        self.currentCohortId = ko.observable();
+        self.currentExposureCohortId = ko.observable();
         self.currentDrugSetId = ko.observable();
         self.currentDrugConceptId = ko.observable(0);
         self.currentDrugName = ko.observable();
@@ -40,6 +41,7 @@ define([
         self.selectedConditionConceptName = ko.observable('');
         self.selectedConditionConceptAndDescendants = ko.observableArray(null);
         self.selectedConditionOccurrencePrevalence = ko.observable();
+        self.selectedConditionCohorts = ko.observableArray(null);
         self.selectedDrugAndAncestorDescendants = ko.observableArray(null);
         self.drugLabelActiveTab = ko.observable('obs'); // Observational Evidence is the default
         self.productLabelSectionHeadings = ko.observableArray(null);
@@ -61,14 +63,16 @@ define([
 				name: 'Local',
 				url: 'http://localhost:8080/WebAPI/',
 				dialect: ko.observable('loading'),
-				version: ko.observable('loading')
+				version: ko.observable('loading'),
+                atlas: 'http://hixbeta.jnj.com/atlas'
 			}
             /*,
 			{
-				name: 'Local',
+				name: 'Hixbeta',
 				url: 'http://hixbeta.jnj.com:8081/WebAPI/',
 				dialect: ko.observable('loading'),
-				version: ko.observable('loading')
+				version: ko.observable('loading'),
+                atlas: 'http://hixbeta.jnj.com/atlas'
 			}*/
 		]);
         self.sources = ko.observableArray().extend({ localStoragePersist: ['sources', '30']});
@@ -178,7 +182,7 @@ define([
                 self.currentDrugSetId(selectedDrug.set_id);
                 self.currentDrugName(selectedDrug.drug_name);
                 self.currentDrugConceptId(selectedDrug.drug_concept_id);
-                self.currentCohortId(selectedDrug.cohort_id);
+                self.currentExposureCohortId(selectedDrug.cohort_id);
                 
                 $.ajax({
                     url : "js/spl/" + selectedDrug.set_id + ".html", //"js/mock-data/sample-label-lipitor.html", //"js/mock-data/sample-label.html",

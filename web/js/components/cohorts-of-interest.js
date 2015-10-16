@@ -9,13 +9,13 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
         
 		self.render = function () {
             self.loading(true);            
-            //var conditionConceptList = self.model.selectedConditionConceptAndDescendants().map(function(d, i) { return d.CONCEPT_ID });
-            //var ingredientConceptList = [self.model.currentDrugConceptId()];
+            var exposureCohortList = [self.model.currentExposureCohortId()];
+            var outcomeCohortList = self.model.selectedConditionCohorts().map(function(d, i) { return d.cohortDefinitionId });
             $.ajax({
 				method: 'POST',
                 data: ko.toJSON({
-                    "EXPOSURE_COHORT_LIST" : [293],
-                    "OUTCOME_COHORT_LIST" : [280,289,418,282,419,288,417,416,420,434]
+                    "EXPOSURE_COHORT_LIST" : [self.model.currentExposureCohortId()],
+                    "OUTCOME_COHORT_LIST" : outcomeCohortList
                 }),
 				url: self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/exposurecohortrates',
 				contentType: "application/json; charset=utf-8",
@@ -77,18 +77,18 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
         self.drilldown = function (id, name, type) {
 			self.loadingReportDrilldown(true);
 			self.activeReportDrilldown(false);
-
+            var exposureCohortList = [self.model.currentExposureCohortId()];
 			$.ajax({
 				method: 'POST',
                 data: ko.toJSON({
-                    "EXPOSURE_COHORT_LIST" : [293],
+                    "EXPOSURE_COHORT_LIST" : exposureCohortList,
                     "OUTCOME_COHORT_LIST" : [id]
                 }),
 				url: self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/timetoevent',
 				contentType: "application/json; charset=utf-8"
 			}).done(function (result) {
 				if (result && result.length > 0) {
-					$("#" + type + "cohortOfInterestDrilldownScatterplot").empty();
+					$("#cohortOfInterestDrilldownScatterplot").empty();
 					var normalized = self.model.dataframeToArray(self.model.normalizeArray(result));
 
 					// nest dataframe data into key->values pair
@@ -158,8 +158,8 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
             
 		}    
 
-        self.model.selectedConditionConceptAndDescendants.subscribe(function(newValue) {
-        	if (newValue != null) {
+        self.model.currentExposureCohortId.subscribe(function(newValue) {
+        	if (newValue > 0) {
 				self.evaluateRender();        		
         	}
         });
@@ -170,7 +170,7 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
         	}
         });
         
-        self.model.selectedConditionOccurrencePrevalence.subscribe(function(newValue) {
+        self.model.selectedConditionCohorts.subscribe(function(newValue) {
         	if (newValue != undefined) {        		
 				self.evaluateRender();            
         	}
@@ -179,7 +179,7 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
         self.evaluateRender = function() {
             try
             {
-                if (self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionOccurrencePrevalence() != undefined && self.model.selectedConditionConceptAndDescendants().length > 0){
+                if (self.model.currentExposureCohortId() > 0 && self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionCohorts().length > 0){
                     self.render();
                 }
                 else{

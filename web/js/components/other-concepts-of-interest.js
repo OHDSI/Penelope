@@ -129,7 +129,7 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
 
 			$.ajax({
 				type: "GET",
-				url: self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/' + self.model.currentCohortId() + '/cohortspecific' + type + "/" + id,
+				url: self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/' + self.model.currentExposureCohortId() + '/cohortspecific' + type + "/" + id,
 				contentType: "application/json; charset=utf-8"
 			}).done(function (result) {
 				if (result && result.length > 0) {

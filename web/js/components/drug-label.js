@@ -117,6 +117,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                 self.setClinicalCharacterizationActive();
                 self.model.selectedConditionConceptAndDescendants(null);
                 self.getConceptDescendants(self.model.selectedConditionConceptId());
+                self.getConceptCohorts(self.model.selectedConditionConceptId());
             }
         });
         
@@ -129,6 +130,17 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                    self.model.selectedConditionConceptAndDescendants(result); 
                 }
             });
+        }
+        
+        self.getConceptCohorts = function(concept_id) {
+            $.ajax({
+				type: "GET",
+				url: self.model.evidenceUrl() + "mapping/" + concept_id,
+				contentType: "application/json; charset=utf-8",
+				success: function (result) {
+                   self.model.selectedConditionCohorts(result); 
+                }
+            });            
         }
         
         self.setSliders = function () {

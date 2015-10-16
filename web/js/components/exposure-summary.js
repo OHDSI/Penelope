@@ -7,6 +7,7 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
         self.loadingConditionPrevalence = ko.observable(false);
         self.loadingDrugPrevalence = ko.observable(false);
         self.loadingDrugEras = ko.observable(false);
+        self.loadingDrugSummary = ko.observable(false);
         self.loadingReportDrilldown = ko.observable(false);
         self.activeReportDrilldown = ko.observable(false);
         
@@ -14,6 +15,7 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
         	self.loadingConditionPrevalence(true);
             self.loadingDrugPrevalence(true);
             self.loadingDrugEras(true);
+            self.loadingDrugSummary(true);
             //self.loading(true);
             
             // Get Condition Prevalence
@@ -56,7 +58,7 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
                                 };
                             }, conditionOccurrencePrevalence);
                             self.model.selectedConditionOccurrencePrevalence(table_data);
-                            
+                                                        
                             $(document).on('click', '.treemap_table tbody tr', function () {
                                 var datatable = self.datatables[$(this).parents('.treemap_table').attr('id')];
                                 var data = datatable.data()[datatable.row(this)[0]];
@@ -180,6 +182,8 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
                         contentType: "application/json; charset=utf-8",
                         success: function (data) {
                             self.loadingDrugPrevalence(false);
+                            self.loadingDrugSummary(false);
+
                             if (data && data.length > 0) {
                                 //var normalizedData = self.normalizeDataFrame(data);
                                 var table_data = data.map(function (d, i) {
@@ -200,6 +204,51 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
                                     order: [ 5, 'desc' ],
                                     dom: 'Clfrtip',
                                     data: table_data,
+                                    columns: [
+                                        {
+                                            data: 'concept_id',
+                                            visible: false
+                                        },
+                                        {
+                                            data: 'atc1'
+                                        },
+                                        {
+                                            data: 'atc3',
+                                            visible: false
+                                        },
+                                        {
+                                            data: 'atc5'
+                                        },
+                                        {
+                                            data: 'ingredient'
+                                        },
+                                        {
+                                            data: 'num_persons',
+                                            className: 'numeric'
+                                        },
+                                        {
+                                            data: 'percent_persons',
+                                            className: 'numeric'
+                                        },
+                                        {
+                                            data: 'length_of_era',
+                                            className: 'numeric'
+                                        }
+                                    ],
+                                    pageLength: 5,
+                                    lengthChange: false,
+                                    deferRender: true,
+                                    destroy: true
+                                });
+                                
+                                // Pull out the current drug of interest from the 
+                                var summary_table_data = $.grep(table_data, function(d, i) {
+                                    return d.concept_id == self.model.currentDrugConceptId();
+                                });
+                                datatable = $('#drug_summary_table').DataTable({
+                                    order: [ 5, 'desc' ],
+                                    dom: 'Clfrtip',
+                                    data: summary_table_data,
                                     columns: [
                                         {
                                             data: 'concept_id',

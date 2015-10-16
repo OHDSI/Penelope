@@ -8,9 +8,70 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
         self.activeReportDrilldown = ko.observable(false);
         
 		self.render = function () {
-            self.loading(true);
+            self.loading(true);            
+            //var conditionConceptList = self.model.selectedConditionConceptAndDescendants().map(function(d, i) { return d.CONCEPT_ID });
+            //var ingredientConceptList = [self.model.currentDrugConceptId()];
+            $.ajax({
+				method: 'POST',
+                data: ko.toJSON({
+                    "EXPOSURE_COHORT_LIST" : [293],
+                    "OUTCOME_COHORT_LIST" : [280,289,418,282,419,288,417,416,420,434]
+                }),
+				url: self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/exposurecohortrates',
+				contentType: "application/json; charset=utf-8",
+				success: function (data) {
+                    self.loading(false);   
                     
-            self.loading(false);
+                    // Set the callback click event for the table row
+                    $(document).on('click', '.cohort_of_interest_table tbody tr', function () {
+                        var datatable = self.datatables[$(this).parents('.cohort_of_interest_table').attr('id')];
+                        var data = datatable.data()[datatable.row(this)[0]];
+                        if (data) {
+                            var did = data.outcome_cohort_definition_id;
+                            var concept_name = data.name;
+                            self.drilldown(did, concept_name, $(this).parents('.cohort_of_interest_table').attr('type'));
+                        }
+                    });
+
+                    // Show the subset of the overall cohort conditions in this section.
+                    var datatable = $('#cohort_of_interest_table').DataTable({
+                        order: [6, 'desc'],
+                        dom: 'T<"clear">lfrtip',
+                        data: data,
+                        columns: [{
+                                data: 'exposure_cohort_definition_id'
+                            },
+                            {
+                                data: 'outcome_cohort_definition_id'
+                            },
+                            {
+                                data: 'num_persons_exposed',
+                                className: 'numeric'
+                            },
+                            {
+                                data: 'num_persons_w_outcome_pre_exposure',
+                                className: 'numeric'
+                            },
+                            {
+                                data: 'num_persons_w_outcome_post_exposure',
+                                className: 'numeric'
+                            },
+                            {
+                                data: 'time_at_risk'
+                            },
+                            {
+                                data: 'incidence_rate_1000py',
+                                className: 'numeric'
+                            }
+                        ],
+                        pageLength: 5,
+                        lengthChange: false,
+                        deferRender: true,
+                        destroy: true
+                    });
+                    self.datatables['cohort_of_interest_table'] = datatable;    
+                }
+            });            
 		}
 
         self.drilldown = function (id, name, type) {
@@ -18,12 +79,16 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
 			self.activeReportDrilldown(false);
 
 			$.ajax({
-				type: "GET",
-				url: self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/' + self.model.currentCohortId() + '/cohortspecific' + type + "/" + id,
+				method: 'POST',
+                data: ko.toJSON({
+                    "EXPOSURE_COHORT_LIST" : [293],
+                    "OUTCOME_COHORT_LIST" : [id]
+                }),
+				url: self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/timetoevent',
 				contentType: "application/json; charset=utf-8"
 			}).done(function (result) {
 				if (result && result.length > 0) {
-					$("#" + type + "ConceptByIndexDrilldownScatterplot").empty();
+					$("#" + type + "cohortOfInterestDrilldownScatterplot").empty();
 					var normalized = self.model.dataframeToArray(self.model.normalizeArray(result));
 
 					// nest dataframe data into key->values pair
@@ -41,9 +106,9 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
 
 					var scatter = new jnj_chart.scatterplot();
 					self.activeReportDrilldown(true);
-					$('#' + type + 'ConceptByIndexDrilldownScatterplotHeading').html(name);
+					$('#cohortOfInterestDrilldownScatterplotHeading').html(name);
 
-					scatter.render(totalRecordsData, "#" + type + "ConceptByIndexDrilldownScatterplot", 460, 150, {
+					scatter.render(totalRecordsData, "#cohortOfInterestDrilldownScatterplot", 460, 150, {
 						yFormat: d3.format('0.2%'),
 						xValue: "duration",
 						yValue: "pctPersons",

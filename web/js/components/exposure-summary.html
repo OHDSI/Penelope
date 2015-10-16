@@ -1,9 +1,8 @@
 <div class="panel panel-default">
     <div class="pad-10 report">
-        <div class="reportHeading"><i class="fa fa-area-chart"></i>Conditions by Index Report</div>
-        <div class="reportSectionHeading">Condition Prevalence</div>
+        <div class="reportHeading"><i class="fa fa-table"></i>Exposure Summary For <span data-bind="text: self.model.currentDrugName"></span></div>
         <!-- start: loading -->
-        <div id="es-loading" data-bind="if: $component.loadingConditionPrevalence() == true">
+        <div id="es-loading" data-bind="if: $component.loadingDrugSummary() == true">
             <div class="spinner">
               <h4>Loading</h4>
               <div class="rect1"></div>
@@ -15,50 +14,44 @@
               <div class="rect7"></div>
             </div>
         </div>
-        <!-- end: loading -->
-        <div data-bind="if: $component.loadingConditionPrevalence() == false">
-            <div>
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="active" id="treemap-tab"><a href="#condition-treemap-panel" role="tab" data-toggle="tab">Treemap</a>
-                    </li>
-                    <li><a href="#condition-table-panel" role="tab" data-toggle="tab">Table</a>
-                    </li>
-                </ul>
-                <div id='content' class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="condition-treemap-panel">
-                        <div id="treemap_container">
-                            <div class="treemap_zoomtarget"></div>
-                        </div>
-                        <div class="treemap_legend">Box Size: Prevalence, Color: Log of Relative Risk (Red to Green = Negative to Positive), Use Ctrl-Click to Zoom, Alt-Click to Reset Zoom</div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="condition-table-panel">
-                        <table id="condition_table" class="display treemap_table" type="condition">
-                            <thead>
-                                <tr>
-                                    <th>Concept Id</th>
-                                    <th>SOC</th>
-                                    <th>HLGT</th>
-                                    <th>HLT</th>
-                                    <th>PT</th>
-                                    <th>SNOMED</th>
-                                    <th>Person Count</th>
-                                    <th>Prevalence</th>
-                                    <th>Relative Risk per Person</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="loader" data-bind="if:$component.loadingReportDrilldown">
-                    <i class="fa fa-refresh fa-spin"></i> Loading Drilldown...
-                </div>
-                <div data-bind="if:$component.activeReportDrilldown">
-                    <div id="conditionDrilldownScatterplotHeading" class="reportSectionHeading">
-                    </div>
-                    <div class="evidenceVisualization" id="conditionDrilldownScatterplot"></div>
-                </div>
+        <!-- end: loading --> 
+        <div data-bind="if: $component.loadingDrugSummary() == false">
+            <table id="drug_summary_table" class="display">
+            <thead>
+                <tr>
+                    <th>Concept Id</th>
+                    <th>ATC 1</th>
+                    <th>ATC 3</th>
+                    <th>ATC 5</th>
+                    <th>Ingredient</th>
+                    <th>Person Count</th>
+                    <th>Prevalence</th>
+                    <th>Length of Era</th>
+                </tr>
+            </thead>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="pad-10 report">
+        <div class="reportHeading"><i class="fa fa-area-chart"></i>Drug Era</div>
+        <!-- start: loading -->
+        <div id="es-loading" data-bind="if: $component.loadingDrugEras() == true">
+            <div class="spinner">
+              <h4>Loading</h4>
+              <div class="rect1"></div>
+              <div class="rect2"></div>
+              <div class="rect3"></div>
+              <div class="rect4"></div>
+              <div class="rect5"></div>
+              <div class="rect6"></div>
+              <div class="rect7"></div>
             </div>
+        </div>
+        <!-- end: loading --> 
+        <div data-bind="if: $component.loadingDrugEras() == false">
+            <div class="drilldown" id="trellisLinePlot"></div>
         </div>
     </div>
 </div>
@@ -99,9 +92,10 @@
 </div>
 <div class="panel panel-default">
     <div class="pad-10 report">
-        <div class="reportHeading"><i class="fa fa-area-chart"></i>Drug Era</div>
+        <div class="reportHeading"><i class="fa fa-area-chart"></i>Conditions by Index Report</div>
+        <div class="reportSectionHeading">Condition Prevalence</div>
         <!-- start: loading -->
-        <div id="es-loading" data-bind="if: $component.loadingDrugEras() == true">
+        <div id="es-loading" data-bind="if: $component.loadingConditionPrevalence() == true">
             <div class="spinner">
               <h4>Loading</h4>
               <div class="rect1"></div>
@@ -113,9 +107,50 @@
               <div class="rect7"></div>
             </div>
         </div>
-        <!-- end: loading --> 
-        <div data-bind="if: $component.loadingDrugEras() == false">
-            <div class="drilldown" id="trellisLinePlot"></div>
+        <!-- end: loading -->
+        <div data-bind="if: $component.loadingConditionPrevalence() == false">
+            <div>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="active" id="treemap-tab"><a href="#condition-treemap-panel" role="tab" data-toggle="tab">Treemap</a>
+                    </li>
+                    <li><a href="#condition-table-panel" role="tab" data-toggle="tab">Table</a>
+                    </li>
+                </ul>
+                <div id='content' class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="condition-table-panel">
+                        <table id="condition_table" class="display treemap_table" type="condition">
+                            <thead>
+                                <tr>
+                                    <th>Concept Id</th>
+                                    <th>SOC</th>
+                                    <th>HLGT</th>
+                                    <th>HLT</th>
+                                    <th>PT</th>
+                                    <th>SNOMED</th>
+                                    <th>Person Count</th>
+                                    <th>Prevalence</th>
+                                    <th>Relative Risk per Person</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="condition-treemap-panel">
+                        <div id="treemap_container">
+                            <div class="treemap_zoomtarget"></div>
+                        </div>
+                        <div class="treemap_legend">Box Size: Prevalence, Color: Log of Relative Risk (Red to Green = Negative to Positive), Use Ctrl-Click to Zoom, Alt-Click to Reset Zoom</div>
+                    </div>
+                </div>
+
+                <div class="loader" data-bind="if:$component.loadingReportDrilldown">
+                    <i class="fa fa-refresh fa-spin"></i> Loading Drilldown...
+                </div>
+                <div data-bind="if:$component.activeReportDrilldown">
+                    <div id="conditionDrilldownScatterplotHeading" class="reportSectionHeading">
+                    </div>
+                    <div class="evidenceVisualization" id="conditionDrilldownScatterplot"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -17,7 +17,26 @@
         </div>
         <!-- end: loading -->
         <div data-bind="if: $component.loading() == false">
-            Pull in report from Penelope_stats table and display similar to the one from Heracles with a link out to the Cohort definition. http://hixbeta.jnj.com/heracles/viewer.html?cohortId=293 
+            <table id="cohort_of_interest_table" class="display cohort_of_interest_table" type="condition">
+                <thead>
+                    <tr>
+                        <th>Exposure Cohort ID</th>
+                        <th>Outcome Cohort ID</th>
+                        <th>Persons Exposed</th>
+                        <th>Persons With Outcome Pre-exposure</th>
+                        <th>Persons With Outcome Post-exposure</th>
+                        <th>Time at risk</th>
+                        <th>Incidence Rate (Per 1000py)</th>
+                    </tr>
+                </thead>
+            </table>
+            <div class="loader" data-bind="if:$component.loadingReportDrilldown">
+                <i class="fa fa-refresh fa-spin"></i> Loading Drilldown...
+            </div>
+            <div data-bind="if:$component.activeReportDrilldown">
+                <div id="cohortOfInterestDrilldownScatterplotHeading" class="reportSectionHeading"></div>
+                <div class="evidenceVisualization" id="cohortOfInterestDrilldownScatterplot"></div>
+            </div>
         </div>
     </div>
 </div>

@@ -23,6 +23,7 @@ define([
 
         // Selected Drug settings
         self.currentExposureCohortId = ko.observable();
+        self.currentExposureCohortName = ko.observable();
         self.currentDrugSetId = ko.observable();
         self.currentDrugConceptId = ko.observable(0);
         self.currentDrugName = ko.observable();
@@ -64,7 +65,8 @@ define([
 				url: 'http://localhost:8080/WebAPI/',
 				dialect: ko.observable('loading'),
 				version: ko.observable('loading'),
-                atlas: 'http://hixbeta.jnj.com/atlas'
+                atlas: 'http://hixbeta.jnj.com/atlas',
+                circe: 'http://hixbeta.jnj.com/circe'
 			}
             /*,
 			{
@@ -72,7 +74,8 @@ define([
 				url: 'http://hixbeta.jnj.com:8081/WebAPI/',
 				dialect: ko.observable('loading'),
 				version: ko.observable('loading'),
-                atlas: 'http://hixbeta.jnj.com/atlas'
+                atlas: 'http://hixbeta.jnj.com/atlas',
+                circe: 'http://hixbeta.jnj.com/circe'
 			}*/
 		]);
         self.sources = ko.observableArray().extend({ localStoragePersist: ['sources', '30']});
@@ -183,6 +186,7 @@ define([
                 self.currentDrugName(selectedDrug.drug_name);
                 self.currentDrugConceptId(selectedDrug.drug_concept_id);
                 self.currentExposureCohortId(selectedDrug.cohort_id);
+                self.currentExposureCohortName(selectedDrug.cohort_name);
                 
                 $.ajax({
                     url : "js/spl/" + selectedDrug.set_id + ".html", //"js/mock-data/sample-label-lipitor.html", //"js/mock-data/sample-label.html",

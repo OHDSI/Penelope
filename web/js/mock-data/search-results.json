@@ -1,6 +1,7 @@
 [
     {
         "cohort_id": 293,
+        "cohort_name": "Celecoxib new users",
         "drug_concept_id":1118084,
         "drug_concept_name": "celecoxib",
         "drug_name":"celebrex",
@@ -9,6 +10,7 @@
     },
     {
         "cohort_id": 294,
+        "cohort_name": "Donepezil new users",
         "drug_concept_id":715997,
         "drug_concept_name": "donepezil",
         "drug_name":"aricept",
@@ -17,6 +19,7 @@
     },
     {
         "cohort_id": 295,
+        "cohort_name": "Carbamazepine new users",        
         "drug_concept_id":740275,
         "drug_concept_name": "carbamazepine",
         "drug_name":"tegretol",
@@ -25,6 +28,7 @@
     },
     {
         "cohort_id": 296,
+        "cohort_name": "Pioglitazone new users",        
         "drug_concept_id":1525215,
         "drug_concept_name": "pioglitazone",
         "drug_name":"actos",

@@ -21,6 +21,27 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
 				contentType: "application/json; charset=utf-8",
 				success: function (data) {
                     self.loading(false);   
+                    //var normalizedData = self.model.normalizeDataframe(self.model.normalizeArray(data, true));
+                    // format the return results
+                    var table_data = data.map(function(d, i) {
+                        var outcome_cohort_id = d.outcome_cohort_definition_id;
+                        var condition_cohort_name = $.grep(self.model.selectedConditionCohorts(), function(n, i) {
+                            return n.cohortDefinitionId == outcome_cohort_id;
+                        });
+                        if (condition_cohort_name.length > 0){
+                            return {
+                                "exposure_cohort_definition_id": d.exposure_cohort_definition_id,
+                                "exposure_cohort_name": self.model.currentExposureCohortName(),
+                                "outcome_cohort_definition_id": d.outcome_cohort_definition_id,
+                                "outcome_cohort_name": condition_cohort_name[0].cohortDefinitionName,
+                                "num_persons_exposed": self.model.formatComma(d.num_persons_exposed),
+                                "num_persons_w_outcome_pre_exposure": self.model.formatComma(d.num_persons_w_outcome_pre_exposure),
+                                "num_persons_w_outcome_post_exposure": self.model.formatComma(d.num_persons_w_outcome_post_exposure),
+                                "time_at_risk": self.model.formatComma(d.time_at_risk),
+                                "incidence_rate_1000py": self.model.formatFixed(d.incidence_rate_1000py)
+                            }
+                        }
+                    });
                     
                     // Set the callback click event for the table row
                     $(document).on('click', '.cohort_of_interest_table tbody tr', function () {
@@ -37,12 +58,25 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
                     var datatable = $('#cohort_of_interest_table').DataTable({
                         order: [6, 'desc'],
                         dom: 'T<"clear">lfrtip',
-                        data: data,
+                        data: table_data,
                         columns: [{
-                                data: 'exposure_cohort_definition_id'
+                                data: 'exposure_cohort_definition_id',
+                                visible: false
                             },
                             {
-                                data: 'outcome_cohort_definition_id'
+                                data: 'exposure_cohort_name',
+                                visible: false
+                            },
+                            {
+                                data: 'outcome_cohort_definition_id',
+                                visible: false
+                            },
+                            {
+                                data: 'outcome_cohort_name',
+                                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                                    $(nTd).html("<a target='_blank' href='" + self.model.services()[0].circe + "/#/"+oData.outcome_cohort_definition_id+"'>"+oData.outcome_cohort_name+"</a>");
+                                }
+                                
                             },
                             {
                                 data: 'num_persons_exposed',
@@ -57,7 +91,8 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
                                 className: 'numeric'
                             },
                             {
-                                data: 'time_at_risk'
+                                data: 'time_at_risk',
+                                className: 'numeric'
                             },
                             {
                                 data: 'incidence_rate_1000py',

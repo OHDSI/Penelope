@@ -192,7 +192,13 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
 				self.evaluateRender();            
         	}
         });
-        
+
+        self.model.reportSourceKey.subscribe(function(newValue) {
+            if (newValue != undefined) {
+                self.render();
+            }
+        });        
+
         self.evaluateRender = function() {
             try
             {

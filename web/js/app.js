@@ -80,8 +80,8 @@ define([
 		]);
         self.sources = ko.observableArray().extend({ localStoragePersist: ['sources', '30']});
         self.reportSourceKey = ko.observable().extend({ localStoragePersist: ['reportSourceKey', '30']});
-		self.vocabularyUrl = ko.observable();
-		self.evidenceUrl = ko.observable();
+		self.vocabularyUrl = ko.observable().extend({ localStoragePersist: ['vocabularyUrl', '30']});
+		self.evidenceUrl = ko.observable().extend({ localStoragePersist: ['evidenceUrl', '30']});
 		self.resultsUrl = ko.observable();
 
         self.hasResults = function (source) {

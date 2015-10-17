@@ -49,8 +49,8 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
                         var data = datatable.data()[datatable.row(this)[0]];
                         if (data) {
                             var did = data.outcome_cohort_definition_id;
-                            var concept_name = data.name;
-                            self.drilldown(did, concept_name, $(this).parents('.cohort_of_interest_table').attr('type'));
+                            var cohort_name = data.outcome_cohort_name;
+                            self.drilldown(did, cohort_name, $(this).parents('.cohort_of_interest_table').attr('type'));
                         }
                     });
 
@@ -210,7 +210,13 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
 				self.evaluateRender();            
         	}
         });
-        
+
+        self.model.reportSourceKey.subscribe(function(newValue) {
+            if (newValue != undefined) {
+                self.render();
+            }
+        });        
+
         self.evaluateRender = function() {
             try
             {

@@ -215,6 +215,12 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
         	}
         });
 
+        self.model.reportSourceKey.subscribe(function(newValue) {
+            if (newValue != undefined) {
+                self.render();
+            }
+        });        
+
         self.evaluateRender = function() {
             try
             {

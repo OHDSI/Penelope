@@ -155,7 +155,8 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
 							};
 						});
 
-					var scatter = new jnj_chart.scatterplot();
+					//var scatter = new jnj_chart.scatterplot();
+                    var scatter = new jnj_chart.zoomScatter();
 					self.activeReportDrilldown(true);
 					$('#' + type + 'OtherConceptsOfInterestDrilldownScatterplotHeading').html(name);
 

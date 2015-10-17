@@ -411,7 +411,8 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
 							};
 						});
 
-					var scatter = new jnj_chart.scatterplot();
+					//var scatter = new jnj_chart.scatterplot();
+                    var scatter = new jnj_chart.zoomScatter();
 					self.activeReportDrilldown(true);
 					$('#' + type + 'DrilldownScatterplotHeading').html(name);
 
@@ -460,9 +461,7 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
 					});
 					self.loadingReportDrilldown(false);
 				}
-			});
-            
-            
+			});  
 		}    
 
         self.model.currentDrugConceptId.subscribe(function(newValue) {

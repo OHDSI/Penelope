@@ -2018,7 +2018,7 @@
 					.attr("class", "dot")
 					.attr("r", 1)
 					.style("fill", function (d) {
-						return options.colors(d.seriesName);
+						return options.colors(d[options.seriesName]);
 					})
 					.attr("transform", function (d) {
 						var xVal = x(d[options.xValue]);

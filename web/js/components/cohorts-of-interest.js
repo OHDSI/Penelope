@@ -142,7 +142,8 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
 							};
 						});
 
-					var scatter = new jnj_chart.scatterplot();
+					//var scatter = new jnj_chart.scatterplot();
+                    var scatter = new jnj_chart.zoomScatter();
 					self.activeReportDrilldown(true);
 					$('#cohortOfInterestDrilldownScatterplotHeading').html(name);
 

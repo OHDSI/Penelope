@@ -127,7 +127,8 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
 							};
 						});
 
-					var scatter = new jnj_chart.scatterplot();
+					//var scatter = new jnj_chart.scatterplot();
+                    var scatter = new jnj_chart.zoomScatter();
 					self.activeReportDrilldown(true);
 					$('#' + type + 'ConceptByIndexDrilldownScatterplotHeading').html(name);
 

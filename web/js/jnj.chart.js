@@ -177,7 +177,8 @@
 					.append("text")
 					.attr("dy", ".35em")
 					.text(function (d) {
-						return d.data.label + ' (' + d.data.value + ')';
+						var pct = (d.endAngle - d.startAngle) / (Math.PI * 2);
+						return d.data.label + ' (' + formatpercent(pct) + ')';
 					});
 
 				function midAngle(d) {
@@ -1956,7 +1957,7 @@
 
 				var axisHelper = chart.append("g")
 					.attr("transform", "translate(" + (options.margin.left + yAxisLabelWidth + yAxisWidth) + "," + options.margin.top + ")");
-				
+
 				var vis = chart.append("g")
 					.attr("class", options.cssClass)
 					.attr("transform", "translate(" + (options.margin.left + yAxisLabelWidth + yAxisWidth) + "," + options.margin.top + ")")

@@ -187,6 +187,10 @@ section {
 
 /* end: loading spinner */
 
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    color: #fff;
+    background-color: #337ab7;
+    }
 
 /* start: atlas - data tables */
 

@@ -27,6 +27,11 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
 		self.toggleEvidence = function (data, event) {
 			$.sidr('open', 'sidr-right');
 		};
+        
+        self.closeEvidence = function (data, event) {
+			$.sidr('close', 'sidr-right');
+		};
+
 
                 
         // Handles the click logic for the tabbed evidence browser
@@ -96,6 +101,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
         
         // Click handler for the links on the drug label
         self.productLabelLinkClick = function(item, event) {
+            $.sidr('open', 'sidr-right');
             self.model.selectedConditionConceptId(event.target.attributes["conceptid"].value);
             self.model.selectedConditionConceptName(event.target.attributes["conceptname"].value);
         }   
@@ -158,7 +164,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
         
         self.toggleFull = function () {
             $('#sidr-right').toggleClass("sidr-full");
-            $('#eeFullScreen').toggleClass("glyphicon-circle-arrow-left").toggleClass("glyphicon-circle-arrow-right");
+            $('#eeFullScreen').toggleClass("glyphicon-resize-full").toggleClass("glyphicon-resize-small");
         }
         
         self.setSliders();

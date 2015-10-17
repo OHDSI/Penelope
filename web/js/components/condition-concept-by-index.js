@@ -54,11 +54,20 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
                 order: [6, 'desc'],
                 dom: 'T<"clear">lfrtip',
                 data: table_data_subset_no_nulls,
-                columns: [{
-                        data: 'concept_id'
+                columns: [
+                    {
+                        data: 'snomed',
+                        "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                            $(nTd).html("<a target='_blank' href='" + self.model.services()[0].atlas + "/#/concept/"+oData.concept_id+"'>"+oData.snomed+"</a>");
+                        }
                     },
                     {
-                        data: 'soc'
+                        data: 'concept_id',
+                        visible: false
+                    },
+                    {
+                        data: 'soc',
+                        visible: false
                     },
                     {
                         data: 'hlgt',
@@ -70,9 +79,6 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
                     {
                         data: 'pt',
                         visible: false
-                    },
-                    {
-                        data: 'snomed'
                     },
                     {
                         data: 'num_persons',

@@ -6,6 +6,7 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
         self.loading = ko.observable(false);
         self.loadingReportDrilldown = ko.observable(false);
         self.activeReportDrilldown = ko.observable(false);
+        self.loadingPredictorsDrilldown = ko.observable(false);
         
 		self.render = function () {
             self.loading(true);            
@@ -74,9 +75,8 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
                             {
                                 data: 'outcome_cohort_name',
                                 "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                                    $(nTd).html("<a target='_blank' href='" + self.model.services()[0].circe + "/#/"+oData.outcome_cohort_definition_id+"'>"+oData.outcome_cohort_name+"</a>");
+                                    $(nTd).html("<a target='_blank' href='" + self.model.services()[0].circe + "/#/"+oData.outcome_cohort_definition_id+"'>"+oData.outcome_cohort_name+"</a>")
                                 }
-                                
                             },
                             {
                                 data: 'num_persons_exposed',
@@ -112,12 +112,15 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
         self.drilldown = function (id, name, type) {
 			self.loadingReportDrilldown(true);
 			self.activeReportDrilldown(false);
+            self.loadingPredictorsDrilldown(true);
             var exposureCohortList = [self.model.currentExposureCohortId()];
-			$.ajax({
+			var outcomeCohortList = [id];
+            
+            $.ajax({
 				method: 'POST',
                 data: ko.toJSON({
                     "EXPOSURE_COHORT_LIST" : exposureCohortList,
-                    "OUTCOME_COHORT_LIST" : [id]
+                    "OUTCOME_COHORT_LIST" : outcomeCohortList
                 }),
 				url: self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/timetoevent',
 				contentType: "application/json; charset=utf-8"
@@ -190,7 +193,103 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
 				}
 			});
             
-            
+            $.ajax({
+				method: 'POST',
+                data: ko.toJSON({
+                    "EXPOSURE_COHORT_LIST" : exposureCohortList,
+                    "OUTCOME_COHORT_LIST" : outcomeCohortList,
+                    "MIN_CELL_COUNT": 100
+                }),
+				url: self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/predictors',
+				contentType: "application/json; charset=utf-8",
+				success: function (data) {
+                    self.loadingPredictorsDrilldown(false);   
+                    $('#cohortPredictorsHeading').html(name + " Predictors");
+                    
+                    // format the return results
+                    var table_data = data.map(function(d, i) {
+                        var outcome_cohort_id = d.outcome_cohort_definition_id;
+                        var condition_cohort_name = $.grep(self.model.selectedConditionCohorts(), function(n, i) {
+                            return n.cohortDefinitionId == outcome_cohort_id;
+                        });
+                        if (condition_cohort_name.length > 0){
+                            return {
+                                "exposure_cohort_definition_id": d.exposure_cohort_definition_id,
+                                "exposure_cohort_name": self.model.currentExposureCohortName(),
+                                "outcome_cohort_definition_id": d.outcome_cohort_definition_id,
+                                "outcome_cohort_name": condition_cohort_name[0].cohortDefinitionName,
+                                "concept_id": d.concept_id,
+                                "concept_name": d.concept_name,
+                                "domain_id": d.domain_id,
+                                "concept_w_outcome": self.model.formatComma(d.concept_w_outcome),
+                                "pct_outcome_w_concept": self.model.formatPercent(d.pct_outcome_w_concept),
+                                "pct_nooutcome_w_concept": self.model.formatPercent(d.pct_nooutcome_w_concept),
+                                "abs_std_diff": self.model.formatPercent(d.abs_std_diff)
+                            }
+                        }
+                    });
+                    
+                    // Show the subset of the overall cohort conditions in this section.
+                    var datatable = $('#cohort_predictors_table').DataTable({
+                        order: [10, 'desc'],
+                        dom: 'T<"clear">lfrtip',
+                        data: table_data,
+                        columns: [{
+                                data: 'exposure_cohort_definition_id',
+                                visible: false
+                            },
+                            {
+                                data: 'exposure_cohort_name',
+                                visible: false
+                            },
+                            {
+                                data: 'outcome_cohort_definition_id',
+                                visible: false
+                            },
+                            {
+                                data: 'outcome_cohort_name',
+                                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                                    $(nTd).html("<a target='_blank' href='" + self.model.services()[0].circe + "/#/"+oData.outcome_cohort_definition_id+"'>"+oData.outcome_cohort_name+"</a>");
+                                }                                
+                            },
+                            {
+                                data: 'concept_id',
+                                className: 'numeric'
+                            },
+                            {
+                                data: 'concept_name',
+                                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                                    $(nTd).html("<a target='_blank' href='" + self.model.services()[0].atlas + "/#/concept/"+oData.concept_id+"'>"+oData.concept_name+"</a>");
+                                }
+                            },
+                            {
+                                data: 'domain_id'
+                            },
+                            {
+                                data: 'concept_w_outcome',
+                                className: 'numeric'
+                            },
+                            {
+                                data: 'pct_outcome_w_concept',
+                                className: 'numeric'
+                            },
+                            {
+                                data: 'pct_nooutcome_w_concept',
+                                className: 'numeric'
+                            },
+                            {
+                                data: 'abs_std_diff',
+                                className: 'numeric'
+                            }
+                        ],
+                        pageLength: 10,
+                        lengthChange: false,
+                        deferRender: true,
+                        destroy: true
+                    });
+                    self.datatables['cohort_predictors_table'] = datatable;    
+                }
+            });            
 		}    
 
         self.model.currentExposureCohortId.subscribe(function(newValue) {

@@ -24,7 +24,9 @@ define([
         // Selected Drug settings
         self.currentExposureCohortId = ko.observable();
         self.currentExposureCohortName = ko.observable();
+        self.currentExposureCohortCountValue = ko.observable();
         self.currentDrugSetId = ko.observable();
+        self.currentDrugIngredientName = ko.observable();
         self.currentDrugConceptId = ko.observable(0);
         self.currentDrugName = ko.observable();
         self.currentDrugLabel = ko.observable();
@@ -185,6 +187,7 @@ define([
             {
                 self.currentDrugSetId(selectedDrug.set_id);
                 self.currentDrugName(selectedDrug.drug_name);
+                self.currentDrugIngredientName(selectedDrug.drug_concept_name);
                 self.currentDrugConceptId(selectedDrug.drug_concept_id);
                 self.currentExposureCohortId(selectedDrug.cohort_id);
                 self.currentExposureCohortName(selectedDrug.cohort_name);

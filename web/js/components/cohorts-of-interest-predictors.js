@@ -6,7 +6,6 @@ define(['knockout', 'text!./cohorts-of-interest-predictors.html','d3', 'jnj_char
         self.loading = ko.observable(false);
         self.loadingReportDrilldown = ko.observable(false);
         self.activeReportDrilldown = ko.observable(false);
-        self.loadingPredictorsDrilldown = ko.observable(false);
         
 		self.render = function () {
             self.loading(true);            
@@ -112,7 +111,6 @@ define(['knockout', 'text!./cohorts-of-interest-predictors.html','d3', 'jnj_char
         self.drilldown = function (id, name, type) {
 			self.loadingReportDrilldown(true);
 			self.activeReportDrilldown(false);
-            self.loadingPredictorsDrilldown(true);
             var exposureCohortList = [self.model.currentExposureCohortId()];
 			var outcomeCohortList = [id];
             
@@ -126,7 +124,7 @@ define(['knockout', 'text!./cohorts-of-interest-predictors.html','d3', 'jnj_char
 				url: self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/predictors',
 				contentType: "application/json; charset=utf-8",
 				success: function (data) {
-                    self.loadingPredictorsDrilldown(false);   
+					self.activeReportDrilldown(true);
                     $('#cohortPredictorsHeading').html(name + " Predictors");
                     
                     // format the return results
@@ -211,6 +209,7 @@ define(['knockout', 'text!./cohorts-of-interest-predictors.html','d3', 'jnj_char
                         destroy: true
                     });
                     self.datatables['cohort_predictors_table'] = datatable;    
+                    self.loadingReportDrilldown(false);
                 }
             });            
 		}    

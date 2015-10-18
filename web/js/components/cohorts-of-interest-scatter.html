@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="pad-10 report">
         <div class="reportHeading"><i class="fa fa-area-chart"></i>Cohorts Of Interest</div>
-        <div class="reportSectionHeading" data-bind="text: 'Exposure to ' + model.currentDrugName()"></div>
+        <div class="reportSectionHeading" data-bind="text: 'Exposure to ' + model.currentDrugIngredientName()"></div>
         <!-- start: loading -->
         <div id="es-loading" data-bind="if: $component.loading() == true">
             <div class="spinner">

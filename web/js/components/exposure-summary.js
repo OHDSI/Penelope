@@ -54,10 +54,14 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
                                     relative_risk: self.model.formatFixed(this.logRRAfterBefore[i]),
                                     percent_persons_before: self.model.formatPercent(this.percentPersons[i]),
                                     percent_persons_after: self.model.formatPercent(this.percentPersons[i]),
-                                    risk_difference: self.model.formatFixed(this.riskDiffAfterBefore[i])
+                                    risk_difference: self.model.formatFixed(this.riskDiffAfterBefore[i]),
+                                    count_value: self.model.formatComma(this.countValue[i])
                                 };
                             }, conditionOccurrencePrevalence);
                             self.model.selectedConditionOccurrencePrevalence(table_data);
+                            
+                            // Get the count value for the currently selected cohort
+                            self.model.currentExposureCohortCountValue(table_data[0].count_value);                            
                                                         
                             $(document).on('click', '.treemap_table tbody tr', function () {
                                 var datatable = self.datatables[$(this).parents('.treemap_table').attr('id')];

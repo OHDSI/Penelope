@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="pad-10 report">
         <div class="reportHeading"><i class="fa fa-area-chart"></i>Cohorts Of Interest</div>
-        <div class="reportSectionHeading" data-bind="text: 'Exposure to ' + model.currentDrugName()"></div>
+        <div class="reportSectionHeading" data-bind="text: 'Exposure to ' + model.currentDrugIngredientName()"></div>
         <!-- start: loading -->
         <div id="es-loading" data-bind="if: $component.loading() == true">
             <div class="spinner">
@@ -32,40 +32,29 @@
                     </tr>
                 </thead>
             </table>
-                <!-- start: loading -->
-                <div id="es-loading" data-bind="if: $component.loadingPredictorsDrilldown() == true">
-                    <div class="spinner">
-                      <h4>Loading</h4>
-                      <div class="rect1"></div>
-                      <div class="rect2"></div>
-                      <div class="rect3"></div>
-                      <div class="rect4"></div>
-                      <div class="rect5"></div>
-                      <div class="rect6"></div>
-                      <div class="rect7"></div>
-                    </div>
-                </div>
-                <!-- end: loading -->
-                <div data-bind="if:$component.loadingPredictorsDrilldown() == false">
-                    <div id="cohortPredictorsHeading" class="reportSectionHeading"></div>
-                    <table id="cohort_predictors_table" class="display cohort_predictors_table" style="width: 100%" type="condition">
-                    <thead>
-                        <tr>
-                            <th>Exposure Cohort ID</th>
-                            <th>Exposure Cohort</th>                        
-                            <th>Outcome Cohort ID</th>
-                            <th>Cohort Name</th>
-                            <th>Concept ID</th>
-                            <th>Concept Name</th>
-                            <th>Domain</th>
-                            <th>Concept With Outcome</th>
-                            <th>% Outcome With Concept</th>
-                            <th>% Outcome Without Concept</th>
-                            <th>Absolute Std Diff</th>
-                        </tr>
-                    </thead>
-                    </table>
-                </div>
+            <div class="loader" data-bind="if:$component.loadingReportDrilldown">
+                <i class="fa fa-refresh fa-spin"></i> Loading Drilldown...
+            </div>
+            <div data-bind="if:$component.activeReportDrilldown">
+                <div id="cohortPredictorsHeading" class="reportSectionHeading"></div>
+                <table id="cohort_predictors_table" class="display cohort_predictors_table" style="width: 100%" type="condition">
+                <thead>
+                    <tr>
+                        <th>Exposure Cohort ID</th>
+                        <th>Exposure Cohort</th>                        
+                        <th>Outcome Cohort ID</th>
+                        <th>Cohort Name</th>
+                        <th>Concept ID</th>
+                        <th>Concept Name</th>
+                        <th>Domain</th>
+                        <th>Concept With Outcome</th>
+                        <th>% Outcome With Concept</th>
+                        <th>% Outcome Without Concept</th>
+                        <th>Absolute Std Diff</th>
+                    </tr>
+                </thead>
+                </table>
+            </div>            
         </div>
     </div>
 </div>

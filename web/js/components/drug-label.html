@@ -125,7 +125,7 @@
 									<div>
 										<condition-concept-by-index params="{model: pageModel, conceptDomain: 'condition'}"></condition-concept-by-index>
 										<other-concepts-of-interest params="{model: pageModel, conceptDomain: 'condition'}"></other-concepts-of-interest>
-                                        <cohorts-of-interest params="{model: pageModel, displayScatter: true, displayPredictors: false}"></cohorts-of-interest>
+                                        <cohorts-of-interest-scatter params="{model: pageModel}"></cohorts-of-interest-scatter>
 									</div>
 								</div>
 							</div>
@@ -152,7 +152,7 @@
 								</div>
 								<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
 									<div class="panel-body">
-                                        <cohorts-of-interest params="{model: pageModel, displayScatter: false, displayPredictors: true}"></cohorts-of-interest>
+                                        <cohorts-of-interest-predictors params="{model: pageModel}"></cohorts-of-interest-predictors>
                                     </div>
 								</div>
 							</div>

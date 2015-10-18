@@ -1,0 +1,44 @@
+<div class="panel panel-default">
+    <div class="pad-10 report">
+        <div class="reportHeading"><i class="fa fa-area-chart"></i>Cohorts Of Interest</div>
+        <div class="reportSectionHeading" data-bind="text: 'Exposure to ' + model.currentDrugName()"></div>
+        <!-- start: loading -->
+        <div id="es-loading" data-bind="if: $component.loading() == true">
+            <div class="spinner">
+              <h4>Loading</h4>
+              <div class="rect1"></div>
+              <div class="rect2"></div>
+              <div class="rect3"></div>
+              <div class="rect4"></div>
+              <div class="rect5"></div>
+              <div class="rect6"></div>
+              <div class="rect7"></div>
+            </div>
+        </div>
+        <!-- end: loading -->
+        <div data-bind="if: $component.loading() == false">
+            <table id="cohorts_of_interest_scatter_table" class="display cohorts_of_interest_scatter_table" style="width: 100%" type="condition">
+                <thead>
+                    <tr>
+                        <th>Exposure Cohort ID</th>
+                        <th>Exposure Cohort</th>                        
+                        <th>Outcome Cohort ID</th>
+                        <th>Cohort Name</th>
+                        <th>Persons Exposed</th>
+                        <th>Persons With Outcome Pre-exposure</th>
+                        <th>Persons With Outcome Post-exposure</th>
+                        <th>Time at risk</th>
+                        <th>Incidence Rate (Per 1000py)</th>
+                    </tr>
+                </thead>
+            </table>
+            <div class="loader" data-bind="if:$component.loadingReportDrilldown">
+                <i class="fa fa-refresh fa-spin"></i> Loading Drilldown...
+            </div>
+            <div data-bind="if:$component.activeReportDrilldown">
+                <div id="cohortOfInterestDrilldownScatterplotHeading" class="reportSectionHeading"></div>
+                <div class="evidenceVisualization" id="cohortOfInterestDrilldownScatterplot"></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -47,6 +47,16 @@ define(['knockout', 'text!./label-evidence.html', 'knockout.dataTables.binding',
                     var labelEvidenceResult = data.map(
                         function(d, i) {
                             var ingredientConceptId = d.ingredient_concept_id;
+                            var hasEvidence = null;
+                            switch(d.hasEvidence)
+                            {
+                                case "0":
+                                    hasEvidence = false;
+                                    break;
+                                case "1":
+                                    hasEvidence = true;
+                                    break;
+                            }                                    
                             var findlookup = $.grep(self.model.selectedDrugAndAncestorDescendants(), function(n, i) {
                                 return n.concept_id == ingredientConceptId;
                             });
@@ -55,7 +65,7 @@ define(['knockout', 'text!./label-evidence.html', 'knockout.dataTables.binding',
                                 "CONCEPT_NAME": d.ingredient_concept_name,
                                 "ATC3": findlookup[0].atc3,
                                 "ATC5": findlookup[0].atc5,
-                                "HAS_EVIDENCE": d.hasEvidence
+                                "HAS_EVIDENCE": hasEvidence
                             };
                         });
 

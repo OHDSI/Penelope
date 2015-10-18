@@ -106,6 +106,7 @@ requirejs(['knockout', './app', 'lscache', 'director', 'cache-flush', 'condition
 	var densityPriority = 0;
 
     // Get the sources from localStorage - if not found, retrieve them from the WS
+    
     if (pageModel.sources().length == 0)
     {
         // initialize all service information asynchronously
@@ -185,12 +186,12 @@ requirejs(['knockout', './app', 'lscache', 'director', 'cache-flush', 'condition
     // Get the sources and set the pageModel variables appropriately
     if (pageModel.sources().length > 0)
     {
-        $.each(pageModel.sources(), function(sourceIndex, source) {
-            // establish base priorities for daimons
-            var evidencePriority = 0;
-            var vocabularyPriority = 0;
-            var densityPriority = 0;
+    	// establish base priorities for daimons
+		evidencePriority = 0;
+		vocabularyPriority = 0;
+		densityPriority = 0;
 
+        $.each(pageModel.sources(), function(sourceIndex, source) {            
             for (var d = 0; d < source.daimons.length; d++) {
                 var daimon = source.daimons[d];
 

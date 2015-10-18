@@ -2,6 +2,8 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
 	function cohortsOfInterest(params) {
 		var self = this;
 		self.model = params.model;
+        self.displayScatter = params.displayScatter;
+        self.displayPredictors = params.displayPredictors;
 		self.datatables = {};
         self.loading = ko.observable(false);
         self.loadingReportDrilldown = ko.observable(false);
@@ -57,54 +59,54 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
 
                     // Show the subset of the overall cohort conditions in this section.
                     var datatable = $('#cohort_of_interest_table').DataTable({
-                        order: [6, 'desc'],
-                        dom: 'T<"clear">lfrtip',
-                        data: table_data,
-                        columns: [{
-                                data: 'exposure_cohort_definition_id',
-                                visible: false
-                            },
-                            {
-                                data: 'exposure_cohort_name',
-                                visible: false
-                            },
-                            {
-                                data: 'outcome_cohort_definition_id',
-                                visible: false
-                            },
-                            {
-                                data: 'outcome_cohort_name',
-                                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                                    $(nTd).html("<a target='_blank' href='" + self.model.services()[0].circe + "/#/"+oData.outcome_cohort_definition_id+"'>"+oData.outcome_cohort_name+"</a>")
-                                }
-                            },
-                            {
-                                data: 'num_persons_exposed',
-                                className: 'numeric'
-                            },
-                            {
-                                data: 'num_persons_w_outcome_pre_exposure',
-                                className: 'numeric'
-                            },
-                            {
-                                data: 'num_persons_w_outcome_post_exposure',
-                                className: 'numeric'
-                            },
-                            {
-                                data: 'time_at_risk',
-                                className: 'numeric'
-                            },
-                            {
-                                data: 'incidence_rate_1000py',
-                                className: 'numeric'
-                            }
-                        ],
-                        pageLength: 10,
-                        lengthChange: false,
-                        deferRender: true,
-                        destroy: true
-                    });
-                    self.datatables['cohort_of_interest_table'] = datatable;    
+							order: [6, 'desc'],
+							dom: 'T<"clear">lfrtip',
+							data: table_data,
+							columns: [{
+									data: 'exposure_cohort_definition_id',
+									visible: false
+								},
+								{
+									data: 'exposure_cohort_name',
+									visible: false
+								},
+								{
+									data: 'outcome_cohort_definition_id',
+									visible: false
+								},
+								{
+									data: 'outcome_cohort_name',
+									"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+										$(nTd).html("<a target='_blank' href='" + self.model.services()[0].circe + "/#/"+oData.outcome_cohort_definition_id+"'>"+oData.outcome_cohort_name+"</a>")
+									}
+								},
+								{
+									data: 'num_persons_exposed',
+									className: 'numeric'
+								},
+								{
+									data: 'num_persons_w_outcome_pre_exposure',
+									className: 'numeric'
+								},
+								{
+									data: 'num_persons_w_outcome_post_exposure',
+									className: 'numeric'
+								},
+								{
+									data: 'time_at_risk',
+									className: 'numeric'
+								},
+								{
+									data: 'incidence_rate_1000py',
+									className: 'numeric'
+								}
+							],
+							pageLength: 10,
+							lengthChange: false,
+							deferRender: true,
+							destroy: true
+						});
+				    self.datatables['cohort_of_interest_table'] = datatable;    
                 }
             });            
 		}
@@ -225,7 +227,7 @@ define(['knockout', 'text!./cohorts-of-interest.html','d3', 'jnj_chart', 'colorb
                                 "concept_w_outcome": self.model.formatComma(d.concept_w_outcome),
                                 "pct_outcome_w_concept": self.model.formatPercent(d.pct_outcome_w_concept),
                                 "pct_nooutcome_w_concept": self.model.formatPercent(d.pct_nooutcome_w_concept),
-                                "abs_std_diff": self.model.formatPercent(d.abs_std_diff)
+                                "abs_std_diff": self.model.formatFixed(d.abs_std_diff)
                             }
                         }
                     });

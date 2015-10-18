@@ -125,7 +125,7 @@
 									<div>
 										<condition-concept-by-index params="{model: pageModel, conceptDomain: 'condition'}"></condition-concept-by-index>
 										<other-concepts-of-interest params="{model: pageModel, conceptDomain: 'condition'}"></other-concepts-of-interest>
-                                        <cohorts-of-interest params="{model: pageModel}"></cohorts-of-interest>
+                                        <cohorts-of-interest params="{model: pageModel, displayScatter: true, displayPredictors: false}"></cohorts-of-interest>
 									</div>
 								</div>
 							</div>
@@ -152,9 +152,8 @@
 								</div>
 								<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
 									<div class="panel-body">
-										Check table for combination of drug + HOI – if found, link to the relevant study. If not, display a message such as “If you are interested in starting a study on
-										<drug + HOI> click here to join the journey”
-									</div>
+                                        <cohorts-of-interest params="{model: pageModel, displayScatter: false, displayPredictors: true}"></cohorts-of-interest>
+                                    </div>
 								</div>
 							</div>
 						</div>

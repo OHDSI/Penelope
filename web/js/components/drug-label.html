@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" id="labelFull" data-bind="click:closeEvidence">
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<div id="sidebar-toggle" class="btn btn-primary"><i class="fa fa-bars"></i></div>
@@ -54,14 +54,14 @@
 <div id="sidr-right" class="sidr sidr-right">
 	<div class="panel panel-default">
 		<div class="panel-heading evidence-explorer-heading">
-			<span class="glyphicon glyphicon-circle-arrow-left evidence-explorer-button" id="eeFullScreen" data-bind="click: toggleFull" alt="Full Screen"></span>
+			<span class="glyphicon glyphicon-circle-arrow-right evidence-explorer-button" id="eeCloseEvidence" data-bind="click: closeEvidence" alt="Close Panel"></span>
 			<!-- ko if: model.selectedConditionConceptId() == 0 -->
 			<span data-bind="text: 'Evidence for ' + model.currentDrugName()"></span>
 			<!-- /ko -->
 			<!-- ko if: model.selectedConditionConceptId() > 0 -->
 			<span data-bind="text: 'Evidence for ' + model.currentDrugName() + ' with ' + model.selectedConditionConceptName()"></span>
 			<!-- /ko -->
-			<span id="eeClose" class="glyphicon glyphicon-remove-circle evidence-explorer-button evidence-explorer-close-button"></span>
+			<small><span id="eeFullScreen" class="glyphicon glyphicon-resize-full evidence-explorer-button evidence-explorer-close-button" data-bind="click: toggleFull"></span></small>
 		</div>
 		<ul class="nav nav-tabs" data-bind="eventListener: { event: 'click', selector: '.tab', callback: tabClick}">
 			<li role="presentation" data-bind="css: {active: model.drugLabelActiveTab() == 'obs'}" tabName="obs" class="tab"><a>Observational Evidence</a></li>
@@ -84,7 +84,7 @@
 			<div id="tabObsEvidence" data-bind="css: {hidden: model.drugLabelActiveTab() != 'obs'}">
 				<!-- START: Data Source Selection -->
 				<div class="input-group">
-					<span class="input-group-addon" data-bind="text: model.services()[0].url"></span>
+					<span class="input-group-addon" data-bind="text: 'Observational Data Source'"></span>
 					<select class="selectpicker form-control" data-bind="css : { invalid: model.reportSourceKey()==undefined }, options: model.sources().filter(model.hasResults), optionsValue:'sourceKey', optionsText:'sourceName', value: model.reportSourceKey, optionsCaption:'Select a Source'"></select>
 				</div>
 				<!-- ko if: pageModel.reportSourceKey() == undefined-->

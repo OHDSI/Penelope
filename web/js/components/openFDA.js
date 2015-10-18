@@ -4,15 +4,52 @@ define(['knockout', 'text!./openFDA.html', 'jnj_chart'], function (ko, view, cha
 		self.model = params.model;
 		self.drug = params.drug;
 		self.condition = params.condition;
-
+		self.errorFree = ko.observable(true);
 		self.outcomesData = [];
 
+		self.isReady = ko.computed(function () {
+			if (self.condition() && self.drug()) {
+				if (self.condition().length > 0 && self.drug().length > 0) {
+					return true;
+				}
+			}
+
+			return false;
+		}, this);
+
+		self.model.selectedConditionConceptId.subscribe(function() {
+			self.condition('');
+		});
+
+		self.caption = ko.computed(function() {
+			if (self.isReady()) {
+				return 'OpenFDA data for ' + self.drug() + ' and ' + self.condition();
+			}
+		},this);
+
 		self.model.drugLabelActiveTab.subscribe(function (value) {
-			if (value == 'spo') {
+			if (value == 'spo' && self.isReady()) {
 				self.loadSeverityData();
 				self.loadOutcomes();
 			}
 		});
+
+		// when the drug changes, lets update the display
+		self.drug.subscribe(function (value) {
+			self.load();
+		});
+
+		self.condition.subscribe(function (value) {
+			self.load();
+		})
+
+		self.load = function () {
+			if (self.isReady()) {
+				self.errorFree(true);
+				self.loadOutcomes();
+				self.loadSeverityData();
+			}
+		}
 
 		self.setCurrentServiceUrl = function (service) {
 			self.currentServiceUrl(service.url);
@@ -25,6 +62,9 @@ define(['knockout', 'text!./openFDA.html', 'jnj_chart'], function (ko, view, cha
 			$.ajax({
 				url: 'https://api.fda.gov/drug/event.json?search=(patient.drug.medicinalproduct:' + self.drug + ')&count=patient.reaction.reactionmeddrapt.exact&limit=20',
 				method: 'GET',
+				error: function () {
+					self.errorFree(false);
+				},
 				success: function (data) {
 					var options = {};
 					var reactionsDonut = new charting.donut();
@@ -53,75 +93,112 @@ define(['knockout', 'text!./openFDA.html', 'jnj_chart'], function (ko, view, cha
 		self.loadOutcomes = function () {
 			self.outcomesData = [];
 
-			var q1 = $.ajax({
-				url: 'https://api.fda.gov/drug/event.json?search=(patient.drug.medicinalproduct:' + self.drug + ')+AND+(patient.reaction.reactionmeddrapt.exact:%22' + self.condition + '%22)&count=seriousnesscongenitalanomali',
+			var p1 = $.Deferred();
+			var p2 = $.Deferred();
+			var p3 = $.Deferred();
+			var p4 = $.Deferred();
+			var p5 = $.Deferred();
+			var p6 = $.Deferred();
+
+
+			$.ajax({
+				url: 'https://api.fda.gov/drug/event.json?search=(patient.drug.medicinalproduct:' + self.drug() + ')+AND+(patient.reaction.reactionmeddrapt.exact:%22' + self.condition() + '%22)&count=seriousnesscongenitalanomali',
+				error: function () {
+					p1.resolve();
+				},
 				success: function (data) {
 					var result = {};
 					result.countValue = data.results[0].count;
-					result.conceptName = 'Congenital Anomali';
+					result.conceptName = 'Congenital Anomalies';
 					self.outcomesData.push(result);
+					p1.resolve();
 				}
 			});
 
-			var q2 = $.ajax({
-				url: 'https://api.fda.gov/drug/event.json?search=(patient.drug.medicinalproduct:' + self.drug + ')+AND+(patient.reaction.reactionmeddrapt.exact:%22' + self.condition + '%22)&count=seriousnessdeath',
+			$.ajax({
+				url: 'https://api.fda.gov/drug/event.json?search=(patient.drug.medicinalproduct:' + self.drug() + ')+AND+(patient.reaction.reactionmeddrapt.exact:%22' + self.condition() + '%22)&count=seriousnessdeath',
+				error: function () {
+					self.errorFree(false);
+					p2.resolve();
+				},
 				success: function (data) {
 					var result = {};
 					result.countValue = data.results[0].count;
 					result.conceptName = 'Death';
 					self.outcomesData.push(result);
+					p2.resolve();
 				}
 			});
 
-			var q3 = $.ajax({
-				url: 'https://api.fda.gov/drug/event.json?search=(patient.drug.medicinalproduct:' + self.drug + ')+AND+(patient.reaction.reactionmeddrapt.exact:%22' + self.condition + '%22)&count=seriousnessdisabling',
+			$.ajax({
+				url: 'https://api.fda.gov/drug/event.json?search=(patient.drug.medicinalproduct:' + self.drug() + ')+AND+(patient.reaction.reactionmeddrapt.exact:%22' + self.condition() + '%22)&count=seriousnessdisabling',
+				error: function () {
+					self.errorFree(false);
+					p3.resolve();
+				},
 				success: function (data) {
 					var result = {};
 					result.countValue = data.results[0].count;
 					result.conceptName = 'Disabling';
 					self.outcomesData.push(result);
+					p3.resolve();
 				}
 			});
 
-			var q4 = $.ajax({
-				url: 'https://api.fda.gov/drug/event.json?search=(patient.drug.medicinalproduct:' + self.drug + ')+AND+(patient.reaction.reactionmeddrapt.exact:%22' + self.condition + '%22)&count=seriousnesshospitalization',
+			$.ajax({
+				url: 'https://api.fda.gov/drug/event.json?search=(patient.drug.medicinalproduct:' + self.drug() + ')+AND+(patient.reaction.reactionmeddrapt.exact:%22' + self.condition() + '%22)&count=seriousnesshospitalization',
+				error: function () {
+					self.errorFree(false);
+					p4.resolve();
+				},
 				success: function (data) {
 					var result = {};
 					result.countValue = data.results[0].count;
 					result.conceptName = 'Hospitalization';
 					self.outcomesData.push(result);
+					p4.resolve();
 				}
 			});
 
-			var q5 = $.ajax({
-				url: 'https://api.fda.gov/drug/event.json?search=(patient.drug.medicinalproduct:' + self.drug + ')+AND+(patient.reaction.reactionmeddrapt.exact:%22' + self.condition + '%22)&count=seriousnesslifethreatening',
+			$.ajax({
+				url: 'https://api.fda.gov/drug/event.json?search=(patient.drug.medicinalproduct:' + self.drug() + ')+AND+(patient.reaction.reactionmeddrapt.exact:%22' + self.condition() + '%22)&count=seriousnesslifethreatening',
+				error: function () {
+					self.errorFree(false);
+					p5.resolve();
+				},
 				success: function (data) {
 					var result = {};
 					result.countValue = data.results[0].count;
 					result.conceptName = 'Life Threatening';
 					self.outcomesData.push(result);
+					p5.resolve();
 				}
 			});
 
-			var q6 = $.ajax({
-				url: 'https://api.fda.gov/drug/event.json?search=(patient.drug.medicinalproduct:' + self.drug + ')+AND+(patient.reaction.reactionmeddrapt.exact:%22' + self.condition + '%22)&count=seriousnessother',
+			$.ajax({
+				url: 'https://api.fda.gov/drug/event.json?search=(patient.drug.medicinalproduct:' + self.drug() + ')+AND+(patient.reaction.reactionmeddrapt.exact:%22' + self.condition() + '%22)&count=seriousnessother',
+				error: function () {
+					self.errorFree(false);
+					p6.resolve();
+				},
 				success: function (data) {
 					var result = {};
 					result.countValue = data.results[0].count;
 					result.conceptName = 'Other';
 					self.outcomesData.push(result);
+					p6.resolve();
 				}
 			});
 
-			$.when(q1, q2, q3, q4, q5, q6).done(function () {
-					var outcomesDonut = new charting.labeledPie();
-					outcomesDonut.render(self.model.mapConceptData(self.outcomesData), "#open-fda-outcomes-chart", 500, 200);
+			$.when(p1,p2,p3,p4,p5,p6).then(function () {
+				var outcomesDonut = new charting.labeledPie();
+				outcomesDonut.render(self.model.mapConceptData(self.outcomesData), "#open-fda-outcomes-chart", 500, 200);
 			});
 		};
 
 		self.loadSeverityData = function () {
 			$.ajax({
-				url: 'https://api.fda.gov/drug/event.json?search=(patient.drug.medicinalproduct:' + self.drug + ')+AND+(patient.reaction.reactionmeddrapt.exact:%22' + self.condition + '%22)&count=serious',
+				url: 'https://api.fda.gov/drug/event.json?search=(patient.drug.medicinalproduct:' + self.drug() + ')+AND+(patient.reaction.reactionmeddrapt.exact:%22' + self.condition() + '%22)&count=serious',
 				method: 'GET',
 				success: function (data) {
 					var options = {};

@@ -1,3 +1,9 @@
+<style>
+	#sr-summary-table tr {
+		cursor:pointer;
+	}
+</style>
+
 <div class="panel panel-default">
     <div class="pad-10 report">
         <div class="reportHeading"><i class="fa fa-table"></i>FAERS Summary</div>
@@ -14,7 +20,7 @@
               <div class="rect7"></div>
             </div>
         </div>
-        <!-- end: loading -->  
+        <!-- end: loading -->
         <div data-bind="if: $component.loadingSummary() == false">
             <table id="sr-summary-table" class="display">
             <thead>
@@ -28,6 +34,6 @@
         </div>
         <div data-bind="$if: $component.hasDetailError() == true">
             <span data-bind="text: $component.detailErrorMsg()"></span>
-        </div>        
+        </div>
     </div>
 </div>

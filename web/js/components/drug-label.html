@@ -125,7 +125,7 @@
 									<div>
 										<condition-concept-by-index params="{model: pageModel, conceptDomain: 'condition'}"></condition-concept-by-index>
 										<other-concepts-of-interest params="{model: pageModel, conceptDomain: 'condition'}"></other-concepts-of-interest>
-                                        <cohorts-of-interest-scatter params="{model: pageModel}"></cohorts-of-interest-scatter>
+										<cohorts-of-interest-scatter params="{model: pageModel}"></cohorts-of-interest-scatter>
 									</div>
 								</div>
 							</div>
@@ -152,8 +152,8 @@
 								</div>
 								<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
 									<div class="panel-body">
-                                        <cohorts-of-interest-predictors params="{model: pageModel}"></cohorts-of-interest-predictors>
-                                    </div>
+										<cohorts-of-interest-predictors params="{model: pageModel}"></cohorts-of-interest-predictors>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -164,12 +164,11 @@
 				<!-- end: report source defined -->
 			</div>
 			<div id="tabSciLit" data-bind="css: {hidden: model.drugLabelActiveTab() != 'sci'}">
-                <scientific-literature params="{model: pageModel}"></scientific-literature>
+				<scientific-literature params="{model: pageModel}"></scientific-literature>
 			</div>
 			<div id="tabSR" data-bind="css: {hidden: model.drugLabelActiveTab() != 'spo'}">
-                <spontaneous-reports params="model: pageModel"></spontaneous-reports>
-                <h4>TODO: Make the section below dynamic and a drill down:</h4>
-				<open-fda params="{drug: 'celecoxib+celebrex', condition: 'myocardial+infarction', model: pageModel}"></open-fda>
+				<spontaneous-reports params="model: pageModel"></spontaneous-reports>
+				<open-fda params="{drug: pageModel.currentDrugName, condition: pageModel.currentDrugCondition, model: pageModel}"></open-fda>
 				<h4>FAERS DRILLDOWN</h4> Case sample - show first 100 or so with drop down to show the date, ae, gender, drug, events
 				<!-- ko if: model.openFDAConditionOccurrenceForLabel() != undefined -->
 				<h3 data-bind="text: 'Conditions related to ' + model.currentDrugName() + ' as reported by OpenFDA'"></h3>
@@ -183,7 +182,7 @@
 				<!-- /ko -->
 			</div>
 			<div id="tabLab" data-bind="css: {hidden: model.drugLabelActiveTab() != 'lab'}">
-                <label-evidence params="model: pageModel"></label-evidence>
+				<label-evidence params="model: pageModel"></label-evidence>
 			</div>
 		</div>
 	</div>

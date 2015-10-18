@@ -29,6 +29,7 @@ define([
         self.currentDrugName = ko.observable();
         self.currentDrugLabel = ko.observable();
         self.currentDrugLabelTOC = ko.observable();
+				self.currentDrugCondition = ko.observable(); // for spontaneous reports tab of evidence explorer
         
         // Search settings
         self.currentView = ko.observable('home');

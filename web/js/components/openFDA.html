@@ -1,6 +1,17 @@
-<div style="padding:5px;">
-	<span>Severity</span>
+<style>
+	.heading {
+		font-weight: bold;
+	}
+</style>
+<div class="heading" data-bind="if:!isReady()">
+	Click a Condition from the table above to see FAERS data from openFDA.gov
+</div>
+<div style="padding:5px;" data-bind="if:isReady() && errorFree()">
+	<div class="heading" data-bind="text: caption"></div>
+	<div>Adverse Event Severity</div>
 	<div id="open-fda-severity-chart" style="text-align:center;"></div>
-	<span>Outcomes</span>
+	<div>Outcomes</div>
 	<div id="open-fda-outcomes-chart" style="text-align:center;"></div>
 </div>
+
+<div data-bind="if:!errorFree()">OpenFDA Data Unavailable for your Selection.</div>

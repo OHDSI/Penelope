@@ -1,6 +1,6 @@
 <div class="panel panel-default">
     <div class="pad-10 report">
-        <div class="reportHeading"><i class="fa fa-table"></i>Exposure Summary For <span data-bind="text: model.currentDrugName"></span></div>
+        <div class="reportHeading"><i class="fa fa-table"></i>Exposure Summary For <span data-bind="text: model.currentDrugIngredientName()"></span></div>
         <!-- start: loading -->
         <div id="es-loading" data-bind="if: $component.loadingDrugSummary() == true">
             <div class="spinner">

@@ -2,7 +2,7 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<div id="sidebar-toggle" class="btn btn-primary"><i class="fa fa-bars"></i></div>
-			<span class="drug-label-title" data-bind="text: model.currentDrugName"></span>
+			<span class="drug-label-title" data-bind="text: model.currentDrugIngredientName()"></span>
 			<div class="pull-right btn btn-primary" data-bind="click:toggleEvidence"><i class="fa fa-stethoscope"></i>&nbsp;Evidence Explorer</div>
 		</div>
 		<div class="panel-body">
@@ -11,7 +11,7 @@
 	</div>
 </div>
 <div id="sidr-left" class="sidr sidr-left">
-	<h2 data-bind="text: model.currentDrugName"></h2>
+	<h2 data-bind="text: model.currentDrugIngredientName()"></h2>
 	<p>Use this section to browse the label sections or to find a health outcome of interest</p>
 	<form>
 		<input placeholder="find a condition..." id="searchtoc" type="text" data-bind="event: { keyup: searchTOC }" />
@@ -56,10 +56,10 @@
 		<div class="panel-heading evidence-explorer-heading">
 			<span class="glyphicon glyphicon-circle-arrow-right evidence-explorer-button" id="eeCloseEvidence" data-bind="click: closeEvidence" alt="Close Panel"></span>
 			<!-- ko if: model.selectedConditionConceptId() == 0 -->
-			<span data-bind="text: 'Evidence for ' + model.currentDrugName()"></span>
+			<span data-bind="text: 'Evidence for ' + model.currentDrugIngredientName()"></span>
 			<!-- /ko -->
 			<!-- ko if: model.selectedConditionConceptId() > 0 -->
-			<span data-bind="text: 'Evidence for ' + model.currentDrugName() + ' with ' + model.selectedConditionConceptName()"></span>
+			<span data-bind="text: 'Evidence for ' + model.currentDrugIngredientName() + ' with ' + model.selectedConditionConceptName()"></span>
 			<!-- /ko -->
 			<small><span id="eeFullScreen" class="glyphicon glyphicon-resize-full evidence-explorer-button evidence-explorer-close-button" data-bind="click: toggleFull"></span></small>
 		</div>
@@ -75,7 +75,7 @@
 			<div id="debug">
 				Drug Concept ID: <span id="drugConceptId" data-bind="text: model.currentDrugConceptId"></span>
 				<br/> Set ID: <span id="setId" data-bind="text: model.currentDrugSetId"></span>
-				<br/> Drug Name: <span data-bind="text: model.currentDrugName"></span>
+				<br/> Drug Name: <span data-bind="text: model.currentDrugIngredientName()"></span>
 				<br/> Selected HOI Concept_ID: <span data-bind="text: model.selectedConditionConceptId"></span>
 				<br/> Selected HOI: <span id="selectedHOI" data-bind="text: model.selectedConditionConceptName"></span>
 				<br/>
@@ -172,7 +172,7 @@
 				<open-fda params="{drug: 'celecoxib+celebrex', condition: 'myocardial+infarction', model: pageModel}"></open-fda>
 				<h4>FAERS DRILLDOWN</h4> Case sample - show first 100 or so with drop down to show the date, ae, gender, drug, events
 				<!-- ko if: model.openFDAConditionOccurrenceForLabel() != undefined -->
-				<h3 data-bind="text: 'Conditions related to ' + model.currentDrugName() + ' as reported by OpenFDA'"></h3>
+				<h3 data-bind="text: 'Conditions related to ' + model.currentDrugIngredientName() + ' as reported by OpenFDA'"></h3>
 				<!-- ko foreach: model.openFDAConditionOccurrenceForLabel().results -->
 				<div class="search-result row">
 					<div class="col-xs-12 col-sm-12 col-md-7 excerpet">

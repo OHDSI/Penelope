@@ -36,10 +36,10 @@
     <div style="cursor: pointer" data-bind="click: toggleFull">Collapse</div>
     <div class="panel panel-default">
         <!-- ko if: model.selectedConditionConceptId() == null -->
-        <div class="panel-heading" data-bind="text: 'Evidence for ' + model.currentDrugName()"></div>
+        <div class="panel-heading" data-bind="text: 'Evidence for ' + model.currentDrugIngredientName()"></div>
         <!-- /ko -->
         <!-- ko if: model.selectedConditionConceptId() != null -->
-        <div class="panel-heading" data-bind="text: 'Evidence for ' + model.currentDrugName() + ' with ' + model.selectedConditionConceptName()"></div>
+        <div class="panel-heading" data-bind="text: 'Evidence for ' + model.currentDrugIngredientName() + ' with ' + model.selectedConditionConceptName()"></div>
         <!-- /ko -->
         <ul class="nav nav-tabs" data-bind="eventListener: { event: 'click', selector: '.tab', callback: tabClick}">
           <li role="presentation" data-bind="css: {active: model.drugLabelActiveTab() == 'obs'}" tabName="obs" class="tab"><a>Observational Evidence</a></li>
@@ -53,7 +53,7 @@
             <div id="debug">
                 Drug Concept ID: <span id="drugConceptId" data-bind="text: model.currentDrugConceptId"></span><br/>
                 Set ID: <span id="setId" data-bind="text: model.currentDrugSetId"></span><br/>
-                Drug Name: <span data-bind="text: model.currentDrugName"></span><br/>
+                Drug Name: <span data-bind="text: model.currentDrugIngredientName"></span><br/>
                 Selected HOI Concept_ID: <span data-bind="text: model.selectedConditionConceptId"></span><br/>
                 Selected HOI: <span id="selectedHOI" data-bind="text: model.selectedConditionConceptName"></span><br/>
                 <br/>
@@ -197,7 +197,7 @@
                 <h4>FAERS DRILLDOWN</h4>
                 Case sample - show first 100 or so with drop down to show the date, ae, gender, drug, events       
                 <!-- ko if: model.openFDAConditionOccurrenceForLabel() != undefined -->
-                  <h3 data-bind="text: 'Conditions related to ' + model.currentDrugName() + ' as reported by OpenFDA'"></h3>
+                  <h3 data-bind="text: 'Conditions related to ' + model.currentDrugIngredientName() + ' as reported by OpenFDA'"></h3>
                     <!-- ko foreach: model.openFDAConditionOccurrenceForLabel().results --> 
                     <div class="search-result row">
                         <div class="col-xs-12 col-sm-12 col-md-7 excerpet">

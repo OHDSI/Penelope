@@ -147,6 +147,10 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
             }
         });
         
+        self.model.currentDrugConceptId.subscribe(function(newValue) {
+            self.model.selectedConditionConceptId(0);
+        });
+        
         self.getConceptDescendants = function(concept_id) {
             $.ajax({
 				type: "GET",

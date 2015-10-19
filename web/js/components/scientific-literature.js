@@ -35,24 +35,136 @@ define(['knockout', 'text!./scientific-literature.html', 'd3', 'jnj_chart', 'col
             if (self.model.literatureEvidenceSummary == undefined) 
                 return; 
             
-            var literatureSeries = [];
-            var conditionConceptName = self.model.selectedConditionConceptName(); 
-            var literatureEvidenceSummary = self.model.literatureEvidenceSummary();
-            for(var i = 0; i < literatureEvidenceSummary.length; i++) { 
-                literatureSeries[i] = {"label": literatureEvidenceSummary[i].evidence_type, "values": [literatureEvidenceSummary[i].evidence_count]};
-            } 
-            
-            var data = {
-              labels: [conditionConceptName],
-              series: literatureSeries
-            };
+            if (self.model.literatureEvidenceSummary().length <= 0)
+            {
+                self.showNoResults();   
+            }
+            else
+            {
+                $("#sciListNoResults").removeClass("visible").addClass("hidden");
+                self.resetCharts();
+                var pubMedSeries = [];
+                var semMedDBSeries = [];
+                var literatureEvidenceSummary = self.model.literatureEvidenceSummary();
+                for(var i = 0; i < literatureEvidenceSummary.length; i++) {
+                    var literatureObject = {"label": literatureEvidenceSummary[i].evidence_type_suffix, "values": [literatureEvidenceSummary[i].evidence_count], "evidence_type": literatureEvidenceSummary[i].evidence_type}; 
+                    switch(literatureEvidenceSummary[i].evidence_type_root.toUpperCase())
+                    {
+                        case "PUBMED":
+                            pubMedSeries[pubMedSeries.length] = literatureObject;
+                            break;
+                        case "SEMMEDDB":
+                            semMedDBSeries[semMedDBSeries.length] = literatureObject;
+                            break;
+                    }
+                } 
 
+                if (pubMedSeries.length > 0)
+                {
+                    var pubMedData = {
+                      labels: ["PUBMED"],
+                      series: pubMedSeries
+                    };
+                    self.renderBarChart(pubMedData, ".pubmed-chart");
+                }
+                
+                if (semMedDBSeries.length > 0)
+                {
+                    var semMedDBData = {
+                      labels: ["SemMedDB"],
+                      series: semMedDBSeries
+                    };
+                    self.renderBarChart(semMedDBData, ".semmeddb-chart");
+                }
+
+            }
+        }
+        
+        // Handles the literature drill down to Laertes
+        self.literatureChartBarClick = function(element) {
+            self.loadingDetails(true);
+            self.resetDetailError();
+            var evidenceType = element.attributes["evidence_type"].value;
+            $.ajax({
+				method: 'GET',
+				url: self.model.evidenceUrl() + 'evidencedetails?conditionID=' + self.model.selectedConditionConceptId() + '&drugID=' + self.model.currentDrugConceptId() + '&evidenceType=' + evidenceType,
+				dataType: 'json',
+				success: function (data) {
+                    self.loadingDetails(false);
+                    var returnVal = {"evidence_type": evidenceType, "evidence_count": data.length, "evidence": data};
+                    self.model.literatureEvidenceDetails(returnVal);
+				},
+                error: function(data, textStatus, errorThrown) {
+                    self.loadingDetails(false);
+                    self.hasDetailError(true);
+                    self.detailErrorMsg("An error occurred: " + textStatus);
+                }
+			});            
+        }
+        
+        // Retrieves the literature summary from Laertes
+        self.getLiteratureSummary = function() {
+            self.loadingSummary(true);
+            self.model.literatureEvidenceDetails(null);
+            $.ajax({
+				method: 'GET',
+				url: self.model.evidenceUrl() + 'evidencesummary?conditionID=' + self.model.selectedConditionConceptId() + ' &drugID=' + self.model.currentDrugConceptId() + '&evidenceGroup=Literature',
+				dataType: 'json',
+				success: function (data) {
+                    self.loadingSummary(false);
+                    var litSummary = data.map(function(d, i) {
+                        var evidenceType = d.evidence_type.toUpperCase().trim();
+                        var evidenceTypeSuffix;
+                        var evidenceTypeFormatted = undefined;
+                        if (evidenceType.indexOf("MEDLINE_MESH") == 0) {
+                            evidenceTypeFormatted = "PUBMED";
+                        }
+                        if (evidenceType.indexOf("MEDLINE_SEMMEDDB") == 0) {
+                            evidenceTypeFormatted = "SemMedDB";
+                        }
+                        var splitEvidenceName = evidenceType.split("_");
+                        if (splitEvidenceName.length > 0) {
+                            switch (splitEvidenceName[splitEvidenceName.length -1]){
+                                case "CLINTRIAL":
+                                    evidenceTypeSuffix = "Clinical Trials"
+                                    break;
+                                case "CR":
+                                    evidenceTypeSuffix = "Case Reports"
+                                    break;
+                                case "OTHER":
+                                    evidenceTypeSuffix = "Other"
+                                    break;
+                            }
+                        }
+                        
+                        return {
+                            "evidence_count": d.evidence_count,
+                            "evidence_group_name": d.evidence_group_name,
+                            "evidence_id": d.evidence_id,
+                            "evidence_type": d.evidence_type,
+                            "evidence_type_root": evidenceTypeFormatted,
+                            "evidence_type_suffix": evidenceTypeSuffix,
+                            "modality": d.modality
+                        }
+                    });
+                    self.model.literatureEvidenceSummary(litSummary);
+        	        self.renderLiteratureChart();
+				}
+			});
+        }        
+        
+        self.resetDetailError = function() {
+            self.hasDetailError(false);
+            self.detailErrorMsg('');
+        }
+        
+        self.renderBarChart = function(data, chartElement) {
             var chartWidth       = 300,
                 barHeight        = 20,
                 groupHeight      = barHeight * data.series.length,
                 gapBetweenGroups = 10,
-                spaceForLabels   = 150,
-                spaceForLegend   = 250;
+                spaceForLabels   = 100,
+                spaceForLegend   = 150;
 
             // Zip the series data together (first values, second values, etc.)
             var zippedData = [];
@@ -80,7 +192,7 @@ define(['knockout', 'text!./scientific-literature.html', 'd3', 'jnj_chart', 'col
                 .orient("left");
 
             // Specify the chart area and dimensions
-            var chart = d3.select(".chart");
+            var chart = d3.select(chartElement);
             
             // Remove any existing elements inside the SVG
             chart.selectAll("g").remove();
@@ -100,10 +212,10 @@ define(['knockout', 'text!./scientific-literature.html', 'd3', 'jnj_chart', 'col
             // Create rectangles of the correct width
             bar.append("rect")
                 //.attr("fill", function(d,i) { return color(i % data.series.length); })
-                .attr("class", function(d, i) { return "bar " + literatureEvidenceSummary[i].evidence_type})
+                .attr("class", function(d, i) { return "bar " + data.series[i].evidence_type })
                 .attr("width", x)
                 .attr("height", barHeight - 1)
-                .attr("evidence_type", function(d, i) { return literatureEvidenceSummary[i].evidence_type })
+                .attr("evidence_type", function(d, i) { return data.series[i].evidence_type }) // { return literatureEvidenceSummary[i].evidence_type })
                 .on('click', function (d) {
                     self.literatureChartBarClick(this);
 				});
@@ -153,57 +265,24 @@ define(['knockout', 'text!./scientific-literature.html', 'd3', 'jnj_chart', 'col
                 .attr('width', legendRectSize)
                 .attr('height', legendRectSize)
                 //.style('fill', function (d, i) { return color(i); })
-                .attr('class', function(d, i) { return "bar " + literatureEvidenceSummary[i].evidence_type}) 
+                .attr('class', function(d, i) { return "bar " + data.series[i].evidence_type}) 
                 .style('stroke', function (d, i) { return color(i); });
 
             legend.append('text')
                 .attr('class', 'legend')
                 .attr('x', legendRectSize + legendSpacing)
                 .attr('y', legendRectSize - legendSpacing)
-                .text(function (d) { return d.label; });
+                .text(function (d) { return d.label; });            
         }
         
-        // Handles the literature drill down to Laertes
-        self.literatureChartBarClick = function(element) {
-            self.loadingDetails(true);
-            self.resetDetailError();
-            var evidenceType = element.attributes["evidence_type"].value;
-            $.ajax({
-				method: 'GET',
-				url: self.model.evidenceUrl() + 'evidencedetails?conditionID=' + self.model.selectedConditionConceptId() + '&drugID=' + self.model.currentDrugConceptId() + '&evidenceType=' + evidenceType,
-				dataType: 'json',
-				success: function (data) {
-                    self.loadingDetails(false);
-                    var returnVal = {"evidence_type": evidenceType, "evidence_count": data.length, "evidence": data};
-                    self.model.literatureEvidenceDetails(returnVal);
-				},
-                error: function(data, textStatus, errorThrown) {
-                    self.loadingDetails(false);
-                    self.hasDetailError(true);
-                    self.detailErrorMsg("An error occurred: " + textStatus);
-                }
-			});            
+        self.showNoResults = function() {
+            self.resetCharts();
+            $("#sciListNoResults").removeClass("hidden").addClass("visible");
         }
         
-        // Retrieves the literature summary from Laertes
-        self.getLiteratureSummary = function() {
-            self.loadingSummary(true);
-            self.model.literatureEvidenceDetails(null);
-            $.ajax({
-				method: 'GET',
-				url: self.model.evidenceUrl() + 'evidencesummary?conditionID=' + self.model.selectedConditionConceptId() + ' &drugID=' + self.model.currentDrugConceptId() + '&evidenceGroup=Literature',
-				dataType: 'json',
-				success: function (data) {
-                    self.loadingSummary(false);
-                    self.model.literatureEvidenceSummary(data);
-        	        self.renderLiteratureChart();
-				}
-			});
-        }        
-        
-        self.resetDetailError = function() {
-            self.hasDetailError(false);
-            self.detailErrorMsg('');
+        self.resetCharts = function() {
+            $(".pubmed-chart").empty();
+            $(".semmeddb-chart").empty();
         }
         
         self.model.selectedConditionConceptId.subscribe(function(newValue) {
@@ -211,8 +290,6 @@ define(['knockout', 'text!./scientific-literature.html', 'd3', 'jnj_chart', 'col
                 self.getLiteratureSummary();
             }
         });
-        
-        
     }
 
 	var component = {

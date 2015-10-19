@@ -168,7 +168,8 @@
 			</div>
 			<div id="tabSR" data-bind="css: {hidden: model.drugLabelActiveTab() != 'spo'}">
 				<spontaneous-reports params="model: pageModel"></spontaneous-reports>
-			</div>
+				<open-fda params="{drug: pageModel.currentDrugName, condition: pageModel.currentDrugCondition, model: pageModel}"></open-fda>
+            </div>
 			<div id="tabLab" data-bind="css: {hidden: model.drugLabelActiveTab() != 'lab'}">
 				<label-evidence params="model: pageModel"></label-evidence>
 			</div>

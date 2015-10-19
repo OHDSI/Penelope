@@ -17,7 +17,9 @@
         </div>
         <!-- end: loading -->  
         <div data-bind="if: $component.loadingSummary() == false">
-            <svg class="chart"></svg>
+            <svg class="chart pubmed-chart"></svg>
+            <svg class="chart semmeddb-chart"></svg>
+            <div id="sciListNoResults" data-bind="text: 'There were no results found for ' + model.selectedConditionConceptName()"></div>
         </div>
         <!-- start: loading -->
         <div id="es-loading" data-bind="if: $component.loadingDetails() == true">

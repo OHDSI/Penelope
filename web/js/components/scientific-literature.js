@@ -312,7 +312,6 @@ define(['knockout', 'text!./scientific-literature.html', 'd3', 'jnj_chart', 'col
                 self.loading(true);
             }            
         }
-
     }
 
 	var component = {

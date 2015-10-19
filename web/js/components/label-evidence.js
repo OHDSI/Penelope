@@ -152,7 +152,7 @@ define(['knockout', 'text!./label-evidence.html', 'knockout.dataTables.binding',
             {
                 self.loadingSummary(true);
             }
-        }
+        }        
     }
 
 	var component = {

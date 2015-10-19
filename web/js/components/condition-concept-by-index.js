@@ -9,6 +9,8 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
         self.loadingDrugEras = ko.observable(false);
         self.loadingReportDrilldown = ko.observable(false);
         self.activeReportDrilldown = ko.observable(false);
+		self.hasDetailError = ko.observable(false);
+		self.detailErrorMsg = ko.observable('');
         
 		self.render = function () {
             self.loadingRelatedConcepts(true);
@@ -236,7 +238,12 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
                 self.loadingRelatedConcepts(true);
             }
         }
-	}
+
+        self.resetDetailError = function () {
+			self.hasDetailError(false);
+			self.detailErrorMsg('');
+		}
+    }
 
 	var component = {
 		viewModel: conceptByIndex,

@@ -56,7 +56,7 @@ define(['knockout', 'text!./spontaneous-reports.html', 'knockout.dataTables.bind
 				},
 				error: function (data, textStatus, errorThrown) {
 					self.loadingSummary(false);
-					self.hasDetailError(true);
+					self.hasDetailErr5or(true);
 					self.detailErrorMsg("An error occurred: " + textStatus);
 				}
 			});

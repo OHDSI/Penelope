@@ -6,9 +6,12 @@ define(['knockout', 'text!./cohorts-of-interest-predictors.html','d3', 'jnj_char
         self.loading = ko.observable(false);
         self.loadingReportDrilldown = ko.observable(false);
         self.activeReportDrilldown = ko.observable(false);
+		self.hasDetailError = ko.observable(false);
+		self.detailErrorMsg = ko.observable('');
         
 		self.render = function () {
-            self.loading(true);            
+            self.loading(true);    
+            self.resetDetailError();
             var exposureCohortList = [self.model.currentExposureCohortId()];
             var outcomeCohortList = self.model.selectedConditionCohorts().map(function(d, i) { return d.cohortDefinitionId });
             $.ajax({
@@ -105,6 +108,11 @@ define(['knockout', 'text!./cohorts-of-interest-predictors.html','d3', 'jnj_char
 						});
 				    self.datatables['cohorts_of_interest_predictors_table'] = datatable;    
                 }
+				error: function (data, textStatus, errorThrown) {
+					self.loading(false);
+					self.hasDetailError(true);
+					self.detailErrorMsg("An error occurred: " + textStatus);
+				}                
             });            
 		}
 
@@ -265,6 +273,11 @@ define(['knockout', 'text!./cohorts-of-interest-predictors.html','d3', 'jnj_char
             }
 
         }
+
+        self.resetDetailError = function () {
+			self.hasDetailError(false);
+			self.detailErrorMsg('');
+		}
 	}
 
 	var component = {

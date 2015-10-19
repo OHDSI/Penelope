@@ -7,6 +7,8 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
         self.hasNoResults = ko.observable(false);
         self.loadingReportDrilldown = ko.observable(false);
         self.activeReportDrilldown = ko.observable(false);
+		self.hasDetailError = ko.observable(false);
+		self.detailErrorMsg = ko.observable('');
         
 		self.render = function () {
             self.loading(true);            
@@ -17,6 +19,11 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
             $.ajax({
 				type: "GET",
 				url: self.model.evidenceUrl() + 'conceptofinterest/' + self.model.selectedConditionConceptId(),
+				error: function (data, textStatus, errorThrown) {
+					self.loading(false);
+					self.hasDetailError(true);
+					self.detailErrorMsg("An error occurred: " + textStatus);
+				}                                
             }).done(function (results) {
                 var table_data = null;
                 if (results != null && results.length > 0) {
@@ -258,7 +265,12 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
                 self.loading(true);
             }
         }
-	}
+
+        self.resetDetailError = function () {
+			self.hasDetailError(false);
+			self.detailErrorMsg('');
+		}    
+    }
 
 	var component = {
 		viewModel: otherConceptsOfInterest,

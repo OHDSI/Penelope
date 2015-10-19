@@ -7,6 +7,8 @@ define(['knockout', 'text!./cohorts-of-interest-scatter.html','d3', 'jnj_chart',
         self.loadingReportDrilldown = ko.observable(false);
         self.activeReportDrilldown = ko.observable(false);
         self.loadingPredictorsDrilldown = ko.observable(false);
+		self.hasDetailError = ko.observable(false);
+		self.detailErrorMsg = ko.observable('');
         
 		self.render = function () {
             self.loading(true);            
@@ -111,6 +113,11 @@ define(['knockout', 'text!./cohorts-of-interest-scatter.html','d3', 'jnj_chart',
 						});                    	
 				    self.datatables['cohorts_of_interest_scatter_table'] = datatable;    
                 }
+				error: function (data, textStatus, errorThrown) {
+					self.loading(false);
+					self.hasDetailError(true);
+					self.detailErrorMsg("An error occurred: " + textStatus);
+				}                
             });            
 		}
 
@@ -255,6 +262,11 @@ define(['knockout', 'text!./cohorts-of-interest-scatter.html','d3', 'jnj_chart',
             }
 
         }
+        
+        self.resetDetailError = function () {
+			self.hasDetailError(false);
+			self.detailErrorMsg('');
+		}        
 	}
 
 	var component = {

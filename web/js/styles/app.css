@@ -12,7 +12,7 @@ html {
 
 body {
 	height: 100%;
-	padding-top: 65px;
+	padding-top: 85px;
 	position: relative;
 	font-family: 'Roboto', sans-serif !important;
 	font-weight: 400 !important;
@@ -412,4 +412,17 @@ ul {
 }
 #eeFullScreen {
     cursor: pointer;
+}
+#labelFull {
+    /* margin-left: inherit; */
+}
+.toc-search-term {
+    cursor: pointer;
+}
+.toc-search-term:hover {
+    text-decoration: underline;
+}
+.highlight {
+    background-color: yellow;
+    color: black;
 }

@@ -19,12 +19,12 @@
 	<ul id="toc" data-bind="eventListener: { event: 'click', selector: '.toc-item', callback: TOCLinkClick}">
 		<!-- ko foreach: model.currentDrugLabelTOC -->
 		<li>
-			<a data-bind="text: mainHeading.text, attr: {id: mainHeading.id }"></a>
+			<a class="toc-item" data-bind="text: mainHeading.text, attr: {id: mainHeading.id }"></a>
 			<!-- ko if: HOITerms.length > 0 -->
 			<ul>
 				<!-- ko foreach: HOITerms -->
 				<li class="toc-item toc-search-term">
-					<a data-bind="attr: {id: id}, text: name"></a>
+					<a class="toc-item" data-bind="attr: {id: id}, text: name"></a>
 				</li>
 				<!-- /ko -->
 			</ul>
@@ -33,12 +33,12 @@
 			<ul>
 				<!-- ko foreach: subHeadings -->
 				<li class="toc-item">
-					<a data-bind="attr: {id: id }, text: subHeading"></a>
+					<a class="toc-item" data-bind="attr: {id: id }, text: subHeading"></a>
 					<!-- ko if: HOITerms.length > 0 -->
 					<ul>
 						<!-- ko foreach: HOITerms -->
 						<li class="toc-item toc-search-term">
-							<a data-bind="attr: {id: id}, text: name"></a>
+							<a class="toc-item" data-bind="attr: {id: id}, text: name"></a>
 						</li>
 						<!-- /ko -->
 					</ul>
@@ -168,18 +168,6 @@
 			</div>
 			<div id="tabSR" data-bind="css: {hidden: model.drugLabelActiveTab() != 'spo'}">
 				<spontaneous-reports params="model: pageModel"></spontaneous-reports>
-				<open-fda params="{drug: pageModel.currentDrugName, condition: pageModel.currentDrugCondition, model: pageModel}"></open-fda>
-				<h4>FAERS DRILLDOWN</h4> Case sample - show first 100 or so with drop down to show the date, ae, gender, drug, events
-				<!-- ko if: model.openFDAConditionOccurrenceForLabel() != undefined -->
-				<h3 data-bind="text: 'Conditions related to ' + model.currentDrugIngredientName() + ' as reported by OpenFDA'"></h3>
-				<!-- ko foreach: model.openFDAConditionOccurrenceForLabel().results -->
-				<div class="search-result row">
-					<div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-						<p data-bind="text: term + ' (' + count + ')'"></p>
-					</div>
-				</div>
-				<!-- /ko -->
-				<!-- /ko -->
 			</div>
 			<div id="tabLab" data-bind="css: {hidden: model.drugLabelActiveTab() != 'lab'}">
 				<label-evidence params="model: pageModel"></label-evidence>

@@ -29,7 +29,12 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
 		};
         
         self.closeEvidence = function (data, event) {
-			$.sidr('close', 'sidr-right');
+        	if ($("#sidr-left").css("display") != "none") {
+				$.sidr('close', 'sidr-left');
+        	}
+        	if ($("#sidr-right").css("display") != "none") {
+				$.sidr('close', 'sidr-right');
+        	}
 		};
 
 
@@ -76,7 +81,7 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
             $('#toc li.toc-search-term').each(function () {
                 var text  = $(this).text().trim(),
                     textL = text.toLowerCase(),
-                    htmlR = text.substr(0,textL.indexOf(valThis)) + '<b id=' + $(this).attr("id") + '>' + text.substr(textL.indexOf(valThis), length) + '</b>' + text.substr(textL.indexOf(valThis) + length);
+                    htmlR = text.substr(0,textL.indexOf(valThis)) + '<b class="highlight" id=' + $(this).attr("id") + '>' + text.substr(textL.indexOf(valThis), length) + '</b>' + text.substr(textL.indexOf(valThis) + length);
                     if (textL.indexOf(valThis)>=0) {
 						$(this).html(htmlR);
 						$(this).show();
@@ -94,9 +99,24 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
             // Here's some code that will allow us to scroll once we figure out the best way
             // to tag the elements in the page.
             //$("#spl-display").scrollTo($("#test1")); $("#spl-display").scrollLeft(0);
-            var scrollToElementId = event.target.attributes["id"].value;
+            var scrollToElementId;
+            var scrollToElementName = undefined;
+            if (event.target.attributes["id"] != undefined) { 
+                scrollToElementId = event.target.attributes["id"].value;
+        	}
+            if (scrollToElementId == undefined) {
+                scrollToElementId = item.id;
+                scrollToElementName = item.name;
+            }
             $("#spl-display").scrollTo($("#" + scrollToElementId)); 
             $("#spl-display").scrollLeft(0);
+            /*
+            if (scrollToElementName != undefined) {
+				$("#searchtoc").val(scrollToElementName);   
+				self.searchTOC();         	
+            }
+            */
+            //$.sidr('close', 'sidr-left');
         }
         
         // Click handler for the links on the drug label
@@ -152,7 +172,8 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
         self.setSliders = function () {
             $('#sidebar-toggle').sidr({
               name: 'sidr-left',
-              side: 'left' // By default
+              side: 'left',
+                body: '#labelFull'
             });
 
             $('#eeClose').sidr({

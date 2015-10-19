@@ -161,7 +161,16 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
 					$('#' + type + 'OtherConceptsOfInterestDrilldownScatterplotHeading').html(name);
 
 					scatter.render(totalRecordsData, "#" + type + "OtherConceptsOfInterestDrilldownScatterplot", 460, 150, {
-						yFormat: d3.format('0.2%'),
+						yFormat: function(d) {
+					var str = d.toString();
+					var idx = str.indexOf('.');
+					if (idx == -1) {
+						return d3.format('0%')(d);
+					}
+
+					var precision = (str.length - (idx+1) - 2).toString();
+					return d3.format('0.' + precision + '%')(d);
+				},
 						xValue: "duration",
 						yValue: "pctPersons",
 						xLabel: "Duration Relative to Index",

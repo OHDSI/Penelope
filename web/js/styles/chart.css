@@ -147,6 +147,7 @@ table.data td {
 	border-radius: 0px;
 	pointer-events: none;
 	max-width: 400px;
+	z-index:1000000;
 }
 /* Creates a small triangle extender for the tooltip */
 

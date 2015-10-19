@@ -10,6 +10,8 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
         self.loadingDrugSummary = ko.observable(false);
         self.loadingReportDrilldown = ko.observable(false);
         self.activeReportDrilldown = ko.observable(false);
+        self.dataByDecile = ko.observable(null);
+        self.allDeciles = ko.observable(null);
         
         self.render = function() {
         	self.loadingConditionPrevalence(true);
@@ -368,25 +370,33 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
                             });
                         });
 
-                        // create svg with range bands based on the trellis names
-                        var chart = new jnj_chart.trellisline();
-                        chart.render(dataByDecile, "#trellisLinePlot", 500, 250, {
-                            trellisSet: allDeciles,
-                            trellisLabel: "Age Decile",
-                            seriesLabel: "Year",
-                            yLabel: "Prevalence Per 1000 People",
-                            xFormat: d3.time.format("%Y"),
-                            yFormat: d3.format("0.2f"),
-                            tickPadding: 20,
-                            colors: d3.scale.ordinal()
-                                .domain(["MALE", "FEMALE", "UNKNOWN"])
-                                .range(["#1F78B4", "#FB9A99", "#33A02C"])
-
-                        });
+                        self.dataByDecile(dataByDecile);
+                        self.allDeciles(allDeciles);
                     }               
                 }
             });            
 
+        }
+        
+        self.renderTrellisPlot = function() {
+            if (self.allDeciles() != null && self.dataByDecile() != null) {            	
+				$("#trellisLinePlot").empty();
+				// create svg with range bands based on the trellis names
+				var chart = new jnj_chart.trellisline();
+				chart.render(self.dataByDecile(), "#trellisLinePlot", 500, 250, {
+					trellisSet: self.allDeciles(),
+					trellisLabel: "Age Decile",
+					seriesLabel: "Year",
+					yLabel: "Prevalence Per 1000 People",
+					xFormat: d3.time.format("%Y"),
+					yFormat: d3.format("0.2f"),
+					tickPadding: 20,
+					colors: d3.scale.ordinal()
+						.domain(["MALE", "FEMALE", "UNKNOWN"])
+						.range(["#1F78B4", "#FB9A99", "#33A02C"])
+
+				});
+            }
         }
 
         self.drilldown = function (id, name, type) {

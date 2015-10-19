@@ -16,115 +16,115 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
             // Get the matching concepts of interest
             $.ajax({
 				type: "GET",
-				url: 'js/mock-data/other-concepts-of-interest.json',
+				url: self.model.evidenceUrl() + 'conceptofinterest/' + self.model.selectedConditionConceptId(),
             }).done(function (results) {
                 var table_data = null;
                 if (results != null && results.length > 0) {
-                    var matches = $.grep(results, function(n, i) { 
-                        return n.concept_id == self.model.selectedConditionConceptId();
+                    conceptsOfInterest = results.map(function(d, i) {
+                        return d.conceptOfInterestId;
                     });
-                    if (matches.length > 0)
-                    {
-                        conceptsOfInterest = matches[0].concepts_of_interest;
-                        
-                        // Get the descendants for the concepts of interest
-                        $.ajax({
-                            type: "POST",
-                            data: ko.toJSON(conceptsOfInterest),
-                            url: self.model.vocabularyUrl() + "conceptlist/descendants",
-                            contentType: "application/json; charset=utf-8",
-                            success: function (result) {
-                                self.loading(false);
-                                // Pull back the full list of conditions for the selected drug cohort
-                                var allConditions = self.model.selectedConditionOccurrencePrevalence();
 
-                                // The result object contains the descendant concepts - use this to pull out this subset
-                                // of concepts from the allConditions object
-                                var allConditions_subset = result.map(function (val, index) {
-                                    var concept_id = val.CONCEPT_ID;
-                                    var matchingResult = $.grep(allConditions, function(n, i) { 
-                                        return n.concept_id == concept_id;
-                                    });
-                                    if (matchingResult.length > 0){
-                                        return matchingResult[0];
-                                    } else {
-                                        return null;
-                                    }
+                    if (conceptsOfInterest.length == 0) {
+                    	return;
+                    }
+
+                    // Get the descendants for the concepts of interest
+                    $.ajax({
+                        type: "POST",
+                        data: ko.toJSON(conceptsOfInterest),
+                        url: self.model.vocabularyUrl() + "conceptlist/descendants",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            self.loading(false);
+                            // Pull back the full list of conditions for the selected drug cohort
+                            var allConditions = self.model.selectedConditionOccurrencePrevalence();
+
+                            // The result object contains the descendant concepts - use this to pull out this subset
+                            // of concepts from the allConditions object
+                            var allConditions_subset = result.map(function (val, index) {
+                                var concept_id = val.CONCEPT_ID;
+                                var matchingResult = $.grep(allConditions, function(n, i) { 
+                                    return n.concept_id == concept_id;
                                 });
+                                if (matchingResult.length > 0){
+                                    return matchingResult[0];
+                                } else {
+                                    return null;
+                                }
+                            });
 
-                                // Remove the NULL values from the subset
-                                var table_data = $.grep(allConditions_subset, function(n, i) {
-                                    return n != null
-                                });
+                            // Remove the NULL values from the subset
+                            var table_data = $.grep(allConditions_subset, function(n, i) {
+                                return n != null
+                            });
 
-                                // Set the callback click event for the table row
-                                $(document).on('click', '.other_concepts_of_interest_table tbody tr', function () {
-                                    var datatable = self.datatables[$(this).parents('.other_concepts_of_interest_table').attr('id')];
-                                    var data = datatable.data()[datatable.row(this)[0]];
-                                    if (data) {
-                                        var did = data.concept_id;
-                                        var concept_name = data.name;
-                                        self.drilldown(did, concept_name, $(this).parents('.other_concepts_of_interest_table').attr('type'));
-                                    }
-                                });
+                            // Set the callback click event for the table row
+                            $(document).on('click', '.other_concepts_of_interest_table tbody tr', function () {
+                                var datatable = self.datatables[$(this).parents('.other_concepts_of_interest_table').attr('id')];
+                                var data = datatable.data()[datatable.row(this)[0]];
+                                if (data) {
+                                    var did = data.concept_id;
+                                    var concept_name = data.name;
+                                    self.drilldown(did, concept_name, $(this).parents('.other_concepts_of_interest_table').attr('type'));
+                                }
+                            });
 
-                                // Show the subset of the overall cohort conditions in this section.
-                                var datatable = $('#other_concepts_of_interest_table').DataTable({
-                                    order: [6, 'desc'],
-                                    dom: 'T<"clear">lfrtip',
-                                    data: table_data,
-                                    columns: [
-                                        {
-                                            data: 'snomed',
-                                            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                                                $(nTd).html("<a target='_blank' href='" + self.model.services()[0].atlas + "/#/concept/"+oData.concept_id+"'>"+oData.snomed+"</a>");
-                                            }
-                                        },
-                                        {
-                                            data: 'concept_id',
-                                            visible: false
-                                        },
-                                        {
-                                            data: 'soc',
-                                            visible: false
-                                        },
-                                        {
-                                            data: 'hlgt',
-                                            visible: false
-                                        },
-                                        {
-                                            data: 'hlt'
-                                        },
-                                        {
-                                            data: 'pt',
-                                            visible: false
-                                        },
-                                        {
-                                            data: 'num_persons',
-                                            className: 'numeric'
-                                        },
-                                        {
-                                            data: 'percent_persons',
-                                            className: 'numeric'
-                                        },
-                                        {
-                                            data: 'relative_risk',
-                                            className: 'numeric'
+                            // Show the subset of the overall cohort conditions in this section.
+                            var datatable = $('#other_concepts_of_interest_table').DataTable({
+                                order: [6, 'desc'],
+                                dom: 'T<"clear">lfrtip',
+                                data: table_data,
+                                columns: [
+                                    {
+                                        data: 'snomed',
+                                        "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                                            $(nTd).html("<a target='_blank' href='" + self.model.services()[0].atlas + "/#/concept/"+oData.concept_id+"'>"+oData.snomed+"</a>");
                                         }
-                                    ],
-                                    pageLength: 10,
-                                    lengthChange: false,
-                                    deferRender: true,
-                                    destroy: true
-                                });
-                                self.datatables['other_concepts_of_interest_table'] = datatable;                                
-                            }
-                        });                        
-                    }
-                    else {
-                        self.loading(false);
-                        self.hasNoResults(true);
-                    }
+                                    },
+                                    {
+                                        data: 'concept_id',
+                                        visible: false
+                                    },
+                                    {
+                                        data: 'soc',
+                                        visible: false
+                                    },
+                                    {
+                                        data: 'hlgt',
+                                        visible: false
+                                    },
+                                    {
+                                        data: 'hlt'
+                                    },
+                                    {
+                                        data: 'pt',
+                                        visible: false
+                                    },
+                                    {
+                                        data: 'num_persons',
+                                        className: 'numeric'
+                                    },
+                                    {
+                                        data: 'percent_persons',
+                                        className: 'numeric'
+                                    },
+                                    {
+                                        data: 'relative_risk',
+                                        className: 'numeric'
+                                    }
+                                ],
+                                pageLength: 10,
+                                lengthChange: false,
+                                deferRender: true,
+                                destroy: true
+                            });
+                            self.datatables['other_concepts_of_interest_table'] = datatable;                                
+                        }
+});                        
+                }
+                else {
+                    self.loading(false);
+                    self.hasNoResults(true);
                 }
             });
 		}

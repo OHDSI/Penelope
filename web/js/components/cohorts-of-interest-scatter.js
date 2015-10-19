@@ -44,6 +44,11 @@ define(['knockout', 'text!./cohorts-of-interest-scatter.html','d3', 'jnj_chart',
                         }
                     });
                     
+					// Remove the NULL values from the subset
+					var table_data = $.grep(table_data, function(n, i) {
+						return n != null
+					});
+                    
                     // Set the callback click event for the table row
                     $(document).on('click', '.cohorts_of_interest_scatter_table tbody tr', function () {
                         var datatable = self.datatables[$(this).parents('.cohorts_of_interest_scatter_table').attr('id')];
@@ -56,7 +61,7 @@ define(['knockout', 'text!./cohorts-of-interest-scatter.html','d3', 'jnj_chart',
                     });
 
                     // Show the subset of the overall cohort conditions in this section.
-                    var datatable = $('#cohorts_of_interest_scatter_table').DataTable({
+					var datatable = $('#cohorts_of_interest_scatter_table').DataTable({
 							order: [6, 'desc'],
 							dom: 'T<"clear">lfrtip',
 							data: table_data,
@@ -103,7 +108,7 @@ define(['knockout', 'text!./cohorts-of-interest-scatter.html','d3', 'jnj_chart',
 							lengthChange: false,
 							deferRender: true,
 							destroy: true
-						});
+						});                    	
 				    self.datatables['cohorts_of_interest_scatter_table'] = datatable;    
                 }
             });            

@@ -96,6 +96,7 @@ section {
 .evidence-explorer-close-button {
 	float: right;
 	margin-top: 0px;
+    cursor:pointer;
 }
 
 .nav-tabs>li>a:hover {

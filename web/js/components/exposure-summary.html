@@ -35,7 +35,7 @@
 </div>
 <div class="panel panel-default">
     <div class="pad-10 report">
-        <div class="reportHeading"><i class="fa fa-area-chart"></i>Drug Era</div>
+        <div class="reportHeading"><i class="fa fa-area-chart"></i>Drug Era<i data-bind="click: renderTrellisPlot" id="drugEraRefresh" class="fa fa-refresh fa-2x evidence-explorer-close-button"></i></div>
         <!-- start: loading -->
         <div id="es-loading" data-bind="if: $component.loadingDrugEras() == true">
             <div class="spinner">

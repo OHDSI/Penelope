@@ -149,6 +149,11 @@ define(['knockout', 'text!./cohorts-of-interest-predictors.html','d3', 'jnj_char
                             }
                         }
                     });
+
+                    // Remove the NULL values from the subset
+					var table_data = $.grep(table_data, function(n, i) {
+						return n != null
+					});
                     
                     // Show the subset of the overall cohort conditions in this section.
                     var datatable = $('#cohort_predictors_table').DataTable({

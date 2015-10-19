@@ -125,11 +125,23 @@ define(['knockout', 'text!./label-evidence.html', 'knockout.dataTables.binding',
                 self.evaluateRender();
             }
         });
+
+        self.model.currentDrugConceptId.subscribe(function(newValue) {
+            if (newValue != undefined) {
+                self.evaluateRender();
+            }
+        });        
         
+        self.model.reportSourceKey.subscribe(function(newValue) {
+            if (newValue != undefined) {
+                self.render();
+            }
+        });        
+
         self.evaluateRender = function() {
             try
             {
-                if (self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionConceptAndDescendants().length > 0 && self.model.selectedDrugAndAncestorDescendants().length > 0){
+                if (self.model.currentDrugConceptId() > 0 && self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionConceptAndDescendants().length > 0 && self.model.selectedDrugAndAncestorDescendants().length > 0){
                     self.render();
                 }
                 else{

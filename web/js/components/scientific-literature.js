@@ -287,9 +287,32 @@ define(['knockout', 'text!./scientific-literature.html', 'd3', 'jnj_chart', 'col
         
         self.model.selectedConditionConceptId.subscribe(function(newValue) {
             if (newValue > 0) {
-                self.getLiteratureSummary();
+                self.evaluateRender();
             }
         });
+
+        self.model.currentDrugConceptId.subscribe(function(newValue) {
+            if (newValue != undefined) {
+                self.evaluateRender();
+            }
+        });        
+        
+        self.evaluateRender = function() {
+            try
+            {
+                if (self.model.currentDrugConceptId() > 0 && self.model.selectedConditionConceptId() > 0){
+                    self.getLiteratureSummary();
+                }
+                else{
+                    self.loading(true);
+                }                
+            }
+            catch (e)
+            {
+                self.loading(true);
+            }            
+        }
+
     }
 
 	var component = {

@@ -233,10 +233,16 @@ define(['knockout', 'text!./cohorts-of-interest-scatter.html','d3', 'jnj_chart',
             }
         });        
 
+        self.model.currentDrugConceptId.subscribe(function(newValue) {
+            if (newValue != undefined) {
+                self.evaluateRender();
+            }
+        });
+
         self.evaluateRender = function() {
             try
             {
-                if (self.model.currentExposureCohortId() > 0 && self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionCohorts().length > 0){
+                if (self.model.currentDrugConceptId() > 0 && self.model.currentExposureCohortId() > 0 && self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionCohorts().length > 0){
                     self.render();
                 }
                 else{

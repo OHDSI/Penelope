@@ -236,6 +236,12 @@ define(['knockout', 'text!./cohorts-of-interest-predictors.html','d3', 'jnj_char
 				self.evaluateRender();            
         	}
         });
+        
+        self.model.currentDrugConceptId.subscribe(function(newValue) {
+            if (newValue != undefined) {
+                self.evaluateRender();
+            }
+        });
 
         self.model.reportSourceKey.subscribe(function(newValue) {
             if (newValue != undefined) {
@@ -246,7 +252,7 @@ define(['knockout', 'text!./cohorts-of-interest-predictors.html','d3', 'jnj_char
         self.evaluateRender = function() {
             try
             {
-                if (self.model.currentExposureCohortId() > 0 && self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionCohorts().length > 0){
+                if (self.model.currentDrugConceptId() > 0 && self.model.currentExposureCohortId() > 0 && self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionCohorts().length > 0){
                     self.render();
                 }
                 else{

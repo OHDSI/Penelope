@@ -237,10 +237,16 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
             }
         });        
 
+        self.model.currentDrugConceptId.subscribe(function(newValue) {
+            if (newValue != undefined) {
+                self.evaluateRender();
+            }
+        });        
+        
         self.evaluateRender = function() {
             try
             {
-                if (self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionOccurrencePrevalence() != undefined){
+                if (self.model.currentDrugConceptId() > 0 && self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionOccurrencePrevalence() != undefined){
                     self.render();
                 }
                 else{

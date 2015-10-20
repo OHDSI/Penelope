@@ -207,6 +207,7 @@ table.data td {
   fill: white;
   font: 10px sans-serif;
   text-anchor: end;
+  /* cursor: pointer; */
 }
 
 .chart .label {

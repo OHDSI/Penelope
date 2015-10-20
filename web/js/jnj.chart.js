@@ -2017,7 +2017,7 @@
 					.enter()
 					.append("circle")
 					.attr("class", "dot")
-					.attr("r", 1)
+					.attr("r", 2)
 					.style("fill", function (d) {
 						return options.colors(d[options.seriesName]);
 					})

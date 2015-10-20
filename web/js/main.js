@@ -71,12 +71,13 @@ requirejs.config({
         "label-evidence": "components/label-evidence",
         "cohorts-of-interest-scatter": "components/cohorts-of-interest-scatter",
         "cohorts-of-interest-predictors": "components/cohorts-of-interest-predictors",
+        "cohort-study": "components/cohort-study"
         //"datatablesbuttons": "https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min", // Try again when DataTables is upgraded to 1.10.10
         //"jsbuttons": "https://cdn.datatables.net/buttons/1.0.3/js/buttons.html5.min", // Try again when DataTables is upgraded to 1.10.10
 	}
 });
 
-requirejs(['knockout', './app', 'lscache', 'director', 'cache-flush', 'condition-concept-by-index', 'drug-label', 'exposure-summary', 'faceted-datatable', 'home', 'other-concepts-of-interest', 'search', 'search-results', 'openFDA', 'scientific-literature', 'spontaneous-reports', 'label-evidence', 'cohorts-of-interest-scatter', 'cohorts-of-interest-predictors'], function(ko, app) {
+requirejs(['knockout', './app', 'lscache', 'director', 'cache-flush', 'condition-concept-by-index', 'drug-label', 'exposure-summary', 'faceted-datatable', 'home', 'other-concepts-of-interest', 'search', 'search-results', 'openFDA', 'scientific-literature', 'spontaneous-reports', 'label-evidence', 'cohorts-of-interest-scatter', 'cohorts-of-interest-predictors', 'cohort-study'], function(ko, app) {
     var pageModel = new app();
     var routerOptions = {
 		notfound: function () {

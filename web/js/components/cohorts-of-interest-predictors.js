@@ -107,7 +107,7 @@ define(['knockout', 'text!./cohorts-of-interest-predictors.html','d3', 'jnj_char
 							destroy: true
 						});
 				    self.datatables['cohorts_of_interest_predictors_table'] = datatable;    
-                }
+                },
 				error: function (data, textStatus, errorThrown) {
 					self.loading(false);
 					self.hasDetailError(true);

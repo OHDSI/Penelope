@@ -151,6 +151,10 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
             self.model.selectedConditionConceptId(0);
         });
         
+        self.model.currentDrugLabel.subscribe(function(newValue) {
+            self.closeEvidence();
+        });
+        
         self.getConceptDescendants = function(concept_id) {
             $.ajax({
 				type: "GET",
@@ -183,7 +187,8 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
             $('#eeClose').sidr({
               name: 'sidr-right',
               side: 'right',
-              displace: false
+              displace: false,
+              body: '#labelFull'
             });
         }
         

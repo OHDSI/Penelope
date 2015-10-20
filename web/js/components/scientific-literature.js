@@ -304,12 +304,14 @@ define(['knockout', 'text!./scientific-literature.html', 'd3', 'jnj_chart', 'col
                     self.getLiteratureSummary();
                 }
                 else{
-                    self.loading(true);
+                    self.loadingSummary(true);
+                    self.loadingDetails(false);
                 }                
             }
             catch (e)
             {
-                self.loading(true);
+                self.loadingSummary(true);
+                self.loadingDetails(false);
             }            
         }
     }

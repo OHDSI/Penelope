@@ -112,7 +112,7 @@ define(['knockout', 'text!./cohorts-of-interest-scatter.html','d3', 'jnj_chart',
 							destroy: true
 						});                    	
 				    self.datatables['cohorts_of_interest_scatter_table'] = datatable;    
-                }
+                },
 				error: function (data, textStatus, errorThrown) {
 					self.loading(false);
 					self.hasDetailError(true);

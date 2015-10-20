@@ -55,6 +55,9 @@
                 </thead>
                 </table>
             </div>            
+            <div data-bind="$if: $component.hasDetailError() == true">
+                <span data-bind="text: $component.detailErrorMsg()"></span>
+            </div>
         </div>
     </div>
 </div>

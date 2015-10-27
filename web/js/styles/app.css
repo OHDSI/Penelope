@@ -426,3 +426,7 @@ ul {
     background-color: yellow;
     color: black;
 }
+
+rect.bar {
+    cursor: pointer;
+}

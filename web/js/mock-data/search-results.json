@@ -19,7 +19,7 @@
     },
     {
         "cohort_id": 295,
-        "cohort_name": "Carbamazepine new users",        
+        "cohort_name": "Carbamazepine new users",
         "drug_concept_id":740275,
         "drug_concept_name": "carbamazepine",
         "drug_name":"tegretol",
@@ -28,11 +28,29 @@
     },
     {
         "cohort_id": 296,
-        "cohort_name": "Pioglitazone new users",        
+        "cohort_name": "Pioglitazone new users",
         "drug_concept_id":1525215,
         "drug_concept_name": "pioglitazone",
         "drug_name":"actos",
         "set_id":"d2ddc491-88a9-4063-9150-443b4fa4330c",
+        "image_preview": "http://localhost"
+    },
+    {
+        "cohort_id": 493,
+        "cohort_name": "Diclofenac new users",
+        "drug_concept_id":1124300,
+        "drug_concept_name": "Diclofenac",
+        "drug_name":"diclofenac",
+        "set_id":"7a7e69c1-6eea-4f27-b2ed-3e5fb176fdae",
+        "image_preview": "http://localhost"
+    },
+    {
+        "cohort_id": 494,
+        "cohort_name": "Naproxen new users",
+        "drug_concept_id":1115008,
+        "drug_concept_name": "naproxen",
+        "drug_name":"naproxen",
+        "set_id":"a92bf444-0ae7-4365-831e-9fd37d59d5fa",
         "image_preview": "http://localhost"
     }
 ]

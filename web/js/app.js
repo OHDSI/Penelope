@@ -213,6 +213,12 @@ define([
                         // Remove the links from the Indications section
                         var labelSectionPrefix = $("#spl-display div[data-sectioncode='34067-9']").children("h1").attr("id").replace("main", "");
                         $("#spl-display span.product-label-link[id*='" + labelSectionPrefix + "-']").attr("class", "");
+                        // Remove the links from the Dosage and Admininisrations section
+                        labelSectionPrefix = $("#spl-display div[data-sectioncode='34068-7']").children("h1").attr("id").replace("main", "");
+                        $("#spl-display span.product-label-link[id*='" + labelSectionPrefix + "-']").attr("class", "");
+                        // Remove the links from the Dosage Forms and Strengths section
+                        labelSectionPrefix = $("#spl-display div[data-sectioncode='43678-2']").children("h1").attr("id").replace("main", "");
+                        $("#spl-display span.product-label-link[id*='" + labelSectionPrefix + "-']").attr("class", "");
                         // Hide the product packaging section
                         $("#spl-display div[data-sectioncode='51945-4']").attr("class", "hidden");
                     },

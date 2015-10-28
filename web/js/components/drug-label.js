@@ -37,8 +37,6 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
         	}
 		};
 
-
-                
         // Handles the click logic for the tabbed evidence browser
         self.tabClick = function(item, event) {
             var listItemNode = event.target;

@@ -103,7 +103,7 @@ define([
 			$('#querytext').blur();
     
 			$.ajax({
-				url: 'js/mock-data/search-results.json', //self.vocabularyUrl() + 'search/' + query,
+				url: self.evidenceUrl() + 'labelsearch/' + query,
 				success: function (results) {
 					if (results.length == 0) {
 						self.currentView('search');
@@ -111,39 +111,35 @@ define([
 						return;
 					}
 
-					//var densityPromise = self.loadDensity(results);
+                    var tempCaption;
 
-					//$.when(densityPromise).done(function () {
-						var tempCaption;
+                    if (decodeURI(query).length > 20) {
+                        tempCaption = decodeURI(query).substring(0, 20) + '...';
+                    } else {
+                        tempCaption = decodeURI(query);
+                    }
 
-						if (decodeURI(query).length > 20) {
-							tempCaption = decodeURI(query).substring(0, 20) + '...';
-						} else {
-							tempCaption = decodeURI(query);
-						}
+                    lastQuery = {
+                        query: query,
+                        caption: tempCaption,
+                        resultLength: results.length
+                    };
+                    self.currentSearch(query);
 
-						lastQuery = {
-							query: query,
-							caption: tempCaption,
-							resultLength: results.length
-						};
-						self.currentSearch(query);
+                    var exists = false;
+                    for (var i = 0; i < self.recentSearch().length; i++) {
+                        if (self.recentSearch()[i].query == query)
+                            exists = true;
+                    }
+                    if (!exists) {
+                        self.recentSearch.unshift(lastQuery);
+                    }
+                    if (self.recentSearch().length > 7) {
+                        self.recentSearch.pop();
+                    }
 
-						var exists = false;
-						for (var i = 0; i < self.recentSearch().length; i++) {
-							if (self.recentSearch()[i].query == query)
-								exists = true;
-						}
-						if (!exists) {
-							self.recentSearch.unshift(lastQuery);
-						}
-						if (self.recentSearch().length > 7) {
-							self.recentSearch.pop();
-						}
-
-						self.currentView('searchResults');
-						self.searchResultsConcepts(results);
-					//});
+                    self.searchResultsConcepts(results);
+                    self.currentView('searchResults');
 				},
 				error: function (xhr, message) {
 					alert('error while searching ' + message);
@@ -154,46 +150,46 @@ define([
         self.displayLabel = function (setid){
             self.currentView('loading');
             
-            // Get the current drug by setid - first by
-            // interrogating the search results and if it is 
-            // not there, go back to the server.
-            var selectedDrug = ko.utils.arrayFirst(self.searchResultsConcepts(), function (item) { 
-                return item.set_id == setid;
+            // Reset the selected concept id and information
+            self.selectedConditionConceptId(0);
+            self.selectedConditionConceptName('');
+            // Call the WS to get all information about the selected drug.
+            $.ajax({
+                url: self.evidenceUrl() + 'label/' + setid,
+                //url : "js/mock-data/search-results.json", //"js/mock-data/sample-drug.json",
+                success : function(result){
+                    var selectedDrugFromResults = ko.utils.arrayFirst(result, function (item) {
+                        return item.setid == setid;
+                    });
+                    self.getLabel(selectedDrugFromResults);
+                }
             });
-            
-            // TODO - Call the WS to get the current drug selected. For now, fake it out
-            if (selectedDrug == null) {
-                // Reset the selected concept id and information
-                self.selectedConditionConceptId(0);
-                self.selectedConditionConceptName('');
-                $.ajax({
-                    url : "js/mock-data/search-results.json", //"js/mock-data/sample-drug.json",
-                    success : function(result){
-                        var selectedDrugFromResults = ko.utils.arrayFirst(result, function (item) {
-                            return item.set_id == setid;
-                        });
-                        self.getLabel(selectedDrugFromResults);
-                    }
-                });
-            }
-            else
-            {
-                self.getLabel(selectedDrug);
-            }
         }
         
         self.getLabel = function (selectedDrug){
             if (selectedDrug != null)
             {
-                self.currentDrugSetId(selectedDrug.set_id);
-                self.currentDrugName(selectedDrug.drug_name);
-                self.currentDrugIngredientName(selectedDrug.drug_concept_name);
-                self.currentDrugConceptId(selectedDrug.drug_concept_id);
-                self.currentExposureCohortId(selectedDrug.cohort_id);
-                self.currentExposureCohortName(selectedDrug.cohort_name);
+                self.currentDrugSetId(selectedDrug.setid);
+                self.currentDrugName(selectedDrug.searchName);
+                self.currentDrugIngredientName(selectedDrug.ingredientConceptName);
+                self.currentDrugConceptId(selectedDrug.ingredientConceptId);
+                self.currentExposureCohortId(selectedDrug.cohortId);
+                if (selectedDrug.cohortId != null || selectedDrug.cohortId != undefined)
+                {
+                    $.ajax({
+                        url : self.services()[0].url + "cohortdefinition/" + selectedDrug.cohortId, 
+                        success : function(result){
+                            self.currentExposureCohortName(result.name);
+                        }
+                    });
+                }
+                else
+                {
+                    self.currentExposureCohortName('');
+                }
                 
                 $.ajax({
-                    url : "js/spl/" + selectedDrug.set_id + ".html", //"js/mock-data/sample-label-lipitor.html", //"js/mock-data/sample-label.html",
+                    url : "js/spl/" + selectedDrug.setid + ".html", 
                     success : function(result){
                         // Bind the result to the observable
                         self.currentDrugLabel(result);

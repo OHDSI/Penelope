@@ -1,4 +1,5 @@
-<div class="container" id="labelFull" data-bind="click:closeEvidence">
+<div data-bind="click:closeEvidence">
+    <div class="container" id="labelFull">
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<div id="sidebar-toggle" class="btn btn-primary"><i class="fa fa-bars"></i></div>
@@ -9,6 +10,7 @@
 			<div id="spl-display" class="drug-label" data-bind="html: model.currentDrugLabel, eventListener: { event: 'click', selector: '.product-label-link', callback: productLabelLinkClick}"></div>
 		</div>
 	</div>
+</div>
 </div>
 <div id="sidr-left" class="sidr sidr-left">
 	<h2 data-bind="text: model.currentDrugIngredientName()"></h2>
@@ -70,110 +72,107 @@
 			<li role="presentation" data-bind="css: {active: model.drugLabelActiveTab() == 'lab'}" tabName="lab" class="tab"><a>Label</a></li>
 		</ul>
 	</div>
-	<div class="panel panel-default">
-		<div class="panel-body">
-			<div id="debug">
-				Drug Concept ID: <span id="drugConceptId" data-bind="text: model.currentDrugConceptId"></span>
-				<br/> Set ID: <span id="setId" data-bind="text: model.currentDrugSetId"></span>
-				<br/> Drug Name: <span data-bind="text: model.currentDrugIngredientName()"></span>
-				<br/> Selected HOI Concept_ID: <span data-bind="text: model.selectedConditionConceptId"></span>
-				<br/> Selected HOI: <span id="selectedHOI" data-bind="text: model.selectedConditionConceptName"></span>
-				<br/>
-				<br/>
-			</div>
-			<div id="tabObsEvidence" data-bind="css: {hidden: model.drugLabelActiveTab() != 'obs'}">
-				<!-- START: Data Source Selection -->
-				<div class="input-group">
-					<span class="input-group-addon" data-bind="text: 'Observational Data Source'"></span>
-					<select class="selectpicker form-control" data-bind="css : { invalid: model.reportSourceKey()==undefined }, options: model.sources().filter(model.hasResults), optionsValue:'sourceKey', optionsText:'sourceName', value: model.reportSourceKey, optionsCaption:'Select a Source'"></select>
-				</div>
-				<!-- ko if: pageModel.reportSourceKey() == undefined-->
-				<div class="list-group">
-					<div class="list-group-item">
-						<h4>Please select a data source above</h4>
-					</div>
-				</div>
-				<!-- /ko -->
-				<!-- END: Data Source Selection -->
-				<!-- START: Collapsable Panel -->
-				<!-- ko if: pageModel.reportSourceKey() != undefined && pageModel.currentExposureCohortId() != undefined -->
-				<!-- start: report source defined -->
-				<div class="row">
-					<div class="fancy-collapse-panel">
-						<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-							<div id="exposure-summary" class="panel panel-default">
-								<div class="panel-heading" role="tab" id="headingOne">
-									<h4 class="panel-title">
-                                        <a data-toggle="collapse" id="headingOneLink" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Exposure Summary
-                                        </a>
-                                    </h4>
-								</div>
-								<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-									<div>
-										<exposure-summary params="{model: pageModel}" data-bind="visible: pageModel.currentDrugConceptId() > 0"></exposure-summary>
-									</div>
-								</div>
-							</div>
-							<div id="clinical-characterization" data-bind="visible: pageModel.selectedConditionConceptId() > 0" class="panel panel-default">
-								<div class="panel-heading" role="tab" id="headingTwo">
-									<h4 class="panel-title">
-                                        <a class="collapsed" data-toggle="collapse" id="headingTwoLink" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Clinical Characterization
-                                        </a>
-                                    </h4>
-								</div>
-								<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-									<div>
-										<condition-concept-by-index params="{model: pageModel, conceptDomain: 'condition'}"></condition-concept-by-index>
-										<other-concepts-of-interest params="{model: pageModel, conceptDomain: 'condition'}"></other-concepts-of-interest>
-										<cohorts-of-interest-scatter params="{model: pageModel}"></cohorts-of-interest-scatter>
-                                        <cohort-study params="{model: pageModel, studyType: 1}"></cohort-study>
-									</div>
-								</div>
-							</div>
-							<div id="pop-level-estimation" data-bind="visible: pageModel.selectedConditionConceptId() > 0" class="panel panel-default">
-								<div class="panel-heading" role="tab" id="headingThree">
-									<h4 class="panel-title">
-                                        <a class="collapsed" data-toggle="collapse" id="headingThreeLink" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Population Level Estimation
-                                        </a>
-                                    </h4>
-								</div>
-								<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-									<div class="panel-body">
-                                        <cohort-study params="{model: pageModel, studyType: 2}"></cohort-study>									
-                                    </div>
-								</div>
-							</div>
-							<div id="pop-level-prediction" data-bind="visible: pageModel.selectedConditionConceptId() > 0" class="panel panel-default">
-								<div class="panel-heading" role="tab" id="headingFour">
-									<h4 class="panel-title">
-                                        <a class="collapsed" data-toggle="collapse" id="headingFourLink" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">Patient Level Prediction
-                                        </a>
-                                    </h4>
-								</div>
-								<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-									<div class="panel-body">
-										<cohorts-of-interest-predictors params="{model: pageModel}"></cohorts-of-interest-predictors>
-                                        <cohort-study params="{model: pageModel, studyType: 3}"></cohort-study>                                        
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- END: Collapsable Panel -->
-				<!-- /ko -->
-				<!-- end: report source defined -->
-			</div>
-			<div id="tabSciLit" data-bind="css: {hidden: model.drugLabelActiveTab() != 'sci'}">
-				<scientific-literature params="{model: pageModel}"></scientific-literature>
-			</div>
-			<div id="tabSR" data-bind="css: {hidden: model.drugLabelActiveTab() != 'spo'}">
-				<spontaneous-reports params="model: pageModel"></spontaneous-reports>
-				<open-fda params="{drug: pageModel.currentDrugName, condition: pageModel.currentDrugCondition, model: pageModel}"></open-fda>
+    <div class="panel-body">
+        <div id="debug">
+            Drug Concept ID: <span id="drugConceptId" data-bind="text: model.currentDrugConceptId"></span>
+            <br/> Set ID: <span id="setId" data-bind="text: model.currentDrugSetId"></span>
+            <br/> Drug Name: <span data-bind="text: model.currentDrugIngredientName()"></span>
+            <br/> Selected HOI Concept_ID: <span data-bind="text: model.selectedConditionConceptId"></span>
+            <br/> Selected HOI: <span id="selectedHOI" data-bind="text: model.selectedConditionConceptName"></span>
+            <br/>
+            <br/>
+        </div>
+        <div id="tabObsEvidence" data-bind="css: {hidden: model.drugLabelActiveTab() != 'obs'}">
+            <!-- START: Data Source Selection -->
+            <div class="input-group" style="margin-left: -15px; margin-right: -15px;">
+                <span class="input-group-addon" data-bind="text: 'Observational Data Source'"></span>
+                <select class="selectpicker form-control" data-bind="css : { invalid: model.reportSourceKey()==undefined }, options: model.sources().filter(model.hasResults), optionsValue:'sourceKey', optionsText:'sourceName', value: model.reportSourceKey, optionsCaption:'Select a Source'"></select>
             </div>
-			<div id="tabLab" data-bind="css: {hidden: model.drugLabelActiveTab() != 'lab'}">
-				<label-evidence params="model: pageModel"></label-evidence>
-			</div>
-		</div>
-	</div>
+            <!-- ko if: pageModel.reportSourceKey() == undefined-->
+            <div class="list-group">
+                <div class="list-group-item">
+                    <h4>Please select a data source above</h4>
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- END: Data Source Selection -->
+            <!-- START: Collapsable Panel -->
+            <!-- ko if: pageModel.reportSourceKey() != undefined && pageModel.currentExposureCohortId() != undefined -->
+            <!-- start: report source defined -->
+            <div class="row">
+                <div class="fancy-collapse-panel">
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div id="exposure-summary" class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingOne">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" id="headingOneLink" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Exposure Summary
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                <div>
+                                    <exposure-summary params="{model: pageModel}" data-bind="visible: pageModel.currentDrugConceptId() > 0"></exposure-summary>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="clinical-characterization" data-bind="visible: pageModel.selectedConditionConceptId() > 0" class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingTwo">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" data-toggle="collapse" id="headingTwoLink" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Clinical Characterization
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                <div>
+                                    <condition-concept-by-index params="{model: pageModel, conceptDomain: 'condition'}"></condition-concept-by-index>
+                                    <other-concepts-of-interest params="{model: pageModel, conceptDomain: 'condition'}"></other-concepts-of-interest>
+                                    <cohorts-of-interest-scatter params="{model: pageModel}"></cohorts-of-interest-scatter>
+                                    <cohort-study params="{model: pageModel, studyType: 1}"></cohort-study>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="pop-level-estimation" data-bind="visible: pageModel.selectedConditionConceptId() > 0" class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingThree">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" data-toggle="collapse" id="headingThreeLink" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Population Level Estimation
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                <div class="panel-body">
+                                    <cohort-study params="{model: pageModel, studyType: 2}"></cohort-study>									
+                                </div>
+                            </div>
+                        </div>
+                        <div id="pop-level-prediction" data-bind="visible: pageModel.selectedConditionConceptId() > 0" class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingFour">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" data-toggle="collapse" id="headingFourLink" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">Patient Level Prediction
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                                <div class="panel-body">
+                                    <cohorts-of-interest-predictors params="{model: pageModel}"></cohorts-of-interest-predictors>
+                                    <cohort-study params="{model: pageModel, studyType: 3}"></cohort-study>                                        
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END: Collapsable Panel -->
+            <!-- /ko -->
+            <!-- end: report source defined -->
+        </div>
+        <div id="tabSciLit" data-bind="css: {hidden: model.drugLabelActiveTab() != 'sci'}">
+            <scientific-literature params="{model: pageModel}"></scientific-literature>
+        </div>
+        <div id="tabSR" data-bind="css: {hidden: model.drugLabelActiveTab() != 'spo'}">
+            <spontaneous-reports params="model: pageModel"></spontaneous-reports>
+        </div>
+        <div id="tabLab" data-bind="css: {hidden: model.drugLabelActiveTab() != 'lab'}">
+            <label-evidence params="model: pageModel"></label-evidence>
+        </div>
+    </div>
 </div>

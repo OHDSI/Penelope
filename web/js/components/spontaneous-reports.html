@@ -7,33 +7,39 @@
 <div class="panel panel-default">
     <div class="pad-10 report">
         <div class="reportHeading"><i class="fa fa-table"></i>FAERS Summary</div>
-        <!-- start: loading -->
-        <div id="es-loading" data-bind="if: $component.loadingSummary() == true">
-            <div class="spinner">
-              <h4>Loading</h4>
-              <div class="rect1"></div>
-              <div class="rect2"></div>
-              <div class="rect3"></div>
-              <div class="rect4"></div>
-              <div class="rect5"></div>
-              <div class="rect6"></div>
-              <div class="rect7"></div>
+        <div data-bind="if: model.selectedConditionConceptId() <= 0" style="text-align: center">
+            <h4>Please select a condition from the product label to review spontaneous reports</h4>
+        </div>
+        <div data-bind="if: model.selectedConditionConceptId() > 0">        
+            <!-- start: loading -->
+            <div id="es-loading" data-bind="if: $component.loadingSummary() == true">
+                <div class="spinner">
+                  <h4>Loading</h4>
+                  <div class="rect1"></div>
+                  <div class="rect2"></div>
+                  <div class="rect3"></div>
+                  <div class="rect4"></div>
+                  <div class="rect5"></div>
+                  <div class="rect6"></div>
+                  <div class="rect7"></div>
+                </div>
             </div>
-        </div>
-        <!-- end: loading -->
-        <div data-bind="if: $component.loadingSummary() == false">
-            <table id="sr-summary-table" class="display">
-            <thead>
-                <tr>
-                    <th>Condition Name</th>
-                    <th>Count</th>
-                    <th>PRR</th>
-                </tr>
-            </thead>
-        </table>
-        </div>
-        <div data-bind="$if: $component.hasDetailError() == true">
-            <span data-bind="text: $component.detailErrorMsg()"></span>
+            <!-- end: loading -->
+            <div data-bind="if: $component.loadingSummary() == false">
+                <table id="sr-summary-table" class="display">
+                <thead>
+                    <tr>
+                        <th>Condition Name</th>
+                        <th>Count</th>
+                        <th>PRR</th>
+                    </tr>
+                </thead>
+                </table>
+                <open-fda params="{drug: pageModel.currentDrugName, condition: pageModel.currentDrugCondition, model: pageModel}"></open-fda>            
+            </div>
+            <div data-bind="$if: $component.hasDetailError() == true">
+                <span data-bind="text: $component.detailErrorMsg()"></span>
+            </div>
         </div>
     </div>
 </div>

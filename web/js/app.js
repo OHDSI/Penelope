@@ -304,7 +304,7 @@ define([
                 }
             }).get());
             return HOITerms;
-        }
+        }        
         
         self.selectedConceptsIndex = {};
         

@@ -7,20 +7,20 @@
 */
 /*@import url("http://fonts.googleapis.com/css?family=Roboto:400,700");*/
 html {
-	height: 100%;
+	min-height: 100%;
+	position: relative;
 }
 
 body {
 	height: 100%;
 	padding-top: 85px;
-	position: relative;
 	font-family: 'Roboto', sans-serif !important;
 	font-weight: 400 !important;
 	/* height: 20px; */
 }
 
 .drug-label {
-	height: 84vh;
+	height: 75vh;
 	overflow-x: hidden;
 	overflow-y: scroll;
 	/* margin-top: -10px; */
@@ -414,7 +414,14 @@ ul {
     cursor: pointer;
 }
 #labelFull {
-    /* margin-left: inherit; */
+    position: relative;
+    height: 100%;
+    /* top: 80px; */
+    /* bottom:0; */
+    /* left:0; */
+    /* right:0; */
+    /* overflow:hidden; */
+    /* width: 100%; */
 }
 .toc-search-term {
     cursor: pointer;

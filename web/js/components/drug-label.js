@@ -28,15 +28,6 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
 			$.sidr('open', 'sidr-right');
 		};
         
-        self.closeEvidence = function (data, event) {
-        	if ($("#sidr-left").css("display") != "none") {
-				$.sidr('close', 'sidr-left');
-        	}
-        	if ($("#sidr-right").css("display") != "none") {
-				$.sidr('close', 'sidr-right');
-        	}
-		};
-
         // Handles the click logic for the tabbed evidence browser
         self.tabClick = function(item, event) {
             var listItemNode = event.target;
@@ -57,18 +48,6 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
             }
             self.model.drugLabelActiveTab(listItemNode.attributes["tabName"].value);
         }
-        
-        // Test function for retrieving data from OpenFDA
-        /* self.getOpenFDAData = function() {
-            $.ajax({
-				method: 'GET',
-				url: 'https://api.fda.gov/drug/event.json?search=(patient.drug.openfda.spl_set_id:"' + self.model.currentDrugSetId() + '")&count=patient.reaction.reactionmeddrapt.exact',
-				dataType: 'json',
-				success: function (data) {
-                    self.model.openFDAConditionOccurrenceForLabel(data);
-				}
-			});
-        } */
         
         // Handles the in-place search of the table of contents
         self.searchTOC = function() {
@@ -151,8 +130,33 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
         
         self.model.currentDrugLabel.subscribe(function(newValue) {
             self.closeEvidence();
+            self.resetEvidence();
         });
         
+        self.model.currentView.subscribe(function(newValue) {
+            self.closeEvidence();
+        });
+
+        self.closeEvidence = function (data, event) {
+        	console.log('closeEvidence');
+            try
+            {
+                if ($("#sidr-left").css("display") != "none") {
+                    $.sidr('close', 'sidr-left');
+                }
+                if ($("#sidr-right").css("display") != "none") {
+                    $.sidr('close', 'sidr-right');
+                }
+            }
+            catch (err) {}
+		};
+        
+        self.resetEvidence = function() {
+            if (!$("#collapseOne").hasClass("in")) {
+                $("#headingOneLink").click();
+            }
+        }
+
         self.getConceptDescendants = function(concept_id) {
             $.ajax({
 				type: "GET",

@@ -137,6 +137,7 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
 		}
 
         self.drilldown = function (id, name, type) {
+            console.log("other-concepts-drilldown");
 			self.loadingReportDrilldown(true);
 			self.activeReportDrilldown(false);
 

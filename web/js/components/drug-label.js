@@ -147,10 +147,11 @@ define(['knockout', 'text!./drug-label.html', 'd3', 'jnj_chart', 'colorbrewer', 
                 if ($("#sidr-right").css("display") != "none") {
                     $.sidr('close', 'sidr-right');
                 }
+                $("#spl-display").focus();
             }
             catch (err) {}
 		};
-        
+                
         self.resetEvidence = function() {
             if (!$("#collapseOne").hasClass("in")) {
                 $("#headingOneLink").click();

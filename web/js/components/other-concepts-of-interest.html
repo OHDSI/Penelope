@@ -43,7 +43,7 @@
                 </div>
             </div>
             <div data-bind="if: $component.hasNoResults() == true">
-                The selected concept did not return any results.
+                <h4>There were no concepts of interest found for <span data-bind="text: model.selectedConditionConceptName"></span></h4>
             </div>
         </div>
     </div>

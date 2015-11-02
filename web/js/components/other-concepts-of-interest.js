@@ -3,6 +3,7 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
 		var self = this;
 		self.model = params.model;
 		self.datatables = {};
+        self.dataTableClickEventBound = ko.observable(false);
         self.loading = ko.observable(false);
         self.hasNoResults = ko.observable(false);
         self.loadingReportDrilldown = ko.observable(false);
@@ -63,17 +64,6 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
                             // Remove the NULL values from the subset
                             var table_data = $.grep(allConditions_subset, function(n, i) {
                                 return n != null
-                            });
-
-                            // Set the callback click event for the table row
-                            $(document).on('click', '.other_concepts_of_interest_table tbody tr', function () {
-                                var datatable = self.datatables[$(this).parents('.other_concepts_of_interest_table').attr('id')];
-                                var data = datatable.data()[datatable.row(this)[0]];
-                                if (data) {
-                                    var did = data.concept_id;
-                                    var concept_name = data.name;
-                                    self.drilldown(did, concept_name, $(this).parents('.other_concepts_of_interest_table').attr('type'));
-                                }
                             });
 
                             // Show the subset of the overall cohort conditions in this section.
@@ -254,6 +244,22 @@ define(['knockout', 'text!./other-concepts-of-interest.html','d3', 'jnj_chart', 
         self.evaluateRender = function() {
             try
             {
+                // Ensure that the document level click event handler for the results table is only bound 1 time!
+                if (self.dataTableClickEventBound() == false) {
+                    // Set the callback click event for the table row that will display the other concepts of interest
+                    $(document).on('click', '.other_concepts_of_interest_table tbody tr', function () {
+                        var datatable = self.datatables[$(this).parents('.other_concepts_of_interest_table').attr('id')];
+                        var data = datatable.data()[datatable.row(this)[0]];
+                        if (data) {
+                            var did = data.concept_id;
+                            var concept_name = data.name;
+                            self.drilldown(did, concept_name, $(this).parents('.other_concepts_of_interest_table').attr('type'));
+                        }
+                    });
+                    
+                    self.dataTableClickEventBound(true);
+                }
+                
                 if (self.model.currentDrugConceptId() > 0 && self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionOccurrencePrevalence() != undefined){
                     self.render();
                 }

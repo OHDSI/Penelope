@@ -16,29 +16,34 @@
             </div>
         </div>
         <!-- end: loading -->
-        <div data-bind="if: $component.loading() == false">
-            <table id="cohorts_of_interest_scatter_table" class="display cohorts_of_interest_scatter_table" style="width: 100%" type="condition">
-                <thead>
-                    <tr>
-                        <th>Exposure Cohort ID</th>
-                        <th>Exposure Cohort</th>                        
-                        <th>Outcome Cohort ID</th>
-                        <th>Cohort Name</th>
-                        <th>Persons Exposed</th>
-                        <th>Persons With Outcome Pre-exposure</th>
-                        <th>Persons With Outcome Post-exposure</th>
-                        <th>Time at risk</th>
-                        <th>Incidence Rate (Per 1000py)</th>
-                    </tr>
-                </thead>
-            </table>
-            <div class="loader" data-bind="if:$component.loadingReportDrilldown">
-                <i class="fa fa-refresh fa-spin"></i> Loading Drilldown...
-            </div>
-            <div data-bind="if:$component.activeReportDrilldown">
-                <div id="cohortOfInterestDrilldownScatterplotHeading" class="reportSectionHeading"></div>
-                <div class="evidenceVisualization" id="cohortOfInterestDrilldownScatterplot"></div>
+        <div data-bind="if: $component.cohortMissing() == false">
+            <div data-bind="if: $component.loading() == false">
+                <table id="cohorts_of_interest_scatter_table" class="display cohorts_of_interest_scatter_table" style="width: 100%" type="condition">
+                    <thead>
+                        <tr>
+                            <th>Exposure Cohort ID</th>
+                            <th>Exposure Cohort</th>                        
+                            <th>Outcome Cohort ID</th>
+                            <th>Cohort Name</th>
+                            <th>Persons Exposed</th>
+                            <th>Persons With Outcome Pre-exposure</th>
+                            <th>Persons With Outcome Post-exposure</th>
+                            <th>Time at risk</th>
+                            <th>Incidence Rate (Per 1000py)</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="loader" data-bind="if:$component.loadingReportDrilldown">
+                    <i class="fa fa-refresh fa-spin"></i> Loading Drilldown...
+                </div>
+                <div data-bind="if:$component.activeReportDrilldown">
+                    <div id="cohortOfInterestDrilldownScatterplotHeading" class="reportSectionHeading"></div>
+                    <div class="evidenceVisualization" id="cohortOfInterestDrilldownScatterplot"></div>
+                </div>
             </div>
         </div>
+        <div data-bind="if: $component.cohortMissing() == true">
+            <h4>There is no cohort configured for exposure to <span data-bind="text: model.currentDrugIngredientName"></span> and <span data-bind="text: model.selectedConditionConceptName"></span>.</h4>
+        </div>        
     </div>
 </div>

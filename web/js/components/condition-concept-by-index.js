@@ -3,7 +3,7 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
 		var self = this;
 		self.model = params.model;
 		self.datatables = {};
-        //self.loading = ko.observable(false);
+        self.dataTableClickEventBound = ko.observable(false);
         self.loadingRelatedConcepts = ko.observable(false);
         self.loadingDrugPrevalence = ko.observable(false);
         self.loadingDrugEras = ko.observable(false);
@@ -40,17 +40,6 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
                     
             self.loadingRelatedConcepts(false);
 
-            // Set the callback click event for the table row
-            $(document).on('click', '.condition_concept_table tbody tr', function () {
-                var datatable = self.datatables[$(this).parents('.condition_concept_table').attr('id')];
-                var data = datatable.data()[datatable.row(this)[0]];
-                if (data) {
-                    var did = data.concept_id;
-                    var concept_name = data.name;
-                    self.drilldown(did, concept_name, $(this).parents('.condition_concept_table').attr('type'));
-                }
-            });
-                    
             // Show the subset of the overall cohort conditions in this section.
             var datatable = $('#condition_concept_table').DataTable({
                 order: [6, 'desc'],
@@ -104,6 +93,7 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
 		}
 
         self.drilldown = function (id, name, type) {
+            console.log("related concepts drilldown");
 			self.loadingReportDrilldown(true);
 			self.activeReportDrilldown(false);
 
@@ -193,6 +183,43 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
             
 		}    
 
+        self.evaluateRender = function() {
+            try
+            {
+                // Ensure that the document level click event handler for the results table is only bound 1 time!
+                if (self.dataTableClickEventBound() == false) {
+                    // Set the callback click event for the table row that will display the condition concepts
+                    $(document).on('click', '.condition_concept_table tbody tr', function () {
+                        var datatable = self.datatables[$(this).parents('.condition_concept_table').attr('id')];
+                        var data = datatable.data()[datatable.row(this)[0]];
+                        if (data) {
+                            var did = data.concept_id;
+                            var concept_name = data.name;
+                            self.drilldown(did, concept_name, $(this).parents('.condition_concept_table').attr('type'));
+                        }
+                    });
+                    
+                    self.dataTableClickEventBound(true);
+                }
+                
+                if (self.model.currentDrugConceptId() > 0 && self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionOccurrencePrevalence() != undefined && self.model.selectedConditionConceptAndDescendants().length > 0){
+                    self.render();
+                }
+                else{
+                    self.loadingRelatedConcepts(true);
+                }                
+            }
+            catch (e)
+            {
+                self.loadingRelatedConcepts(true);
+            }
+        }
+
+        self.resetDetailError = function () {
+			self.hasDetailError(false);
+			self.detailErrorMsg('');
+		}
+
         self.model.selectedConditionConceptAndDescendants.subscribe(function(newValue) {
         	if (newValue != null) {
 				self.evaluateRender();        		
@@ -222,27 +249,6 @@ define(['knockout', 'text!./condition-concept-by-index.html','d3', 'jnj_chart', 
                 self.render();
             }
         });        
-
-        self.evaluateRender = function() {
-            try
-            {
-                if (self.model.currentDrugConceptId() > 0 && self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionOccurrencePrevalence() != undefined && self.model.selectedConditionConceptAndDescendants().length > 0){
-                    self.render();
-                }
-                else{
-                    self.loadingRelatedConcepts(true);
-                }                
-            }
-            catch (e)
-            {
-                self.loadingRelatedConcepts(true);
-            }
-        }
-
-        self.resetDetailError = function () {
-			self.hasDetailError(false);
-			self.detailErrorMsg('');
-		}
     }
 
 	var component = {

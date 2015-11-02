@@ -2,7 +2,9 @@ define(['knockout', 'text!./cohorts-of-interest-scatter.html','d3', 'jnj_chart',
 	function cohortsOfInterestScatter(params) {
 		var self = this;
 		self.model = params.model;
+        self.cohortMissing = ko.observable(false);
 		self.datatables = {};
+        self.dataTableClickEventBound = ko.observable(false);
         self.loading = ko.observable(false);
         self.loadingReportDrilldown = ko.observable(false);
         self.activeReportDrilldown = ko.observable(false);
@@ -11,7 +13,8 @@ define(['knockout', 'text!./cohorts-of-interest-scatter.html','d3', 'jnj_chart',
 		self.detailErrorMsg = ko.observable('');
         
 		self.render = function () {
-            self.loading(true);            
+            self.loading(true);          
+            self.cohortMissing(false);
             var exposureCohortList = [self.model.currentExposureCohortId()];
             var outcomeCohortList = self.model.selectedConditionCohorts().map(function(d, i) { return d.cohortDefinitionId });
             $.ajax({
@@ -51,17 +54,6 @@ define(['knockout', 'text!./cohorts-of-interest-scatter.html','d3', 'jnj_chart',
 						return n != null
 					});
                     
-                    // Set the callback click event for the table row
-                    $(document).on('click', '.cohorts_of_interest_scatter_table tbody tr', function () {
-                        var datatable = self.datatables[$(this).parents('.cohorts_of_interest_scatter_table').attr('id')];
-                        var data = datatable.data()[datatable.row(this)[0]];
-                        if (data) {
-                            var did = data.outcome_cohort_definition_id;
-                            var cohort_name = data.outcome_cohort_name;
-                            self.drilldown(did, cohort_name, $(this).parents('.cohorts_of_interest_scatter_table').attr('type'));
-                        }
-                    });
-
                     // Show the subset of the overall cohort conditions in this section.
 					var datatable = $('#cohorts_of_interest_scatter_table').DataTable({
 							order: [6, 'desc'],
@@ -122,6 +114,7 @@ define(['knockout', 'text!./cohorts-of-interest-scatter.html','d3', 'jnj_chart',
 		}
 
         self.drilldown = function (id, name, type) {
+            console.log("coi-scatter-drilldown");
 			self.loadingReportDrilldown(true);
 			self.activeReportDrilldown(false);
             self.loadingPredictorsDrilldown(true);
@@ -216,6 +209,50 @@ define(['knockout', 'text!./cohorts-of-interest-scatter.html','d3', 'jnj_chart',
 			});
 		}    
 
+        self.evaluateRender = function() {
+            try
+            {
+                // Ensure that the document level click event handler for the results table is only bound 1 time!
+                if (self.dataTableClickEventBound() == false) {
+                    // Set the callback click event for the table row
+                    $(document).on('click', '.cohorts_of_interest_scatter_table tbody tr', function () {
+                        var datatable = self.datatables[$(this).parents('.cohorts_of_interest_scatter_table').attr('id')];
+                        var data = datatable.data()[datatable.row(this)[0]];
+                        if (data) {
+                            var did = data.outcome_cohort_definition_id;
+                            var cohort_name = data.outcome_cohort_name;
+                            self.drilldown(did, cohort_name, $(this).parents('.cohorts_of_interest_scatter_table').attr('type'));
+                        }
+                    });
+                    
+                    self.dataTableClickEventBound(true);
+                }
+                
+                if (self.model.currentDrugConceptId() > 0 && self.model.currentExposureCohortId() > 0 && self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionCohorts().length > 0){
+                    self.render();
+                }
+                else if (self.model.currentExposureCohortId() == 0 || self.model.selectedConditionCohorts().length == 0){
+                    self.loading(false);
+                    self.cohortMissing(true);
+                }
+                else {
+                    self.loading(true);
+                    self.cohortMissing(false);
+                }                
+            }
+            catch (e)
+            {
+                self.loading(true);
+                self.cohortMissing(false);
+            }
+
+        }
+        
+        self.resetDetailError = function () {
+			self.hasDetailError(false);
+			self.detailErrorMsg('');
+		}        
+        
         self.model.currentExposureCohortId.subscribe(function(newValue) {
         	if (newValue > 0) {
 				self.evaluateRender();        		
@@ -246,28 +283,7 @@ define(['knockout', 'text!./cohorts-of-interest-scatter.html','d3', 'jnj_chart',
             }
         });
 
-        self.evaluateRender = function() {
-            try
-            {
-                if (self.model.currentDrugConceptId() > 0 && self.model.currentExposureCohortId() > 0 && self.model.selectedConditionConceptId() > 0 && self.model.selectedConditionCohorts().length > 0){
-                    self.render();
-                }
-                else{
-                    self.loading(true);
-                }                
-            }
-            catch (e)
-            {
-                self.loading(true);
-            }
-
-        }
-        
-        self.resetDetailError = function () {
-			self.hasDetailError(false);
-			self.detailErrorMsg('');
-		}        
-	}
+    }
 
 	var component = {
 		viewModel: cohortsOfInterestScatter,

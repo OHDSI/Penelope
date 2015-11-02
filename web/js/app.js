@@ -173,8 +173,12 @@ define([
                 self.currentDrugName(selectedDrug.searchName);
                 self.currentDrugIngredientName(selectedDrug.ingredientConceptName);
                 self.currentDrugConceptId(selectedDrug.ingredientConceptId);
-                self.currentExposureCohortId(selectedDrug.cohortId);
-                if (selectedDrug.cohortId != null || selectedDrug.cohortId != undefined)
+                var exposureCohortId = selectedDrug.cohortId;
+                if (exposureCohortId == null || exposureCohortId == undefined) {
+                    exposureCohortId = 0;
+                }
+                self.currentExposureCohortId(exposureCohortId);
+                if (exposureCohortId > 0)
                 {
                     $.ajax({
                         url : self.services()[0].url + "cohortdefinition/" + selectedDrug.cohortId, 
@@ -206,17 +210,30 @@ define([
                             if ($(this).attr("type") == 'medication')
                                 $(this).attr("class", "");
                         });
-                        // Remove the links from the Indications section
-                        var labelSectionPrefix = $("#spl-display div[data-sectioncode='34067-9']").children("h1").attr("id").replace("main", "");
-                        $("#spl-display span.product-label-link[id*='" + labelSectionPrefix + "-']").attr("class", "");
-                        // Remove the links from the Dosage and Admininisrations section
-                        labelSectionPrefix = $("#spl-display div[data-sectioncode='34068-7']").children("h1").attr("id").replace("main", "");
-                        $("#spl-display span.product-label-link[id*='" + labelSectionPrefix + "-']").attr("class", "");
-                        // Remove the links from the Dosage Forms and Strengths section
-                        labelSectionPrefix = $("#spl-display div[data-sectioncode='43678-2']").children("h1").attr("id").replace("main", "");
-                        $("#spl-display span.product-label-link[id*='" + labelSectionPrefix + "-']").attr("class", "");
-                        // Hide the product packaging section
-                        $("#spl-display div[data-sectioncode='51945-4']").attr("class", "hidden");
+                        var labelSectionPrefix;
+                        // Remove the links from the Indications section. Doing this in a try/catch as sometimes these sections do not exist in the label.
+                        try {
+                            labelSectionPrefix = $("#spl-display div[data-sectioncode='34067-9']").children("h1").attr("id").replace("main", "");        
+                            $("#spl-display span.product-label-link[id*='" + labelSectionPrefix + "-']").attr("class", "");
+                        }
+                        catch(e) {}                        
+                        // Remove the links from the Dosage and Admininisrations section. Doing this in a try/catch as sometimes these sections do not exist in the label.
+                        try {
+                            labelSectionPrefix = $("#spl-display div[data-sectioncode='34068-7']").children("h1").attr("id").replace("main", "");
+                            $("#spl-display span.product-label-link[id*='" + labelSectionPrefix + "-']").attr("class", "");
+                        }
+                        catch(e) {}                        
+                        // Remove the links from the Dosage Forms and Strengths section. Doing this in a try/catch as sometimes these sections do not exist in the label.
+                        try {
+                            labelSectionPrefix = $("#spl-display div[data-sectioncode='43678-2']").children("h1").attr("id").replace("main", "");
+                            $("#spl-display span.product-label-link[id*='" + labelSectionPrefix + "-']").attr("class", "");
+                        }
+                        catch(e) {}                        
+                        // Hide the product packaging section. Doing this in a try/catch as sometimes these sections do not exist in the label.
+                        try {
+                            $("#spl-display div[data-sectioncode='51945-4']").attr("class", "hidden");
+                        }
+                        catch(e) {}                        
                     },
                     error : function(error){
                         alert('Error retrieving label: ' + error);
@@ -228,7 +245,7 @@ define([
                 // TODO: Display something to let the user know we couldn't find this SetID
             }
         }
-        
+                
         self.buildTOCFromLabel = function () {
             if (self.currentDrugLabel != null) {
                 var sectionCodes = $("#spl-display .Contents").children("div").map(function (mainHeadingIndex, val) {

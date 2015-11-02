@@ -5,59 +5,64 @@
         <!-- start: loading -->
         <div id="es-loading" data-bind="if: $component.loading() == true">
             <div class="spinner">
-              <h4>Loading</h4>
-              <div class="rect1"></div>
-              <div class="rect2"></div>
-              <div class="rect3"></div>
-              <div class="rect4"></div>
-              <div class="rect5"></div>
-              <div class="rect6"></div>
-              <div class="rect7"></div>
+                <h4>Loading</h4>
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+                <div class="rect6"></div>
+                <div class="rect7"></div>
             </div>
         </div>
         <!-- end: loading -->
-        <div data-bind="if: $component.loading() == false">
-            <table id="cohorts_of_interest_predictors_table" class="display cohorts_of_interest_predictors_table" style="width: 100%" type="condition">
-                <thead>
-                    <tr>
-                        <th>Exposure Cohort ID</th>
-                        <th>Exposure Cohort</th>                        
-                        <th>Outcome Cohort ID</th>
-                        <th>Cohort Name</th>
-                        <th>Persons Exposed</th>
-                        <th>Persons With Outcome Pre-exposure</th>
-                        <th>Persons With Outcome Post-exposure</th>
-                        <th>Time at risk</th>
-                        <th>Incidence Rate (Per 1000py)</th>
-                    </tr>
-                </thead>
-            </table>
-            <div class="loader" data-bind="if:$component.loadingReportDrilldown">
-                <i class="fa fa-refresh fa-spin"></i> Loading Drilldown...
-            </div>
-            <div data-bind="if:$component.activeReportDrilldown">
-                <div id="cohortPredictorsHeading" class="reportSectionHeading"></div>
-                <table id="cohort_predictors_table" class="display cohort_predictors_table" style="width: 100%" type="condition">
-                <thead>
-                    <tr>
-                        <th>Exposure Cohort ID</th>
-                        <th>Exposure Cohort</th>                        
-                        <th>Outcome Cohort ID</th>
-                        <th>Cohort Name</th>
-                        <th>Concept ID</th>
-                        <th>Concept Name</th>
-                        <th>Domain</th>
-                        <th>Concept With Outcome</th>
-                        <th>% Outcome With Concept</th>
-                        <th>% Outcome Without Concept</th>
-                        <th>Absolute Std Diff</th>
-                    </tr>
-                </thead>
+        <div data-bind="if: $component.cohortMissing() == false">
+            <div data-bind="if: $component.loading() == false">
+                <table id="cohorts_of_interest_predictors_table" class="display cohorts_of_interest_predictors_table" style="width: 100%" type="condition">
+                    <thead>
+                        <tr>
+                            <th>Exposure Cohort ID</th>
+                            <th>Exposure Cohort</th>
+                            <th>Outcome Cohort ID</th>
+                            <th>Cohort Name</th>
+                            <th>Persons Exposed</th>
+                            <th>Persons With Outcome Pre-exposure</th>
+                            <th>Persons With Outcome Post-exposure</th>
+                            <th>Time at risk</th>
+                            <th>Incidence Rate (Per 1000py)</th>
+                        </tr>
+                    </thead>
                 </table>
-            </div>            
-            <div data-bind="$if: $component.hasDetailError() == true">
-                <span data-bind="text: $component.detailErrorMsg()"></span>
+                <div class="loader" data-bind="if:$component.loadingReportDrilldown">
+                    <i class="fa fa-refresh fa-spin"></i> Loading Drilldown...
+                </div>
+                <div data-bind="if:$component.activeReportDrilldown">
+                    <div id="cohortPredictorsHeading" class="reportSectionHeading"></div>
+                    <table id="cohort_predictors_table" class="display cohort_predictors_table" style="width: 100%" type="condition">
+                        <thead>
+                            <tr>
+                                <th>Exposure Cohort ID</th>
+                                <th>Exposure Cohort</th>
+                                <th>Outcome Cohort ID</th>
+                                <th>Cohort Name</th>
+                                <th>Concept ID</th>
+                                <th>Concept Name</th>
+                                <th>Domain</th>
+                                <th>Concept With Outcome</th>
+                                <th>% Outcome With Concept</th>
+                                <th>% Outcome Without Concept</th>
+                                <th>Absolute Std Diff</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div data-bind="$if: $component.hasDetailError() == true">
+                    <span data-bind="text: $component.detailErrorMsg()"></span>
+                </div>
             </div>
+        </div>
+        <div data-bind="if: $component.cohortMissing() == true">
+            <h4>There is no cohort configured for exposure to <span data-bind="text: model.currentDrugIngredientName"></span> and <span data-bind="text: model.selectedConditionConceptName"></span>.</h4>
         </div>
     </div>
 </div>

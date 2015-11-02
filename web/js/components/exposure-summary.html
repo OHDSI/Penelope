@@ -94,63 +94,68 @@
     <div class="pad-10 report">
         <div class="reportHeading"><i class="fa fa-area-chart"></i>Conditions by Index Report</div>
         <div class="reportSectionHeading">Condition Prevalence</div>
-        <!-- start: loading -->
-        <div id="es-loading" data-bind="if: $component.loadingConditionPrevalence() == true">
-            <div class="spinner">
-              <h4>Loading</h4>
-              <div class="rect1"></div>
-              <div class="rect2"></div>
-              <div class="rect3"></div>
-              <div class="rect4"></div>
-              <div class="rect5"></div>
-              <div class="rect6"></div>
-              <div class="rect7"></div>
+        <div data-bind="if: model.currentExposureCohortId() > 0">        
+            <!-- start: loading -->
+            <div id="es-loading" data-bind="if: $component.loadingConditionPrevalence() == true">
+                <div class="spinner">
+                  <h4>Loading</h4>
+                  <div class="rect1"></div>
+                  <div class="rect2"></div>
+                  <div class="rect3"></div>
+                  <div class="rect4"></div>
+                  <div class="rect5"></div>
+                  <div class="rect6"></div>
+                  <div class="rect7"></div>
+                </div>
+            </div>
+            <!-- end: loading -->
+            <div data-bind="if: $component.loadingConditionPrevalence() == false">
+                <div>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="active"><a href="#condition-table-panel" role="tab" data-toggle="tab">Table</a>
+                        </li>
+                        <li id="treemap-tab"><a href="#condition-treemap-panel" role="tab" data-toggle="tab">Treemap</a>
+                        </li>
+                    </ul>
+                    <div id='content' class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="condition-table-panel">
+                            <table id="condition_table" class="display treemap_table" style="width: 100%" type="condition">
+                                <thead>
+                                    <tr>
+                                        <th>SNOMED</th>
+                                        <th>Concept Id</th>
+                                        <th>SOC</th>
+                                        <th>HLGT</th>
+                                        <th>HLT</th>
+                                        <th>PT</th>
+                                        <th>Person Count</th>
+                                        <th>Prevalence</th>
+                                        <th>Log(post-pre ratio)</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="condition-treemap-panel">
+                            <div id="treemap_container">
+                                <div class="treemap_zoomtarget"></div>
+                            </div>
+                            <div class="treemap_legend">Box Size: Prevalence, Color: Log of Relative Risk (Red to Green = Negative to Positive), Use Ctrl-Click to Zoom, Alt-Click to Reset Zoom</div>
+                        </div>
+                    </div>
+
+                    <div class="loader" data-bind="if:$component.loadingReportDrilldown">
+                        <i class="fa fa-refresh fa-spin"></i> Loading Drilldown...
+                    </div>
+                    <div data-bind="if:$component.activeReportDrilldown">
+                        <div id="conditionDrilldownScatterplotHeading" class="reportSectionHeading">
+                        </div>
+                        <div class="evidenceVisualization" id="conditionDrilldownScatterplot"></div>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- end: loading -->
-        <div data-bind="if: $component.loadingConditionPrevalence() == false">
-            <div>
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="active"><a href="#condition-table-panel" role="tab" data-toggle="tab">Table</a>
-                    </li>
-                    <li id="treemap-tab"><a href="#condition-treemap-panel" role="tab" data-toggle="tab">Treemap</a>
-                    </li>
-                </ul>
-                <div id='content' class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="condition-table-panel">
-                        <table id="condition_table" class="display treemap_table" style="width: 100%" type="condition">
-                            <thead>
-                                <tr>
-                                    <th>SNOMED</th>
-                                    <th>Concept Id</th>
-                                    <th>SOC</th>
-                                    <th>HLGT</th>
-                                    <th>HLT</th>
-                                    <th>PT</th>
-                                    <th>Person Count</th>
-                                    <th>Prevalence</th>
-                                    <th>Log(post-pre ratio)</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="condition-treemap-panel">
-                        <div id="treemap_container">
-                            <div class="treemap_zoomtarget"></div>
-                        </div>
-                        <div class="treemap_legend">Box Size: Prevalence, Color: Log of Relative Risk (Red to Green = Negative to Positive), Use Ctrl-Click to Zoom, Alt-Click to Reset Zoom</div>
-                    </div>
-                </div>
-
-                <div class="loader" data-bind="if:$component.loadingReportDrilldown">
-                    <i class="fa fa-refresh fa-spin"></i> Loading Drilldown...
-                </div>
-                <div data-bind="if:$component.activeReportDrilldown">
-                    <div id="conditionDrilldownScatterplotHeading" class="reportSectionHeading">
-                    </div>
-                    <div class="evidenceVisualization" id="conditionDrilldownScatterplot"></div>
-                </div>
-            </div>
+        <div data-bind="if: model.currentExposureCohortId() == 0">
+            <h4>There is no cohort configured for exposure to <span data-bind="text: model.currentDrugIngredientName"></span>.</h4>            
         </div>
     </div>
 </div>

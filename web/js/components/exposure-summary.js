@@ -4,6 +4,7 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
 		self.model = params.model;
 		self.datatables = {};
         //self.loading = ko.observable(false);
+        self.dataTableClickEventBound = ko.observable(false);        
         self.loadingConditionPrevalence = ko.observable(false);
         self.loadingDrugPrevalence = ko.observable(false);
         self.loadingDrugEras = ko.observable(false);
@@ -14,164 +15,14 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
         self.allDeciles = ko.observable(null);
         
         self.render = function() {
-        	self.loadingConditionPrevalence(true);
             self.loadingDrugPrevalence(true);
             self.loadingDrugEras(true);
             self.loadingDrugSummary(true);
             //self.loading(true);
             
-            // Get Condition Prevalence
-			$.ajax({
-				type: "GET",
-                url: self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/' + self.model.currentExposureCohortId() + '/cohortspecifictreemap',
-				contentType: "application/json; charset=utf-8",
-				success: function (data) {
-                    // Remove the loading dialog
-                    self.loadingConditionPrevalence(false);
-
-                    // Finish the rendering now that we have data
-                    var width = 1000;
-                    var height = 250;
-                    var minimum_area = 50;
-                    var threshold = minimum_area / (width * height);
-                    
-                    var table_data, datatable, tree, treemap;
-                    // condition prevalence
-                    if (data.conditionOccurrencePrevalence) {
-                        var normalizedData = self.model.normalizeDataframe(self.model.normalizeArray(data.conditionOccurrencePrevalence, true));
-                        var conditionOccurrencePrevalence = normalizedData;
-                        if (!conditionOccurrencePrevalence.empty) {
-                            table_data = normalizedData.conceptPath.map(function (d, i) {
-                                var conceptDetails = this.conceptPath[i].split('||');
-                                return {
-                                    concept_id: this.conceptId[i],
-                                    soc: conceptDetails[0],
-                                    hlgt: conceptDetails[1],
-                                    hlt: conceptDetails[2],
-                                    pt: conceptDetails[3],
-                                    snomed: conceptDetails[4],
-                                    name: conceptDetails[4],
-                                    num_persons: self.model.formatComma(this.numPersons[i]),
-                                    percent_persons: self.model.formatPercent(this.percentPersons[i]),
-                                    relative_risk: self.model.formatFixed(this.logRRAfterBefore[i]),
-                                    percent_persons_before: self.model.formatPercent(this.percentPersons[i]),
-                                    percent_persons_after: self.model.formatPercent(this.percentPersons[i]),
-                                    risk_difference: self.model.formatFixed(this.riskDiffAfterBefore[i]),
-                                    count_value: self.model.formatComma(this.countValue[i])
-                                };
-                            }, conditionOccurrencePrevalence);
-                            self.model.selectedConditionOccurrencePrevalence(table_data);
-                            
-                            // Get the count value for the currently selected cohort
-                            self.model.currentExposureCohortCountValue(table_data[0].count_value);                            
-                                                        
-                            $(document).on('click', '.treemap_table tbody tr', function () {
-                                var datatable = self.datatables[$(this).parents('.treemap_table').attr('id')];
-                                var data = datatable.data()[datatable.row(this)[0]];
-                                if (data) {
-                                    var did = data.concept_id;
-                                    var concept_name = data.name;
-                                    self.drilldown(did, concept_name, $(this).parents('.treemap_table').attr('type'));
-                                }
-                            });
-
-                            datatable = $('#condition_table').DataTable({
-                                order: [6, 'desc'],
-                                dom: 'T<"clear">lfrtip',
-                                data: table_data,
-                                columns: [
-                                    {
-                                        data: 'snomed',
-                                        "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                                            $(nTd).html("<a target='_blank' href='" + self.model.services()[0].atlas + "/#/concept/"+oData.concept_id+"'>"+oData.snomed+"</a>");
-                                        }
-                                    },
-                                    {
-                                        data: 'concept_id',
-                                        visible: false
-                                    },
-                                    {
-                                        data: 'soc',
-                                        visible: false
-                                    },
-                                    {
-                                        data: 'hlgt',
-                                        visible: false
-                                    },
-                                    {
-                                        data: 'hlt'
-                                    },
-                                    {
-                                        data: 'pt',
-                                        visible: false
-                                    },
-                                    {
-                                        data: 'num_persons',
-                                        className: 'numeric'
-                                    },
-                                    {
-                                        data: 'percent_persons',
-                                        className: 'numeric'
-                                    },
-                                    {
-                                        data: 'relative_risk',
-                                        className: 'numeric'
-                                    }
-                                ],
-                                pageLength: 10,
-                                lengthChange: false,
-                                deferRender: true,
-                                destroy: true
-                            });
-                            self.datatables['condition_table'] = datatable;
-
-                            tree = self.model.buildHierarchyFromJSON(conditionOccurrencePrevalence, threshold);
-                            treemap = new jnj_chart.treemap();
-                            treemap.render(tree, '#treemap_container', width, height, {
-                                onclick: function (node) {
-                                    self.drilldown(node.id, node.name, 'condition');
-                                },
-                                getsizevalue: function (node) {
-                                    return node.num_persons;
-                                },
-                                getcolorvalue: function (node) {
-                                    return node.relative_risk;
-                                },
-                                getcolorrange: function () {
-                                    return colorbrewer.RR[3];
-                                },
-                                getcolorscale: function () {
-                                    return [-6, 0, 5];
-                                },
-                                getcontent: function (node) {
-                                    var result = '',
-                                        steps = node.path.split('||'),
-                                        i = steps.length - 1;
-                                    result += '<div class="pathleaf">' + steps[i] + '</div>';
-                                    result += '<div class="pathleafstat">Prevalence: ' + self.model.formatPercent(node.pct_persons) + '</div>';
-                                    result += '<div class="pathleafstat">% Persons Before: ' + self.model.formatPercent(node.pct_persons_before) + '</div>';
-                                    result += '<div class="pathleafstat">% Persons After: ' + self.model.formatPercent(node.pct_persons_after) + '</div>';
-                                    result += '<div class="pathleafstat">Number of People: ' + self.model.formatComma(node.num_persons) + '</div>';
-                                    result += '<div class="pathleafstat">Log of Relative Risk per Person: ' + self.model.formatFixed(node.relative_risk) + '</div>';
-                                    result += '<div class="pathleafstat">Difference in Risk: ' + self.model.formatFixed(node.risk_difference) + '</div>';
-                                    return result;
-                                },
-                                gettitle: function (node) {
-                                    var title = '',
-                                        steps = node.path.split('||');
-                                    for (var i = 0; i < steps.length - 1; i++) {
-                                        title += ' <div class="pathstep">' + Array(i + 1).join('&nbsp;&nbsp') + steps[i] + ' </div>';
-                                    }
-                                    return title;
-                                }
-                            });
-
-                            $('[data-toggle="popover"]').popover();
-                        }
-                    }                    
-				}
-			});
-            
+            // Get the condition prevalence
+            self.renderConditionPrevalence();
+                        
             // Get drug prevalance
             $.ajax({
 				type: "POST",
@@ -378,6 +229,151 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
 
         }
         
+        self.renderConditionPrevalence = function() {
+        	self.loadingConditionPrevalence(true);
+            // Get Condition Prevalence
+			$.ajax({
+				type: "GET",
+                url: self.model.services()[0].url + self.model.reportSourceKey() + '/cohortresults/' + self.model.currentExposureCohortId() + '/cohortspecifictreemap',
+				contentType: "application/json; charset=utf-8",
+				success: function (data) {
+                    // Remove the loading dialog
+                    self.loadingConditionPrevalence(false);
+
+                    // Finish the rendering now that we have data
+                    var width = 1000;
+                    var height = 250;
+                    var minimum_area = 50;
+                    var threshold = minimum_area / (width * height);
+                    
+                    var table_data, datatable, tree, treemap;
+                    // condition prevalence
+                    if (data.conditionOccurrencePrevalence) {
+                        var normalizedData = self.model.normalizeDataframe(self.model.normalizeArray(data.conditionOccurrencePrevalence, true));
+                        var conditionOccurrencePrevalence = normalizedData;
+                        if (!conditionOccurrencePrevalence.empty) {
+                            table_data = normalizedData.conceptPath.map(function (d, i) {
+                                var conceptDetails = this.conceptPath[i].split('||');
+                                return {
+                                    concept_id: this.conceptId[i],
+                                    soc: conceptDetails[0],
+                                    hlgt: conceptDetails[1],
+                                    hlt: conceptDetails[2],
+                                    pt: conceptDetails[3],
+                                    snomed: conceptDetails[4],
+                                    name: conceptDetails[4],
+                                    num_persons: self.model.formatComma(this.numPersons[i]),
+                                    percent_persons: self.model.formatPercent(this.percentPersons[i]),
+                                    relative_risk: self.model.formatFixed(this.logRRAfterBefore[i]),
+                                    percent_persons_before: self.model.formatPercent(this.percentPersons[i]),
+                                    percent_persons_after: self.model.formatPercent(this.percentPersons[i]),
+                                    risk_difference: self.model.formatFixed(this.riskDiffAfterBefore[i]),
+                                    count_value: self.model.formatComma(this.countValue[i])
+                                };
+                            }, conditionOccurrencePrevalence);
+                            self.model.selectedConditionOccurrencePrevalence(table_data);
+                            
+                            // Get the count value for the currently selected cohort
+                            self.model.currentExposureCohortCountValue(table_data[0].count_value);                            
+
+                            datatable = $('#condition_table').DataTable({
+                                order: [6, 'desc'],
+                                dom: 'T<"clear">lfrtip',
+                                data: table_data,
+                                columns: [
+                                    {
+                                        data: 'snomed',
+                                        "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                                            $(nTd).html("<a target='_blank' href='" + self.model.services()[0].atlas + "/#/concept/"+oData.concept_id+"'>"+oData.snomed+"</a>");
+                                        }
+                                    },
+                                    {
+                                        data: 'concept_id',
+                                        visible: false
+                                    },
+                                    {
+                                        data: 'soc',
+                                        visible: false
+                                    },
+                                    {
+                                        data: 'hlgt',
+                                        visible: false
+                                    },
+                                    {
+                                        data: 'hlt'
+                                    },
+                                    {
+                                        data: 'pt',
+                                        visible: false
+                                    },
+                                    {
+                                        data: 'num_persons',
+                                        className: 'numeric'
+                                    },
+                                    {
+                                        data: 'percent_persons',
+                                        className: 'numeric'
+                                    },
+                                    {
+                                        data: 'relative_risk',
+                                        className: 'numeric'
+                                    }
+                                ],
+                                pageLength: 10,
+                                lengthChange: false,
+                                deferRender: true,
+                                destroy: true
+                            });
+                            self.datatables['condition_table'] = datatable;
+
+                            tree = self.model.buildHierarchyFromJSON(conditionOccurrencePrevalence, threshold);
+                            treemap = new jnj_chart.treemap();
+                            treemap.render(tree, '#treemap_container', width, height, {
+                                onclick: function (node) {
+                                    self.drilldown(node.id, node.name, 'condition');
+                                },
+                                getsizevalue: function (node) {
+                                    return node.num_persons;
+                                },
+                                getcolorvalue: function (node) {
+                                    return node.relative_risk;
+                                },
+                                getcolorrange: function () {
+                                    return colorbrewer.RR[3];
+                                },
+                                getcolorscale: function () {
+                                    return [-6, 0, 5];
+                                },
+                                getcontent: function (node) {
+                                    var result = '',
+                                        steps = node.path.split('||'),
+                                        i = steps.length - 1;
+                                    result += '<div class="pathleaf">' + steps[i] + '</div>';
+                                    result += '<div class="pathleafstat">Prevalence: ' + self.model.formatPercent(node.pct_persons) + '</div>';
+                                    result += '<div class="pathleafstat">% Persons Before: ' + self.model.formatPercent(node.pct_persons_before) + '</div>';
+                                    result += '<div class="pathleafstat">% Persons After: ' + self.model.formatPercent(node.pct_persons_after) + '</div>';
+                                    result += '<div class="pathleafstat">Number of People: ' + self.model.formatComma(node.num_persons) + '</div>';
+                                    result += '<div class="pathleafstat">Log of Relative Risk per Person: ' + self.model.formatFixed(node.relative_risk) + '</div>';
+                                    result += '<div class="pathleafstat">Difference in Risk: ' + self.model.formatFixed(node.risk_difference) + '</div>';
+                                    return result;
+                                },
+                                gettitle: function (node) {
+                                    var title = '',
+                                        steps = node.path.split('||');
+                                    for (var i = 0; i < steps.length - 1; i++) {
+                                        title += ' <div class="pathstep">' + Array(i + 1).join('&nbsp;&nbsp') + steps[i] + ' </div>';
+                                    }
+                                    return title;
+                                }
+                            });
+
+                            $('[data-toggle="popover"]').popover();
+                        }
+                    }                    
+				}
+			});            
+        }
+        
         self.renderTrellisPlot = function() {
             if (self.allDeciles() != null && self.dataByDecile() != null) {            	
 				$("#trellisLinePlot").empty();
@@ -400,6 +396,7 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
         }
 
         self.drilldown = function (id, name, type) {
+            console.log("exposure-summary-drilldown");
 			self.loadingReportDrilldown(true);
 			self.activeReportDrilldown(false);
 
@@ -487,21 +484,25 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
 			});  
 		}    
 
-        self.model.currentDrugConceptId.subscribe(function(newValue) {
-            if (newValue > 0) {
-                self.render();
-            }
-        }); 
-        
-        self.model.reportSourceKey.subscribe(function(newValue) {
-            if (newValue != undefined) {
-                self.render();
-            }
-        });        
-        
         self.evaluateRender = function() {
             try
             {
+                // Ensure that the document level click event handler for the results table is only bound 1 time!
+                if (self.dataTableClickEventBound() == false) {
+                    // Set the click handler for the table
+                    $(document).on('click', '.treemap_table tbody tr', function () {
+                        var datatable = self.datatables[$(this).parents('.treemap_table').attr('id')];
+                        var data = datatable.data()[datatable.row(this)[0]];
+                        if (data) {
+                            var did = data.concept_id;
+                            var concept_name = data.name;
+                            self.drilldown(did, concept_name, $(this).parents('.treemap_table').attr('type'));
+                        }
+                    });
+                    
+                    self.dataTableClickEventBound(true);
+                }
+                
                 if (self.model.reportSourceKey() != undefined && self.model.currentDrugConceptId() > 0){
                     self.render();
                 }
@@ -521,6 +522,22 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
             self.loadingDrugEras = ko.observable(true);
             self.loadingDrugSummary = ko.observable(true);            
         }
+
+        self.model.currentDrugConceptId.subscribe(function(newValue) {
+            if (newValue > 0) {
+                self.render();
+            }
+        }); 
+        
+        self.model.reportSourceKey.subscribe(function(newValue) {
+            if (newValue != undefined) {
+                self.render();
+            }
+        });        
+        
+        self.model.currentExposureCohortId.subscribe(function(newValue) {
+           self.renderConditionPrevalence();
+        });
         
         self.evaluateRender();
 	}

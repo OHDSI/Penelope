@@ -94,7 +94,7 @@
     <div class="pad-10 report">
         <div class="reportHeading"><i class="fa fa-area-chart"></i>Conditions by Index Report</div>
         <div class="reportSectionHeading">Condition Prevalence</div>
-        <div data-bind="if: model.currentExposureCohortId() > 0">        
+        <div data-bind="if: model.currentExposureCohortId() > 0 && model.selectedConditionOccurrencePrevalenceHasData() != false">        
             <!-- start: loading -->
             <div id="es-loading" data-bind="if: $component.loadingConditionPrevalence() == true">
                 <div class="spinner">
@@ -156,6 +156,9 @@
         </div>
         <div data-bind="if: model.currentExposureCohortId() == 0">
             <h4>There is no cohort configured for exposure to <span data-bind="text: model.currentDrugIngredientName"></span>.</h4>            
+        </div>
+        <div data-bind="if: model.currentExposureCohortId() > 0 && model.selectedConditionOccurrencePrevalenceHasData() == false">
+            <h4>No data was found for the exposure cohort. Please validate that this cohort has been generated in Heracles.</h4>            
         </div>
     </div>
 </div>

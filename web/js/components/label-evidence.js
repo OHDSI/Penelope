@@ -75,7 +75,10 @@ define(['knockout', 'text!./label-evidence.html', 'knockout.dataTables.binding',
                         data: labelEvidenceResult, 
                         columns: [
                             {
-                                data: 'CONCEPT_NAME'
+                                data: 'CONCEPT_NAME',
+                                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                                    $(nTd).html("<a target='_blank' href='#/search/"+oData.CONCEPT_NAME+"'>"+oData.CONCEPT_NAME+"</a>");
+                                }
                             },
                             {
                                 data: 'ATC3'

@@ -1,61 +1,67 @@
 <div class="panel panel-default">
     <div class="pad-10 report">
-        <!-- start: loading -->
-        <div id="es-loading" data-bind="if: $component.loadingRelatedConcepts() == true">
-            <div class="spinner">
-              <h4>Loading</h4>
-              <div class="rect1"></div>
-              <div class="rect2"></div>
-              <div class="rect3"></div>
-              <div class="rect4"></div>
-              <div class="rect5"></div>
-              <div class="rect6"></div>
-              <div class="rect7"></div>
+        <div data-bind="if: model.currentExposureCohortId() > 0 && model.selectedConditionOccurrencePrevalenceHasData() != false">        
+            <!-- start: loading -->
+            <div id="es-loading" data-bind="if: $component.loadingRelatedConcepts() == true">
+                <div class="spinner">
+                  <h4>Loading</h4>
+                  <div class="rect1"></div>
+                  <div class="rect2"></div>
+                  <div class="rect3"></div>
+                  <div class="rect4"></div>
+                  <div class="rect5"></div>
+                  <div class="rect6"></div>
+                  <div class="rect7"></div>
+                </div>
+            </div>
+            <!-- end: loading -->
+            <div style="padding: 5px;" data-bind="if: $component.loadingRelatedConcepts() == false">
+                <b>Clinical characterization was computed using the cohort of <a data-bind="attr: {href: model.services()[0].circe + '/#/' + model.currentExposureCohortId(), target: '_blank'}, text: model.currentExposureCohortName"></a> (n= <span data-bind="text: model.currentExposureCohortCountValue()"></span>)</b>
+            </div>        
+            <div class="reportHeading"><i class="fa fa-area-chart"></i>Related Concepts</div>
+            <div class="reportSectionHeading" data-bind="text: 'First Condition Occurrence Of ' + model.selectedConditionConceptName() + ' Relative To Index'"></div>
+            <!-- start: loading -->
+            <div id="es-loading" data-bind="if: $component.loadingRelatedConcepts() == true">
+                <div class="spinner">
+                  <h4>Loading</h4>
+                  <div class="rect1"></div>
+                  <div class="rect2"></div>
+                  <div class="rect3"></div>
+                  <div class="rect4"></div>
+                  <div class="rect5"></div>
+                  <div class="rect6"></div>
+                  <div class="rect7"></div>
+                </div>
+            </div>
+            <!-- end: loading -->
+            <div data-bind="if: $component.loadingRelatedConcepts() == false">
+                <table id="condition_concept_table" class="display condition_concept_table" style="width: 100%" type="condition">
+                    <thead>
+                        <tr>
+                            <th>SNOMED</th>
+                            <th>Concept Id</th>
+                            <th>SOC</th>
+                            <th>HLGT</th>
+                            <th>HLT</th>
+                            <th>PT</th>
+                            <th>Person Count</th>
+                            <th>Prevalence</th>
+                            <th>Log(post-pre ratio)</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="loader" data-bind="if:$component.loadingReportDrilldown">
+                    <i class="fa fa-refresh fa-spin"></i> Loading Drilldown...
+                </div>
+                <div data-bind="if:$component.activeReportDrilldown">
+                    <div id="conditionConceptByIndexDrilldownScatterplotHeading" class="reportSectionHeading"></div>
+                    <div class="evidenceVisualization" id="conditionConceptByIndexDrilldownScatterplot"></div>
+                </div>
             </div>
         </div>
-        <!-- end: loading -->
-        <div style="padding: 5px;" data-bind="if: $component.loadingRelatedConcepts() == false">
-            <b>Clinical characterization was computed using the cohort of <a data-bind="attr: {href: model.services()[0].circe + '/#/' + model.currentExposureCohortId(), target: '_blank'}, text: model.currentExposureCohortName"></a> (n= <span data-bind="text: model.currentExposureCohortCountValue()"></span>)</b>
-        </div>        
-        <div class="reportHeading"><i class="fa fa-area-chart"></i>Related Concepts</div>
-        <div class="reportSectionHeading" data-bind="text: 'First Condition Occurrence Of ' + model.selectedConditionConceptName() + ' Relative To Index'"></div>
-        <!-- start: loading -->
-        <div id="es-loading" data-bind="if: $component.loadingRelatedConcepts() == true">
-            <div class="spinner">
-              <h4>Loading</h4>
-              <div class="rect1"></div>
-              <div class="rect2"></div>
-              <div class="rect3"></div>
-              <div class="rect4"></div>
-              <div class="rect5"></div>
-              <div class="rect6"></div>
-              <div class="rect7"></div>
-            </div>
-        </div>
-        <!-- end: loading -->
-        <div data-bind="if: $component.loadingRelatedConcepts() == false">
-            <table id="condition_concept_table" class="display condition_concept_table" style="width: 100%" type="condition">
-                <thead>
-                    <tr>
-                        <th>SNOMED</th>
-                        <th>Concept Id</th>
-                        <th>SOC</th>
-                        <th>HLGT</th>
-                        <th>HLT</th>
-                        <th>PT</th>
-                        <th>Person Count</th>
-                        <th>Prevalence</th>
-                        <th>Log(post-pre ratio)</th>
-                    </tr>
-                </thead>
-            </table>
-            <div class="loader" data-bind="if:$component.loadingReportDrilldown">
-                <i class="fa fa-refresh fa-spin"></i> Loading Drilldown...
-            </div>
-            <div data-bind="if:$component.activeReportDrilldown">
-                <div id="conditionConceptByIndexDrilldownScatterplotHeading" class="reportSectionHeading"></div>
-                <div class="evidenceVisualization" id="conditionConceptByIndexDrilldownScatterplot"></div>
-            </div>
+        <div data-bind="if: model.currentExposureCohortId() > 0 && model.selectedConditionOccurrencePrevalenceHasData() == false">
+            <div class="reportHeading"><i class="fa fa-area-chart"></i>Related Concepts</div>
+            <h4>No data was found for the exposure cohort. Please validate that this cohort has been generated in Heracles.</h4>            
         </div>
     </div>
 </div>

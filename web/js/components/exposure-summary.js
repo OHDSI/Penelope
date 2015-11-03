@@ -272,6 +272,7 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
                                 };
                             }, conditionOccurrencePrevalence);
                             self.model.selectedConditionOccurrencePrevalence(table_data);
+                            self.model.selectedConditionOccurrencePrevalenceHasData(true);
                             
                             // Get the count value for the currently selected cohort
                             self.model.currentExposureCohortCountValue(table_data[0].count_value);                            
@@ -368,6 +369,11 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
                             });
 
                             $('[data-toggle="popover"]').popover();
+                        }
+                        else {
+                        	$('#condition_table').empty();
+                            self.model.selectedConditionOccurrencePrevalence(undefined);
+                            self.model.selectedConditionOccurrencePrevalenceHasData(false);
                         }
                     }                    
 				}
@@ -535,9 +541,11 @@ define(['knockout', 'text!./exposure-summary.html','d3', 'jnj_chart', 'colorbrew
             }
         });        
         
+        /*
         self.model.currentExposureCohortId.subscribe(function(newValue) {
            self.renderConditionPrevalence();
         });
+        */
         
         self.evaluateRender();
 	}

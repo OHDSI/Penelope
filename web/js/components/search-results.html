@@ -1,28 +1,33 @@
 <div class="container" id="wrapperSearchResults">
-	<div>
-		<div class="wrapperTitle" data-bind="text: 'Search Results for ' + decodeURI(model.currentSearch())"></div>
-	</div>
-	<table width="100%" class="conceptTable stripe compact hover" cellspacing="0" data-bind="dataTable:{
-            data: $component.searchResults,
-            options: {
-							dom: 'Clfiprt',
-							colVis: {
-								buttonText: 'Change Columns',
-								align: 'right',
-								overlayFade: 0,
-								showAll: 'Show All Columns',
-								restore: 'Reset Columns'
-							},																																													 
-							language: {
-								search: 'Filter: '
-							},
-							rowCallback: $root.contextSensitiveLinkColor,
-							lengthMenu: [[20, 50, 100, -1], [20, 50, 100,'All']],
-							orderClasses: false,
-							ordering: true,
-							order: [[ 2, 'asc' ]],
-							columns: $component.columns
-					}
-        }">
-	</table>    
+    <div data-bind="if: $component.searchResults().length > 0">
+        <div>
+            <div class="wrapperTitle" data-bind="text: 'Search Results for ' + decodeURI(model.currentSearch())"></div>
+        </div>
+        <table width="100%" class="conceptTable stripe compact hover" cellspacing="0" data-bind="dataTable:{
+                data: $component.searchResults,
+                options: {
+                                dom: 'Clfiprt',
+                                colVis: {
+                                    buttonText: 'Change Columns',
+                                    align: 'right',
+                                    overlayFade: 0,
+                                    showAll: 'Show All Columns',
+                                    restore: 'Reset Columns'
+                                },																																													 
+                                language: {
+                                    search: 'Filter: '
+                                },
+                                rowCallback: $root.contextSensitiveLinkColor,
+                                lengthMenu: [[20, 50, 100, -1], [20, 50, 100,'All']],
+                                orderClasses: false,
+                                ordering: true,
+                                order: [[ 2, 'asc' ]],
+                                columns: $component.columns
+                        }
+            }">
+        </table>    
+    </div>
+    <div data-bind="if: $component.searchResults().length <= 0">
+        <h4>No results were found for <span data-bind="text: decodeURI(model.currentSearch())"></span></h4>
+    </div>
 </div>

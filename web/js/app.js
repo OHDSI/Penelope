@@ -45,11 +45,12 @@ define([
         self.selectedConditionConceptName = ko.observable('');
         self.selectedConditionConceptAndDescendants = ko.observableArray(null);
         self.selectedConditionOccurrencePrevalence = ko.observable();
+        self.selectedConditionOccurrencePrevalenceHasData = ko.observable();
         self.selectedConditionCohorts = ko.observableArray(null);
         self.selectedDrugAndAncestorDescendants = ko.observableArray(null);
         self.drugLabelActiveTab = ko.observable('obs'); // Observational Evidence is the default
         self.productLabelSectionHeadings = ko.observableArray(null);
-        
+                
         // Literature Evidence Settings
         self.literatureEvidenceSummary = ko.observableArray(null);
         self.literatureEvidenceDetails = ko.observableArray(null);
@@ -105,12 +106,7 @@ define([
 			$.ajax({
 				url: self.evidenceUrl() + 'labelsearch/' + query,
 				success: function (results) {
-					if (results.length == 0) {
-						self.currentView('search');
-						$('#modalNoSearchResults').modal('show');
-						return;
-					}
-
+                    self.currentView('search');
                     var tempCaption;
 
                     if (decodeURI(query).length > 20) {
@@ -172,7 +168,6 @@ define([
                 self.currentDrugSetId(selectedDrug.setid);
                 self.currentDrugName(selectedDrug.searchName);
                 self.currentDrugIngredientName(selectedDrug.ingredientConceptName);
-                self.currentDrugConceptId(selectedDrug.ingredientConceptId);
                 var exposureCohortId = selectedDrug.cohortId;
                 if (exposureCohortId == null || exposureCohortId == undefined) {
                     exposureCohortId = 0;
@@ -191,6 +186,9 @@ define([
                 {
                     self.currentExposureCohortName('');
                 }
+                self.currentDrugConceptId(selectedDrug.ingredientConceptId);
+                self.selectedConditionOccurrencePrevalence(undefined);
+                self.selectedConditionOccurrencePrevalenceHasData(undefined);
                 
                 $.ajax({
                     url : "js/spl/" + selectedDrug.setid + ".html", 

@@ -6,23 +6,16 @@ define(['knockout', 'text!./search.html', 'knockout.dataTables.binding'], functi
 		self.checkExecuteSearch = function (data, e) {
 			if (e.keyCode == 13 || e.type == 'click') { // enter
 				var query = $('#querytext').val();
+                document.location = "#/search/" + encodeURI(query);
+                /*
 				if (query.length > 2) {
 					document.location = "#/search/" + encodeURI(query);
 				} else {
 					$('#helpMinimumQueryLength').modal('show');
 				}
+                */
 			}
 		};
-
-		self.renderConceptSelector = function (s,p,d) {
-			var css = '';
-			var icon = 'fa-shopping-cart';
-
-			if (self.model.selectedConceptsIndex[d.CONCEPT_ID] == 1) {
-				css = ' selected';
-			}
-			return '<i class="fa ' + icon + ' ' + css + '"></i>';
-		}
 	}
 
 	var component = {
